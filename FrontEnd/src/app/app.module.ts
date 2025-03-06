@@ -14,5 +14,4 @@ import { bootstrapApplication } from '@angular/platform-browser';  // Importar b
 })
 export class AppModule { }
 
-// Usar bootstrapApplication para iniciar la app
-bootstrapApplication(AppComponent);
+

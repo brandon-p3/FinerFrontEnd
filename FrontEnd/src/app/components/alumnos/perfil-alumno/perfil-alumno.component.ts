@@ -1,3 +1,4 @@
+
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import {FormsModule} from '@angular/forms'
@@ -41,4 +42,5 @@ export class PerfilAlumnoComponent {
     console.log('Cerrando sesión...');
     // Aquí puedes agregar lógica para cerrar sesión
   }
+
 }

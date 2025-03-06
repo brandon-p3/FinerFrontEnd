@@ -7,7 +7,7 @@ export const routes: Routes = [
   { path: 'usuarios-admin', component: UsuariosAdminComponent },
   { path: '', redirectTo: 'usuarios-admin', pathMatch: 'full' },
   { path: 'perfil-alumno', component: PerfilAlumnoComponent },
-  
+  { path: '**', redirectTo: 'usuarios-admin' } // Esto captura cualquier ruta desconocida y redirige
 ];
 
 @NgModule({
