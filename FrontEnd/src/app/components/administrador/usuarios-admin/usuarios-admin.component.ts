@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { NavbarComponent } from '../../navbar/navbar.component';
+import { NavbarAdminComponent } from '../navbar-admin/navbar-admin.component';
+import { FooterComponent } from '../footer/footer.component';
 
 @Component({
   selector: 'app-usuarios-admin',
   standalone: true,
-  imports: [NavbarComponent],
+  imports: [NavbarAdminComponent, FooterComponent],
   templateUrl: './usuarios-admin.component.html',
   styleUrl: './usuarios-admin.component.css'
 })

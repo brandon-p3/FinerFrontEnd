@@ -1,9 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+
 import { UsuariosAdminComponent } from './components/administrador/usuarios-admin/usuarios-admin.component';
 import { LoginComponent} from './components/login/login/login.component';
-import { RegistroComponent } from './components/login/registro/registro.component';
+import { RegistroComponent } from './components/login/registro/registro.component';=======
+import { CursosAlumnosComponent } from './components/alumnos/cursos-alumnos/cursos-alumnos.component';
+import { ContenidoCursoComponent } from './components/alumnos/contenido-curso/contenido-curso.component';
+import { DescripcionCursoAlumnoComponent } from './components/alumnos/descripcion-curso-alumno/descripcion-curso-alumno.component';
+import { CursosAdminComponent } from './components/administrador/cursos-admin/cursos-admin.component';
+import { PerfilAlumnoComponent } from './components/alumnos/perfil-alumno/perfil-alumno.component'; 
 
+// Rutas combinadas
 export const routes: Routes = [
   { path: '', redirectTo: 'usuarios-admin', pathMatch: 'full' },
 
@@ -19,10 +26,37 @@ export const routes: Routes = [
   { path: 'usuarios-admin/registro',
     component: RegistroComponent
   }
+  // Rutas para el administrador
+  {
+    path: 'administrador',
+    children: [
+      {
+        path: 'usuarios',
+        children: [
+          { path: 'ver', component: UsuariosAdminComponent }
+        ]
+      },
+      {
+        path: 'cursos',
+        children: [
+          { path: 'ver', component: CursosAdminComponent }
+        ]
+      }
+    ]
+  },
+
+  // Rutas para los alumnos
+  { path: 'cursos-alumnos', component: CursosAlumnosComponent },
+  { path: 'contenido-curso', component: ContenidoCursoComponent },
+  { path: 'descripcion-curso-alumno', component: DescripcionCursoAlumnoComponent },
+  { path: 'perfil-alumno', component: PerfilAlumnoComponent },
+
+  // Redirección por defecto
+  { path: '**', redirectTo: 'administrador/usuarios/ver' }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
