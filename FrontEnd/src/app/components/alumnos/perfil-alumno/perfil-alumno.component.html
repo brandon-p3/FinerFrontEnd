@@ -5,24 +5,24 @@
     </div>
     <div class="search-container">
         <input type="text" placeholder="Buscar cursos..." class="search-bar">
-        <i class="search-icon">&#128269;</i> <!-- Icono de lupa -->
+        <img src="assets/lupa.png" alt="Buscar" class="search-icon"> <!-- Icono de lupa -->
     </div>
     <div class="user-info" (click)="toggleMenu()">
         <span class="role">Estudiante</span>
         <img src="assets/useri.png" alt="Foto de perfil" class="profile-pic">
         <span class="user-name">{{ usuario.nombre }} {{ usuario.apellidos }}</span>
-        <i class="logout-icon" (click)="logout()">&#128274;</i> <!-- Icono de cerrar sesión -->
     </div>
-  </header>
-  
-  <!-- Menú desplegable -->
-  <div class="dropdown-menu" [class.show]="menuOpen">
+    <img src="assets/salir.png" alt="Salir" class="logout-icon" (click)="logout()"> <!-- Icono de cerrar sesión -->
+</header>
+
+<!-- Menú desplegable -->
+<div class="dropdown-menu" [class.show]="menuOpen">
     <ul>
         <li class="menu-section">Cursos</li>
         <li class="menu-item" 
             [class.active]="currentPage === 'mis-cursos'" 
             (click)="navigateTo('mis-cursos')">Mis Cursos</li>
-  
+
         <li class="menu-section">Perfil</li>
         <li class="menu-item" 
             [class.active]="currentPage === 'actualizar-perfil'" 
@@ -30,23 +30,23 @@
         <li class="menu-item" 
             [class.active]="currentPage === 'certificados'" 
             (click)="navigateTo('certificados')">Certificados</li>
-  
+
         <li class="menu-section">Historial</li>
         <li class="menu-item" 
             [class.active]="currentPage === 'historial'" 
             (click)="navigateTo('historial')">Historial de Aprendizaje</li>
-  
+
         <li class="menu-section">Soporte</li>
         <li class="menu-item" 
             [class.active]="currentPage === 'soporte'" 
             (click)="navigateTo('soporte')">Soporte</li>
-  
+
         <li class="menu-item logout" (click)="logout()">Cerrar Sesión</li>
     </ul>
-  </div>
-  
-  <!-- Pantalla de Actualizar Perfil -->
-  <div class="profile-update" *ngIf="currentPage === 'actualizar-perfil'">
+</div>
+
+<!-- Pantalla de Actualizar Perfil -->
+<div class="profile-update" *ngIf="currentPage === 'actualizar-perfil'">
     <h2>Bienvenido, {{ usuario.nombre }} {{ usuario.apellidos }}</h2>
     <p>Rol: Estudiante</p>
     <p>FINER</p>
@@ -58,7 +58,7 @@
         <span [class.active]="currentSection === 'certificados'" (click)="navigateTo('certificados')">Certificaciones</span> |
         <span [class.active]="currentSection === 'historial'" (click)="navigateTo('historial')">Historial de Aprendizaje</span>
     </nav>
-  
+
     <div class="profile-form" *ngIf="currentSection === 'perfil'">
         <h3>Información Básica</h3>
         <label>Nombre: <input type="text" [(ngModel)]="usuario.nombre"></label>
@@ -67,10 +67,88 @@
         <h3>Información de Contacto</h3>
         <label>Correo Electrónico: <input type="email" [(ngModel)]="usuario.email"></label>
     </div>
-  </div>
-  
-  <!-- Pie de página -->
-  <footer class="footer">
+</div>
+
+<!-- Pantalla de Certificados -->
+<div class="certificados" *ngIf="currentPage === 'certificados'">
+    <h2>Certificados</h2>
+    <p>Aquí puedes ver y descargar tus certificados obtenidos.</p>
+    
+    <!-- Mini-Menú -->
+    <nav class="mini-menu">
+        <span [class.active]="currentSection === 'perfil'" (click)="navigateTo('actualizar-perfil')">Perfil</span> |
+        <span [class.active]="currentSection === 'certificados'" (click)="navigateTo('certificados')">Certificaciones</span> |
+        <span [class.active]="currentSection === 'historial'" (click)="navigateTo('historial')">Historial de Aprendizaje</span>
+    </nav>
+
+    <div class="certificados-list">
+        <div class="certificado-item">
+            <h3>Curso de Angular</h3>
+            <p>Fecha de finalización: 01/10/2023</p>
+            <button class="download-btn">Descargar Certificado</button>
+        </div>
+        <div class="certificado-item">
+            <h3>Curso de TypeScript</h3>
+            <p>Fecha de finalización: 15/09/2023</p>
+            <button class="download-btn">Descargar Certificado</button>
+        </div>
+    </div>
+</div>
+
+<!-- Pantalla de Historial de Aprendizaje -->
+<div class="historial" *ngIf="currentPage === 'historial'">
+    <h2>Historial de Aprendizaje</h2>
+    <p>Revisa tu progreso y actividades realizadas.</p>
+    
+    <!-- Mini-Menú -->
+    <nav class="mini-menu">
+        <span [class.active]="currentSection === 'perfil'" (click)="navigateTo('perfil')">Perfil</span> |
+        <span [class.active]="currentSection === 'certificados'" (click)="navigateTo('certificados')">Certificaciones</span> |
+        <span [class.active]="currentSection === 'historial'" (click)="navigateTo('historial')">Historial de Aprendizaje</span>
+    </nav>
+
+    <div class="historial-list">
+        <div class="historial-item">
+            <h3>Curso de Angular</h3>
+            <p>Progreso: 80%</p>
+            <p>Última actividad: 25/09/2023</p>
+        </div>
+        <div class="historial-item">
+            <h3>Curso de TypeScript</h3>
+            <p>Progreso: 100%</p>
+            <p>Última actividad: 15/09/2023</p>
+        </div>
+    </div>
+</div>
+
+<!-- Pantalla de Mis Cursos -->
+<div class="mis-cursos" *ngIf="currentPage === 'mis-cursos'">
+    <h2>Mis Cursos</h2>
+    <p>Aquí puedes ver los cursos en los que estás inscrito.</p>
+    
+    <!-- Mini-Menú -->
+    <nav class="mini-menu">
+        <span [class.active]="currentSection === 'perfil'" (click)="navigateTo('perfil')">Perfil</span> |
+        <span [class.active]="currentSection === 'certificados'" (click)="navigateTo('certificados')">Certificaciones</span> |
+        <span [class.active]="currentSection === 'historial'" (click)="navigateTo('historial')">Historial de Aprendizaje</span>
+    </nav>
+
+    <div class="cursos-list">
+        <div class="curso-item">
+            <h3>Curso de Angular</h3>
+            <p>Progreso: 60%</p>
+            <button class="continuar-btn">Continuar Curso</button>
+        </div>
+        <div class="curso-item">
+            <h3>Curso de TypeScript</h3>
+            <p>Progreso: 100%</p>
+            <button class="ver-certificado-btn">Ver Certificado</button>
+        </div>
+    </div>
+</div>
+
+<!-- Pie de página -->
+<footer class="footer">
     <div>FINER | <a href="#">Términos y Condiciones</a> | <a href="#">Soporte</a> | <a href="#">Sobre Nosotros</a></div>
     <div>Redes Sociales | Contacto | Derechos Reservados</div>
-  </footer>
+

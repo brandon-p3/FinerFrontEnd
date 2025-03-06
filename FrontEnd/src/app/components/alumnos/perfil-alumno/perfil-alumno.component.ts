@@ -14,9 +14,9 @@ import {FormsModule} from '@angular/forms'
 export class PerfilAlumnoComponent {
   // Datos del usuario
   usuario = {
-    nombre: 'Juan',
-    apellidos: 'Pérez',
-    email: 'juan.perez@email.com',
+    nombre: 'Nombre del Alumno',
+    apellidos: 'Apellido del Alumno',
+    email: 'ejemplo@gmail.com',
     cursosCompletados: 5
   };
 
