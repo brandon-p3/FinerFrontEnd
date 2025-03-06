@@ -29,8 +29,5 @@ export const routes: Routes = [
   // Redirección por defecto 
   { path: '**', redirectTo: 'administrador/usuarios/ver' }
 
-@NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
-})
+];
 export class AppRoutingModule { }
