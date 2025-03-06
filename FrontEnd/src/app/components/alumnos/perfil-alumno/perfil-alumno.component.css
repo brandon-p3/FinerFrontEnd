@@ -1,0 +1,241 @@
+/* Estilos generales */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #BCEAD5; /* Verde suave para el fondo principal */
+    color: #2C3E50; /* Texto oscuro para mejor contraste */
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+/* Cabecera */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #FFFFFF; /* Cabecera blanca */
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 1000;
+}
+
+.header .logo {
+    display: flex;
+    align-items: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: #2C3E50;
+}
+
+.header .logo img {
+    max-height: 40px;
+    margin-right: 10px;
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+    flex-grow: 1;
+    margin: 0 20px;
+    max-width: 500px;
+}
+
+.search-bar {
+    padding: 10px 40px 10px 10px; /* Espacio para el icono */
+    border: 1px solid #9ED5C5; /* Borde con verde más claro */
+    border-radius: 25px;
+    width: 100%;
+    background-color: #F0F7F4; /* Fondo suave */
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+}
+
+.search-bar:focus {
+    border-color: #8EC3B0; /* Borde verde claro al enfocar */
+    outline: none;
+}
+
+.search-icon {
+    position: absolute;
+    right: 10px;
+    cursor: pointer;
+    font-size: 20px;
+    color: #8EC3B0; /* Color del icono */
+    transition: color 0.3s ease;
+}
+
+.search-icon:hover {
+    color: #9ED5C5; /* Color del icono al pasar el ratón */
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 25px;
+    transition: background-color 0.3s ease;
+    margin-left: auto; /* Mueve el user-info a la derecha */
+}
+
+.user-info:hover {
+    background-color: #F0F7F4; /* Fondo suave al pasar el ratón */
+}
+
+.profile-pic {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+    border: 2px solid #8EC3B0; /* Borde verde claro */
+}
+
+.role, .user-name {
+    margin-right: 10px;
+}
+
+.logout-icon {
+    cursor: pointer;
+    font-size: 20px;
+    color: #8EC3B0; /* Color del icono */
+    transition: color 0.3s ease;
+}
+
+.logout-icon:hover {
+    color: #9ED5C5; /* Color del icono al pasar el ratón */
+}
+
+/* Menú desplegable */
+.dropdown-menu {
+    position: absolute;
+    top: 80px; /* Ajusta según el espacio debajo del header */
+    right: 20px;
+    background-color: #FFFFFF; /* Fondo blanco */
+    border: 1px solid #9ED5C5; /* Borde con verde más claro */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: none;
+    padding: 10px;
+    width: 250px;
+    z-index: 1000;
+}
+
+.dropdown-menu.show {
+    display: block;
+}
+
+.dropdown-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu-section {
+    font-weight: bold;
+    padding: 10px 0;
+    color: #2C3E50; /* Color de texto de las secciones */
+    border-bottom: 1px solid #9ED5C5; /* Borde inferior con verde más claro */
+    margin-bottom: 10px;
+}
+
+.menu-item {
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.menu-item:hover {
+    background-color: #9ED5C5; /* Fondo de hover con verde más claro */
+    color: #FFFFFF; /* Texto blanco */
+}
+
+.menu-item.active {
+    background-color: #8EC3B0; /* Fondo de menú activo */
+    color: #FFFFFF; /* Texto blanco */
+}
+
+/* Mini-menú */
+.mini-menu {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #FFFFFF; /* Fondo blanco */
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.mini-menu span {
+    margin: 0 15px;
+    cursor: pointer;
+    font-size: 16px;
+    color: #2C3E50; /* Texto oscuro */
+    transition: color 0.3s ease;
+}
+
+.mini-menu span:hover {
+    color: #8EC3B0; /* Color de texto activo con verde claro */
+}
+
+.mini-menu .active {
+    color: #8EC3B0; /* Color de texto activo con verde claro */
+    font-weight: bold;
+}
+
+/* Estilos para el formulario de actualización de perfil */
+.profile-form {
+    background-color: #FFFFFF; /* Fondo blanco */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+.profile-form h3 {
+    margin-top: 0;
+    color: #2C3E50; /* Texto oscuro */
+}
+
+.profile-form label {
+    display: block;
+    margin-top: 15px;
+    color: #2C3E50; /* Texto oscuro */
+}
+
+.profile-form input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #9ED5C5; /* Borde con verde más claro */
+    border-radius: 5px;
+    margin-top: 5px;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+}
+
+.profile-form input:focus {
+    border-color: #8EC3B0; /* Borde verde claro al enfocar */
+    outline: none;
+}
+
+/* Pie de página */
+.footer {
+    background-color: #8EC3B0; /* Fondo del pie de página */
+    color: #FFFFFF; /* Texto blanco */
+    padding: 20px;
+    text-align: center;
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.footer a {
+    color: #FFFFFF; /* Enlaces blancos */
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer a:hover {
+    color: #F0F7F4; /* Enlaces con hover en verde más claro */
+}
