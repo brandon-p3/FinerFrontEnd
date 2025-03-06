@@ -28,6 +28,6 @@ export const routes: Routes = [
 
   // Redirección por defecto 
   { path: '**', redirectTo: 'administrador/usuarios/ver' }
-
 ];
+
 export class AppRoutingModule { }
