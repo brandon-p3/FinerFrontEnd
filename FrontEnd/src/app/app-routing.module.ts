@@ -2,14 +2,30 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { UsuariosAdminComponent } from './components/administrador/usuarios-admin/usuarios-admin.component';
+import { LoginComponent} from './components/login/login/login.component';
+import { RegistroComponent } from './components/login/registro/registro.component';=======
 import { CursosAlumnosComponent } from './components/alumnos/cursos-alumnos/cursos-alumnos.component';
 import { ContenidoCursoComponent } from './components/alumnos/contenido-curso/contenido-curso.component';
 import { DescripcionCursoAlumnoComponent } from './components/alumnos/descripcion-curso-alumno/descripcion-curso-alumno.component';
 import { CursosAdminComponent } from './components/administrador/cursos-admin/cursos-admin.component';
-import { PerfilAlumnoComponent } from './components/alumnos/perfil-alumno/perfil-alumno.component';
+import { PerfilAlumnoComponent } from './components/alumnos/perfil-alumno/perfil-alumno.component'; 
 
 // Rutas combinadas
 export const routes: Routes = [
+  { path: '', redirectTo: 'usuarios-admin', pathMatch: 'full' },
+
+  {
+    path: 'usuarios-admin',
+    component: UsuariosAdminComponent
+  },
+
+  { path: 'usuarios-admin/login/login',
+    component: LoginComponent
+   },
+
+  { path: 'usuarios-admin/registro',
+    component: RegistroComponent
+  }
   // Rutas para el administrador
   {
     path: 'administrador',
