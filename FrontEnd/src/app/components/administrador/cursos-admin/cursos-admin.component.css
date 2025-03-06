@@ -1,0 +1,175 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    padding: 20px;
+}
+  
+.section {
+    padding: 15px;
+    background: #f9f9f9;
+    border-radius: 8px;
+}
+  
+h2 {
+    text-align: left;
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+/* ====== Estilos para "Cursos por Aprobar" ====== */
+.pending-courses {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+  
+.pending-card {
+    display: flex;
+    flex-direction: row;
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    align-items: center;
+}
+  
+.card-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    justify-content: space-between;
+    gap: 10px;
+}
+  
+.card-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 5px;
+    object-fit: cover;
+    margin-left: 10px;
+}
+  
+.buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 10px;
+    justify-content: center;
+}
+  
+.btn {
+    padding: 6px 10px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    white-space: nowrap;
+}
+  
+.approve {
+    background: green;
+    color: white;
+}
+  
+.reject {
+    background: red;
+    color: white;
+}
+  
+/* ======= Estilos para "Todos los Cursos" ======= */
+.all-courses {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+  
+.all-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    width: 350px; /* Aumentamos el tamaño */
+    text-align: center;
+}
+  
+.all-card .card-image {
+    width: 150px; /* Aumentamos tamaño */
+    height: 150px;
+    border-radius: 5px;
+    object-fit: cover;
+}
+  
+.all-card .details {
+    background: blue;
+    color: white;
+    margin-top: 10px;
+}
+
+/* ====== Estilos para los Filtros ====== */
+.filters {
+    display: flex;
+    justify-content: right;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+  
+.filters input,
+.filters select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+  /*  ===== FILTROS ===== */
+
+  .filters {
+    display: flex;
+    justify-content: flex-end; /* Mueve los filtros a la derecha */
+    gap: 10px; /* Espaciado entre elementos */
+    padding: 10px;
+  }
+  
+  .filters input,
+  .filters select {
+    padding: 8px 12px;
+    border: 2px solid #8EC3B0;
+    border-radius: 8px;
+    font-size: 1rem;
+    background-color: #FFFF;
+    color: #333;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .filters input::placeholder {
+    color: #555;
+  }
+  
+  .filters select {
+    cursor: pointer;
+  }
+  
+  /* Efecto hover */
+  .filters input:hover,
+  .filters select:hover {
+    background-color: #9ED5C5;
+    border-color: #9ED5C5;
+    transform: scale(1.05);
+  }
+  
+  /* Responsive: Para móviles, que se apilen */
+  @media (max-width: 768px) {
+    .filters {
+      flex-direction: column;
+      align-items: flex-end;
+    }
+  
+    .filters input,
+    .filters select {
+      width: 100%;
+    }
+  }
