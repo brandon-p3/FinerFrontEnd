@@ -29,7 +29,7 @@
     padding: 15px;
     border-radius: 12px;
     margin: 8px;
-    background: linear-gradient(135deg, #BCEAD5, #9ED5C5);
+    background: linear-gradient(135deg, #FFFF, #DEF5E5);
     box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
     border-left: 5px solid #8EC3B0;
@@ -52,6 +52,15 @@
   .card strong {
     color: #055052;
   }
+
+  .details {
+    display: none;
+    transition: opacity 0.3s ease-in-out;
+  }
+  
+  .card:hover .details {
+    display: block;
+  }  
   
   /* Responsive: para pantallas pequeñas */
   @media (max-width: 768px) {
