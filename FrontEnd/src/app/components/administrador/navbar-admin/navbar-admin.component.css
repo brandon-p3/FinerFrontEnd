@@ -1,5 +1,5 @@
 .custom-navbar {
-    background: #8EC3B0; /* Degradado azul a morado */
+    background: #FFFF; /* Degradado azul a morado */
     padding: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
@@ -7,11 +7,11 @@
   .navbar-brand {
     font-size: 1.4rem;
     font-weight: bold;
-    color: white !important;
+    color: #8EC3B0  !important;
   }
   
   .navbar-nav .nav-link {
-    color: white !important;
+    color: #8EC3B0    !important;
     font-size: 1.1rem;
     font-weight: 500;
     margin: 0 10px;
