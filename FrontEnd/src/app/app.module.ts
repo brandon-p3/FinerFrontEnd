@@ -6,11 +6,22 @@ import { FormsModule } from '@angular/forms';
 import { bootstrapApplication } from '@angular/platform-browser';  // Importar bootstrapApplication
 
 @NgModule({
+
+    imports: [
+        AppRoutingModule,
+        BrowserModule
+    ],
+    providers: [],
+    bootstrap: [
+      //AppComponent
+      ]
+
   imports: [
     AppRoutingModule,
     FormsModule,  // No es necesario importar BrowserModule aquí
   ],
   providers: [],
+
 })
 export class AppModule { }
 

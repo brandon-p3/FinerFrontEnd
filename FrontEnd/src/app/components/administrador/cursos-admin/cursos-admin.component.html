@@ -1,1 +1,57 @@
-<p>cursos-admin works!</p>
+<app-navbar-admin></app-navbar-admin>
+<div class="container">
+    <!-- Sección 1: Cursos por Aprobar -->
+    <section class="section">
+      <h2>Cursos por Aprobar</h2>
+      <div class="pending-courses">
+        <div class="pending-card">
+          <div class="card-content">
+            <div class="text">
+              <h3>Nombre del Curso</h3>
+              <p>Descripción breve del curso.</p>
+              <div class="buttons">
+                <button class="btn">Contenido</button>
+                <button class="btn approve">Aprobar</button>
+                <button class="btn reject">Rechazar</button>
+              </div>
+            </div>
+            <img src="assets/noImage.jpg" alt="Imagen del curso" class="card-image">
+          </div>
+        </div>
+      </div>
+    </section>
+  
+    <!-- Sección 2: Todos los Cursos -->
+    <section class="section">
+      <h2>Todos los cursos</h2>
+      <div class="filters">
+        <input type="text" placeholder="Buscar por nombre">
+        <select>
+          <option value="">Filtrar por categoría</option>
+          <option value="programacion">Programación</option>
+          <option value="diseño">Diseño</option>
+          <option value="marketing">Marketing</option>
+        </select>
+      </div>
+      <div class="all-courses">
+        <div class="all-card">
+          <img src="assets/noImage.jpg" alt="Imagen del curso" class="card-image">
+          <h3>Nombre del Curso</h3>
+          <p>Descripción breve del curso.</p>
+          <button class="btn details">Detalles</button>
+        </div>
+        <div class="all-card">
+          <img src="assets/noImage.jpg" alt="Imagen del curso" class="card-image">
+          <h3>Nombre del Curso</h3>
+          <p>Descripción breve del curso.</p>
+          <button class="btn details">Detalles</button>
+        </div>
+        <div class="all-card">
+          <img src="assets/noImage.jpg" alt="Imagen del curso" class="card-image">
+          <h3>Nombre del Curso</h3>
+          <p>Descripción breve del curso.</p>
+          <button class="btn details">Detalles</button>
+        </div>
+      </div>
+    </section>
+</div>

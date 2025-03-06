@@ -1,1 +1,64 @@
-<p>cursos-alumnos works!</p>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Cursos</title>
+    <link rel="stylesheet" href="cursos-alumnos.component.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+
+  <header>
+    <div class="header-left">
+        <img src="assets/logo.png" alt="Logo Finner">
+        <h1>FINNER</h1>
+    </div>
+    <div class="header-center">
+      <input type="text" placeholder="Buscar curso...">
+  </div>
+    <div class="header-right">
+        <span class="username">Nombre_Usuario</span>
+        <i class="fa-solid fa-right-from-bracket"></i>
+    </div>
+  </header>
+
+  <div class="filters-container">
+    <div class="filter">
+      <input type="text" placeholder="Buscar curso..." aria-label="Buscar curso">
+      <i class="fa-solid fa-magnifying-glass search-icon"></i>
+    </div>
+    <div class="filter">
+      <input type="text" placeholder="Filtrar por fecha..." aria-label="Filtrar por fecha">
+      <i class="fa-solid fa-calendar calendar-icon"></i>
+    </div>
+  </div>
+
+  <main class="courses-container">
+    <div class="course-card">
+        <h3>Curso de MongoDB</h3>
+        <p>Aprende sobre bases de datos NoSQL y cómo migrar datos.</p>
+        <button>Acceder</button>
+    </div>
+
+    <div class="course-card">
+        <h3>Desarrollo con React</h3>
+        <p>Crea aplicaciones web modernas con React y componentes reutilizables.</p>
+        <button>Acceder</button>
+    </div>
+
+    <div class="course-card">
+        <h3>Diseño UX/UI</h3>
+        <p>Mejora la experiencia del usuario con técnicas avanzadas de diseño.</p>
+        <button>Acceder</button>
+    </div>
+
+    <div class="course-card">
+        <h3>Introducción a Python</h3>
+        <p>Aprende lo básico sobre Python y cómo escribir tus primeros programas.</p>
+        <button>Acceder</button>
+    </div>
+  </main>
+
+</body>
+</html>
