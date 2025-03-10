@@ -1,10 +1,106 @@
 body {
-    background-color: #E3F2FD;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #BCEAD5, #f0faf7); /* Fondo degradado con tonos claros */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
+
 .login-container {
-    max-width: 400px;
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0
+    background-color: #ffffff; /* Fondo blanco */
+    padding: 30px;
+    border-radius: 12px; /* Bordes redondeados */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    width: 400px; /* Más ancho */
+    text-align: center;
+}
+
+.login-container h2 {
+    color: #333; /* Texto oscuro para contraste */
+    font-size: 24px; /* Más grande */
+    margin-bottom: 20px;
+    font-family: 'Poppins', sans-serif; /* Nueva fuente */
+    font-weight: 600; /* Grosor de la fuente */
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ddd; /* Borde gris claro */
+    border-radius: 6px;
+    font-size: 14px;
+    background-color: #f9f9f9; /* Fondo gris muy claro */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #BCEAD5; /* Borde verde claro al enfocar */
+    outline: none;
+    box-shadow: 0 0 8px rgba(188, 234, 213, 0.6); /* Sombra más pronunciada */
+}
+
+.btn-login {
+    width: 100%;
+    padding: 12px;
+    background-color: #BCEAD5; /* Color principal */
+    color: #333; /* Texto oscuro para contraste */
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-login:hover {
+    background-color: #9DD9C7; /* Tonos más bajitos al pasar el mouse */
+}
+
+.social-login {
+    margin-top: 20px;
+}
+
+.btn-google {
+    background-color: #db4437; /* Color de Google */
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-google:hover {
+    background-color: #c33d2e; /* Tonos más bajitos al pasar el mouse */
+}
+
+.forgot-password, .register-link {
+    color: #2c3e50; /* Color más fuerte para los enlaces */
+    text-decoration: none;
+    transition: color 0.3s ease;
+    position: relative;
+}
+
+.forgot-password::after, .register-text::after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 1px;
+    background-color: #BCEAD5; /* Línea clara debajo del texto */
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+}
+
+.forgot-password:hover, .register-link:hover {
+    color: #1a252f; /* Color más oscuro al pasar el mouse */
+}
+
+.register-text {
+    position: relative;
+    display: inline-block;
 }
