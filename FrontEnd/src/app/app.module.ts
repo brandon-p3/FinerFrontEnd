@@ -3,24 +3,19 @@ import { AppComponent } from './app.component';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
-import { bootstrapApplication } from '@angular/platform-browser';  // Importar bootstrapApplication
+import { bootstrapApplication, BrowserModule } from '@angular/platform-browser';  // Importar bootstrapApplication
 
 @NgModule({
 
     imports: [
         AppRoutingModule,
-        BrowserModule
+        BrowserModule,
+        FormsModule,
     ],
     providers: [],
     bootstrap: [
       //AppComponent
-      ]
-
-  imports: [
-    AppRoutingModule,
-    FormsModule,  // No es necesario importar BrowserModule aquí
-  ],
-  providers: [],
+      ],
 
 })
 export class AppModule { }

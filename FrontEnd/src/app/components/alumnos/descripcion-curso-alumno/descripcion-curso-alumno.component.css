@@ -2,14 +2,14 @@ body {
   font-family: 'Arial', sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #DEF5E5;
+  background-color: #ffffff;
   color: #2F4F4F;
 }
 
 
 header {
-  background-color: #8EC3B0;
-  color: white;
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -129,6 +129,9 @@ header {
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
 }
 
+.icono-negro {
+  color: black;
+}
 
 .course-description {
   width: 40%;

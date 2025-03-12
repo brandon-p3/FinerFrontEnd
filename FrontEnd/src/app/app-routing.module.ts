@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-
 import { UsuariosAdminComponent } from './components/administrador/usuarios-admin/usuarios-admin.component';
 import { CursosAlumnosComponent } from './components/alumnos/cursos-alumnos/cursos-alumnos.component';
 import { ContenidoCursoComponent } from './components/alumnos/contenido-curso/contenido-curso.component';
@@ -8,9 +7,7 @@ import { DescripcionCursoAlumnoComponent } from './components/alumnos/descripcio
 import { CursosAdminComponent } from './components/administrador/cursos-admin/cursos-admin.component';
 import { PerfilAlumnoComponent } from './components/alumnos/perfil-alumno/perfil-alumno.component';
 
-// Rutas combinadas
 export const routes: Routes = [
-  // Rutas para el administrador
   {
     path: 'administrador',
     children: [
@@ -28,15 +25,19 @@ export const routes: Routes = [
       }
     ]
   },
-
-  // Rutas para los alumnos
-  { path: 'cursos-alumnos', component: CursosAlumnosComponent },
-  { path: 'contenido-curso', component: ContenidoCursoComponent },
-  { path: 'descripcion-curso-alumno', component: DescripcionCursoAlumnoComponent },
-  { path: 'perfil-alumno', component: PerfilAlumnoComponent },
-
-  // Redirección por defecto
-  { path: '**', redirectTo: 'administrador/usuarios/ver' }
+  {
+    path: 'alumnos',
+    children: [
+      { path: 'cursos', component: CursosAlumnosComponent },
+      { path: 'contenido', component: ContenidoCursoComponent },
+      { path: 'descripcion/:id', component: DescripcionCursoAlumnoComponent },
+      { path: 'perfil', component: PerfilAlumnoComponent },
+      { path: '', redirectTo: 'cursos', pathMatch: 'full' },
+      { path: '**', redirectTo: 'cursos' }
+    ]
+  },
+  { path: '', redirectTo: 'alumnos/cursos', pathMatch: 'full' },
+  { path: '**', redirectTo: 'alumnos/cursos' }
 ];
 
 @NgModule({
