@@ -1,1 +1,111 @@
-<p>crear-curso works!</p>
+<!-- Modal para vista previa -->
+<div class="modal-overlay" *ngIf="isModalOpen">
+    <div class="modal-content">
+      <h2>Vista Previa del Curso</h2>
+      <h4>Nombre del Curso: {{ courseName }}</h4>
+      <hr>
+      <div *ngFor="let section of sections; let sectionIndex = index">
+        <h5>Sección {{ sectionIndex + 1 }}: {{ section.title }}</h5>
+        <div *ngFor="let subsection of section.subsections; let subsectionIndex = index">
+          <h6>Subsección {{ subsectionIndex + 1 }}: {{ subsection.title }}</h6>
+          <p>{{ subsection.content }}</p>
+        </div>
+        <hr>
+      </div>
+      <button (click)="closeModal()">Cerrar</button>
+    </div>
+  </div>
+<!-- Contenedor principal -->
+<div class="main-container">
+    <!-- Cabecera -->
+    <header class="header">
+        <div class="logo">
+            <img src="assets/logo.png" alt="Logotipo"> FINER
+        </div>
+        <div class="user-info" (click)="toggleMenu()">
+            <span class="role">Instructor</span>
+            <img src="assets/useri.png" alt="Foto de perfil" class="profile-pic">
+            <span class="user-name">{{ usuario.nombre }} {{ usuario.apellidos }}</span>
+        </div>
+        <img src="assets/salir.png" alt="Salir" class="logout-icon" (click)="logout()"> <!-- Icono de cerrar sesión -->
+    </header>
+
+    <!-- Menú Desplegable -->
+    <div class="dropdown-menu" [class.show]="menuOpen">
+        <ul>
+            <li class="menu-section">Cursos</li>
+            <li class="menu-item" [class.active]="currentPage === 'cursos-instructor'" (click)="navigateTo('cursos-instructor')">Mis Cursos</li>
+        </ul>
+    </div>
+
+    <!-- Crear Curso -->
+    <div class="content-container">
+        <h2>Crear Nuevo Curso</h2>
+        
+        <!-- Botones Vista Previa y Eliminar -->
+        <div class="action-buttons">
+            <button class="btn-view" (click)="vistaPrevia()">
+              <i class="fas fa-eye"></i> Vista Previa
+            </button>
+            <button class="btn-delete" (click)="eliminarCurso()">
+              <i class="fas fa-trash"></i> Borrar
+            </button>
+          </div>
+
+        <!-- Nombre del Curso -->
+        <div class="form-group">
+            <label for="course-name">Nombre del Curso</label>
+            <input type="text" id="course-name" class="form-input" placeholder="Ingrese el nombre del curso" [(ngModel)]="courseName">
+        </div>
+
+        <!-- Sección de contenido -->
+        <div class="sections-container">
+            <!-- Iterar sobre las secciones -->
+            <div class="section" *ngFor="let section of sections; let sectionIndex = index">
+                <div class="form-group">
+                    <label for="section-title">Título de Sección</label>
+                    <input type="text" id="section-title" class="form-input" placeholder="Ingrese el título de la sección" [(ngModel)]="section.title">
+                   <!-- Botón para eliminar sección -->
+<button *ngIf="sections.length > 1" class="btn-delete" (click)="removeSection(sectionIndex)">
+    <i class="fas fa-trash"></i> Eliminar Sección
+  </button>
+                </div>
+
+                <!-- Iterar sobre las subsecciones de la sección actual -->
+                <div class="subsection" *ngFor="let subsection of section.subsections; let subsectionIndex = index">
+                    <div class="form-group">
+                        <label for="subsection-title">Título de Subsección</label>
+                        <input type="text" id="subsection-title" class="form-input" placeholder="Ingrese el título de la subsección" [(ngModel)]="subsection.title">
+                    </div>
+                    <div class="form-group">
+                        <label for="subsection-content">Contenido</label>
+                        <textarea id="subsection-content" class="form-input" placeholder="Ingrese el contenido de la subsección" [(ngModel)]="subsection.content"></textarea>
+                    </div>
+                  <!-- Botón para eliminar subsección -->
+<button *ngIf="section.subsections.length > 1" class="btn-delete" (click)="removeSubsection(sectionIndex, subsectionIndex)">
+    <i class="fas fa-trash"></i> Eliminar Subsección
+  </button>
+  
+  <!-- Botón para añadir subsección -->
+  <button class="add-subsection-btn" (click)="addSubsection(sectionIndex)">
+    <i class="fas fa-plus"></i> Añadir Subsección
+  </button>
+        </div>
+
+       <!-- Contenedor para los botones "Añadir Sección" y "Enviar a Revisión" -->
+<div class="button-container">
+    <!-- Botón para añadir sección -->
+    <button class="add-section-btn" (click)="addSection()">
+        <i class="fas fa-plus"></i>Añadir Sección</button>
+
+    <!-- Botón para enviar a revisión -->
+    <button class="submit-btn" (click)="submitForReview()">Enviar a Revisión</button>
+</div>
+    </div>
+</div>
+</div>
+    <!-- Pie de página -->
+    <footer class="footer">
+        <div>FINER | <a href="#">Términos y Condiciones</a> | <a href="#">Soporte</a> | <a href="#">Sobre Nosotros</a></div>
+        <div>Redes Sociales | Contacto | Derechos Reservados</div>
+    </footer>
