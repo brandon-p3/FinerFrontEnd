@@ -66,6 +66,7 @@ export class CursosInstructorComponent {
   }
 
   createCourse() {
+    this.currentPage = 'crear-curso';
     this.router.navigate(['/crear-curso']);
   }
   

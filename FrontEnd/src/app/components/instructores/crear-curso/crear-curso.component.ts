@@ -27,7 +27,7 @@ export class CrearCursoComponent {
     email: 'juan.perez@finer.com',
   };
   menuOpen = false;
-  currentPage = 'cursos-instructor';
+  currentPage = 'crear-curso';
 
   constructor(private router: Router, private modalService: NgbModal) {}
 
@@ -81,10 +81,11 @@ export class CrearCursoComponent {
     });
   }
 
-  // Métodos adicionales 
+
   toggleMenu() {
     this.menuOpen = !this.menuOpen;
   }
+
 
   // Método para abrir el modal
   vistaPrevia() {
@@ -112,3 +113,4 @@ export class CrearCursoComponent {
     this.router.navigate(['/cursos-instructor']);
   }
 }
+
