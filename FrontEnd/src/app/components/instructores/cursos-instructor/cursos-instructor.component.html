@@ -18,9 +18,9 @@
         <ul>
             <li class="menu-section">Cursos</li>
             <li class="menu-item" [class.active]="currentPage === 'mis-cursos'" (click)="navigateTo('mis-cursos')">Mis Cursos</li>
-            <li class="menu-item" [class.active]="currentPage === 'crear-curso'" (click)="navigateTo('crear-curso')">
-                Crear Curso
-              </li>
+                <li class="menu-item" [class.active]="currentPage === 'crear-curso'" (click)="createCourse()">
+                    Crear Curso
+                  </li>
         </ul>
     </div>
 
