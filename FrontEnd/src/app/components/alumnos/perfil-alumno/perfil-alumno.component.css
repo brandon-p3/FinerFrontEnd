@@ -161,7 +161,94 @@ body {
     color: #FFFFFF; 
 }
 
-/* Mini-menú */
+/*Mini-menu*/
+/* Estilo general para el mini menú */
+.mini-menu {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    color: #333; /* Color del texto normal */
+}
+
+/* Estilo para la sección activa */
+.mini-menu span.active {
+    font-weight: bold;  /* Hace que el texto esté en negrita */
+    color: #8EC3B0;     /* Cambia el color del texto activo */
+}
+
+/* Estilo para las secciones normales (no activas) */
+.mini-menu span {
+    cursor: pointer;    /* Añade un cursor pointer para hacer que se vea interactivo */
+    transition: color 0.3s ease; /* Transición suave para el cambio de color */
+}
+
+/* Cambio de color al pasar el mouse por encima */
+.mini-menu span:hover {
+    color: #9ED5C5;  /* Color suave al pasar el ratón */
+}
+/* Estilo para el contenedor de las pantallas (Certificados, Historial) */
+.content-container {
+    background-color: #FFFFFF; /* Fondo blanco */
+    border-radius: 8px;         /* Bordes redondeados */
+    padding: 20px;              /* Espaciado interno */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+    margin: 20px auto;          /* Márgenes para centrar el contenido */
+    max-width: 900px;           /* Ancho máximo */
+}
+
+.content-container h2 {
+    font-size: 24px;            /* Tamaño del encabezado */
+    color: #333;                /* Color del texto */
+    margin-bottom: 15px;        /* Espaciado debajo del encabezado */
+}
+
+.content-container p {
+    font-size: 16px;            /* Tamaño del texto */
+    color: #666;                /* Color de texto más suave */
+    margin-bottom: 20px;        /* Espaciado debajo del párrafo */
+}
+
+.mini-menu {
+    margin-bottom: 20px;        /* Espaciado debajo del mini menú */
+}
+
+.mini-menu span {
+    cursor: pointer;           /* Indicar que es interactivo */
+    color: #333;                /* Color de texto normal */
+}
+
+.mini-menu span.active {
+    font-weight: bold;          /* Resalta la sección activa */
+    color: #8EC3B0;             /* Color de la sección activa */
+}
+
+.mini-menu span:hover {
+    color: #9ED5C5;             /* Cambio de color al pasar el mouse */
+}
+
+
+/* Contenedor principal para todas las pantallas */
+.container {
+    max-width: 800px; /* Ancho máximo para el contenido */
+    margin: 20px auto; /* Centrar el contenedor */
+    padding: 20px;
+    background-color: #FFFFFF; 
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Títulos de las pantallas */
+h2 {
+    color: #2C3E50;
+    margin-bottom: 20px;
+}
+
+/* Texto descriptivo */
+p {
+    color: #2C3E50;
+    margin-bottom: 20px;
+}
+
+/* Mini-Menú */
 .mini-menu {
     display: flex;
     justify-content: center;
@@ -189,6 +276,54 @@ body {
     font-weight: bold;
 }
 
+/* Listas de elementos (Certificados, Historial, Cursos) */
+.certificados-list, .historial-list, .cursos-list {
+    margin-top: 20px;
+}
+
+/* Items de las listas */
+.certificado-item, .historial-item, .curso-item {
+    background-color: #F0F7F4;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #9ED5C5;
+    text-align: left; /* Alinear el texto a la izquierda */
+}
+
+.certificado-item h3, .historial-item h3, .curso-item h3 {
+    margin: 0;
+    color: #2C3E50;
+}
+
+.certificado-item p, .historial-item p, .curso-item p {
+    margin: 5px 0;
+    color: #8EC3B0;
+}
+
+/* Botones */
+button {
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px; /* Bordes redondeados */
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    color: #FFFFFF; /* Texto blanco */
+    margin-top: 10px;
+}
+
+button:hover {
+    transform: scale(1.05); /* Efecto de escala al pasar el ratón */
+}
+
+.download-btn, .continuar-btn, .ver-certificado-btn {
+    background-color: #8EC3B0; /* Verde claro */
+}
+
+.download-btn:hover, .continuar-btn:hover, .ver-certificado-btn:hover {
+    background-color: #9ED5C5; /* Verde más claro al pasar el ratón */
+}
 /* Estilos para el formulario de actualización de perfil */
 .profile-form {
     background-color: #FFFFFF; 
@@ -205,26 +340,49 @@ body {
     text-align: center; /* Centrar el texto */
 }
 
-.profile-form label {
-    display: block;
-    margin-top: 15px;
-    color: #2C3E50; 
+/* Grupos de formulario */
+.form-group {
+    margin-bottom: 15px;
     text-align: left; /* Alinear el texto a la izquierda */
 }
 
-.profile-form input {
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #2C3E50; 
+    font-weight: bold;
+}
+
+/* Campos de entrada */
+.form-input {
     width: 100%;
     padding: 10px;
     border: 1px solid #9ED5C5; 
     border-radius: 5px;
-    margin-top: 5px;
     font-size: 14px;
     transition: border-color 0.3s ease;
 }
 
-.profile-form input:focus {
+.form-input:focus {
     border-color: #8EC3B0; 
     outline: none;
+}
+
+/* Botón de Guardar Cambios */
+.save-btn {
+    background-color: #8EC3B0; /* Verde claro */
+    color: #FFFFFF; /* Texto blanco */
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px; /* Espacio superior */
+    width: 100%; /* Ancho completo */
+}
+
+.save-btn:hover {
+    background-color: #9ED5C5; /* Verde más claro al pasar el ratón */
 }
 
 /* Pie de página */
@@ -245,82 +403,4 @@ body {
 
 .footer a:hover {
     color: #F0F7F4; 
-}
-
-/* Estilos base para los botones */
-button {
-    border: none;
-    padding: 10px 20px;
-    border-radius: 25px; /* Bordes redondeados */
-    font-size: 14px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    color: #FFFFFF; /* Texto blanco */
-}
-
-/* Efecto hover para todos los botones */
-button:hover {
-    transform: scale(1.05); /* Efecto de escala al pasar el ratón */
-}
-
-/* Botón Descargar Certificado */
-.download-btn {
-    background-color: #8EC3B0; /* Verde claro */
-}
-
-.download-btn:hover {
-    background-color: #9ED5C5; /* Verde más claro al pasar el ratón */
-}
-
-/* Botón Continuar Curso */
-.continuar-btn {
-    background-color: #8EC3B0; /* Verde claro */
-}
-
-.continuar-btn:hover {
-    background-color: #9ED5C5; /* Verde más claro al pasar el ratón */
-}
-
-/* Botón Ver Certificado */
-.ver-certificado-btn {
-    background-color: #8EC3B0; /* Verde claro */
-}
-
-.ver-certificado-btn:hover {
-    background-color: #9ED5C5; /* Verde más claro al pasar el ratón */
-}
-
-/* Botón de Cerrar Sesión */
-.logout-btn {
-    background-color: #8EC3B0; /* Verde claro */
-    padding: 10px 20px;
-    border-radius: 25px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.logout-btn:hover {
-    background-color: #9ED5C5; /* Verde más claro al pasar el ratón */
-}
-
-/* Botón de Soporte (si lo necesitas) */
-.soporte-btn {
-    background-color: #8EC3B0; /* Verde claro */
-}
-
-.soporte-btn:hover {
-    background-color: #9ED5C5; /* Verde más claro al pasar el ratón */
-}
-
-/* Botón de Acción Secundaria (si lo necesitas) */
-.secondary-btn {
-    background-color: #F0F7F4; /* Fondo suave */
-    color: #2C3E50; /* Texto oscuro */
-    border: 1px solid #9ED5C5; /* Borde con verde más claro */
-}
-
-.secondary-btn:hover {
-    background-color: #9ED5C5; /* Fondo verde más claro al pasar el ratón */
-    color: #FFFFFF; /* Texto blanco */
 }

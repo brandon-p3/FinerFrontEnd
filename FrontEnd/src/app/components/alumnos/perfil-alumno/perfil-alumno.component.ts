@@ -1,8 +1,6 @@
-
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import {FormsModule} from '@angular/forms'
-
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-perfil-alumno',
@@ -32,9 +30,23 @@ export class PerfilAlumnoComponent {
     this.menuOpen = !this.menuOpen;
   }
 
-  // Método para navegar entre páginas
+  // Método para navegar a las diferentes páginas y secciones
   navigateTo(page: string) {
     this.currentPage = page;
+
+    // Cambiar la sección activa del mini menú
+    if (page === 'actualizar-perfil') {
+      this.currentSection = 'perfil';
+    } else if (page === 'certificados') {
+      this.currentSection = 'certificados';
+    } else if (page === 'historial') {
+      this.currentSection = 'historial';
+    } else if (page === 'mis-cursos') {
+      this.currentSection = 'mis-cursos';
+    }
+
+    // Cerrar el menú después de seleccionar una opción
+    this.menuOpen = false;
   }
 
   // Método para cerrar sesión
@@ -42,5 +54,4 @@ export class PerfilAlumnoComponent {
     console.log('Cerrando sesión...');
     // Aquí puedes agregar lógica para cerrar sesión
   }
-
 }
