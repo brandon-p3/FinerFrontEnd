@@ -65,15 +65,13 @@ export const routes: Routes = [
 
 
   // Redirección por defecto (en caso de ruta no encontrada)
-  { path: '**', redirectTo: 'home/inicio' }
+  { path: '**', redirectTo: 'home/inicio' },
 
 
   //Rutas para el instructor
   {path: 'cursos-instructor', component: CursosInstructorComponent},
   {path: 'crear-curso', component:CrearCursoComponent},
 
-  // Redirección por defecto
-  { path: '**', redirectTo: 'administrador/usuarios/ver' }
 ];
 
 @NgModule({
