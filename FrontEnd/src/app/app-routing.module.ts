@@ -1,30 +1,23 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { UsuariosAdminComponent } from './components/administrador/usuarios-admin/usuarios-admin.component';
-import { LoginComponent} from './components/login/login/login.component';
+import { LoginComponent } from './components/login/login/login.component';
 import { RegistroComponent } from './components/login/registro/registro.component';
 import { CursosAlumnosComponent } from './components/alumnos/cursos-alumnos/cursos-alumnos.component';
 import { ContenidoCursoComponent } from './components/alumnos/contenido-curso/contenido-curso.component';
 import { DescripcionCursoAlumnoComponent } from './components/alumnos/descripcion-curso-alumno/descripcion-curso-alumno.component';
 import { CursosAdminComponent } from './components/administrador/cursos-admin/cursos-admin.component';
-import { PerfilAlumnoComponent } from './components/alumnos/perfil-alumno/perfil-alumno.component'; 
+import { PerfilAlumnoComponent } from './components/alumnos/perfil-alumno/perfil-alumno.component';
+import { InicioComponent } from './components/inicio/inicio.component';
 
-// Rutas combinadas
+
 export const routes: Routes = [
-  { path: '', redirectTo: 'usuarios-admin', pathMatch: 'full' },
+  { path: '', redirectTo: 'home/inicio', pathMatch: 'full' }, 
 
-  {
-    path: 'usuarios-admin',
-    component: UsuariosAdminComponent
-  },
+  { path: 'home/inicio', component: InicioComponent }, 
+  { path: 'home/login', component: LoginComponent }, 
+  { path: 'home/registro', component: RegistroComponent }, 
 
-  { path: 'home/login',
-    component: LoginComponent
-   },
-
-  { path: 'home/registro',
-    component: RegistroComponent
-  },
   // Rutas para el administrador
   {
     path: 'administrador',
@@ -50,8 +43,8 @@ export const routes: Routes = [
   { path: 'descripcion-curso-alumno', component: DescripcionCursoAlumnoComponent },
   { path: 'perfil-alumno', component: PerfilAlumnoComponent },
 
-  // Redirección por defecto
-  { path: '**', redirectTo: 'administrador/usuarios/ver' }
+  // Redirección por defecto (en caso de ruta no encontrada)
+  { path: '**', redirectTo: 'home/inicio' }
 ];
 
 @NgModule({

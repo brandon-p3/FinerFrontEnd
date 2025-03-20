@@ -1,85 +1,109 @@
-body {
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #BCEAD5, #f0faf7); /* Fondo degradado con tonos claros */
+body, html {
     margin: 0;
     padding: 0;
+    height: 100%;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #BCEAD5, #f0faf7);
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
 }
 
 .login-container {
-    background-color: #ffffff; /* Fondo blanco */
+    background-color: #ffffff;
     padding: 30px;
-    border-radius: 12px; /* Bordes redondeados */
+    border-radius: 12px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    width: 400px; /* Más ancho */
+    width: 500px;
     text-align: center;
+    margin: auto;
 }
 
-.login-container h2 {
-    color: #333; /* Texto oscuro para contraste */
-    font-size: 24px; /* Más grande */
+.logo {
     margin-bottom: 20px;
-    font-family: 'Poppins', sans-serif; /* Nueva fuente */
-    font-weight: 600; /* Grosor de la fuente */
 }
 
-.form-control {
+.logo img {
+    width: 100px;
+    margin-bottom: 20px;
+}
+
+.logo h1 {
+    color: #333;
+    font-size: 24px;
+    margin-top: 15px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+}
+
+.form-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #555;
+    font-size: 14px;
+}
+
+.form-group input {
     width: 100%;
     padding: 10px;
     box-sizing: border-box;
-    border: 1px solid #ddd; /* Borde gris claro */
+    border: 1px solid #ddd;
     border-radius: 6px;
     font-size: 14px;
-    background-color: #f9f9f9; /* Fondo gris muy claro */
+    background-color: #f9f9f9;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.form-control:focus {
-    border-color: #BCEAD5; /* Borde verde claro al enfocar */
+.form-group input:focus {
+    border-color: #BCEAD5;
     outline: none;
-    box-shadow: 0 0 8px rgba(188, 234, 213, 0.6); /* Sombra más pronunciada */
+    box-shadow: 0 0 8px rgba(188, 234, 213, 0.6);
 }
 
 .btn-login {
     width: 100%;
     padding: 12px;
-    background-color: #BCEAD5; /* Color principal */
-    color: #333; /* Texto oscuro para contraste */
+    background-color: #BCEAD5;
+    color: #333;
     border: none;
     border-radius: 6px;
     cursor: pointer;
     font-size: 16px;
     transition: background-color 0.3s ease;
+    margin-top: 10px;
 }
 
 .btn-login:hover {
-    background-color: #9DD9C7; /* Tonos más bajitos al pasar el mouse */
+    background-color: #9DD9C7;
 }
 
 .social-login {
-    margin-top: 20px;
+    margin-top: 15px;
 }
 
 .btn-google {
-    background-color: #db4437; /* Color de Google */
-    color: #fff;
-    border: none;
+    background-color: #f0faf7;
+    color: #2c3e50;
+    border: 1px solid #BCEAD5;
     border-radius: 6px;
     padding: 10px;
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    width: 100%;
 }
 
 .btn-google:hover {
-    background-color: #c33d2e; /* Tonos más bajitos al pasar el mouse */
+    background-color: #d0f0e4;
 }
 
 .forgot-password, .register-link {
-    color: #2c3e50; /* Color más fuerte para los enlaces */
+    color: #2c3e50;
     text-decoration: none;
     transition: color 0.3s ease;
     position: relative;
@@ -90,17 +114,18 @@ body {
     display: block;
     width: 100%;
     height: 1px;
-    background-color: #BCEAD5; /* Línea clara debajo del texto */
+    background-color: #BCEAD5;
     position: absolute;
     bottom: -5px;
     left: 0;
 }
 
 .forgot-password:hover, .register-link:hover {
-    color: #1a252f; /* Color más oscuro al pasar el mouse */
+    color: #1a252f;
 }
 
 .register-text {
     position: relative;
     display: inline-block;
+    margin-top: 15px;
 }

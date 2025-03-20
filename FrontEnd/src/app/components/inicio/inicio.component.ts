@@ -2,14 +2,17 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router'; 
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  selector: 'app-inicio',
+  templateUrl: './inicio.component.html',
+  styleUrls: ['./inicio.component.css']
 })
-export class LoginComponent {
+export class InicioComponent {
 
   constructor(private router: Router) {} 
-  
+  navigateToLogin() {
+    this.router.navigate(['/home/login']); 
+  }
+
   navigateToRegister() {
     this.router.navigate(['/home/registro']); 
   }

@@ -2,16 +2,13 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-registro',
-  standalone: true,
-  imports: [],
   templateUrl: './registro.component.html',
-  styleUrl: './registro.component.css'
+  styleUrls: ['./registro.component.css']
 })
 export class RegistroComponent {
-    showInstructorFields = false;
-  
-    toggleInstructorFields() {
-      this.showInstructorFields = !this.showInstructorFields;
-    }
+  showInstructorFields: boolean = false; 
+
+  toggleInstructorFields() {
+    this.showInstructorFields = !this.showInstructorFields;
   }
-  
+}
