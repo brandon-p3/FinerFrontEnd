@@ -1,13 +1,7 @@
 import { Component } from '@angular/core';
-import { NavbarAdminComponent } from '../navbar-admin/navbar-admin.component';
-import { FooterComponent } from '../footer/footer.component';
-import { DetalleInstructorAdminComponent } from '../detalle-instructor-admin/detalle-instructor-admin.component';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-solicitudes-admin',
-  standalone: true,
-  imports: [NavbarAdminComponent, FooterComponent, CommonModule, DetalleInstructorAdminComponent],
   templateUrl: './solicitudes-admin.component.html',
   styleUrl: './solicitudes-admin.component.css'
 })

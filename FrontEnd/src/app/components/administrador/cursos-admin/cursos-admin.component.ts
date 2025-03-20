@@ -5,8 +5,6 @@ import { FooterComponent } from '../footer/footer.component';
 
 @Component({
   selector: 'app-cursos-admin',
-  standalone: true,
-  imports: [NavbarAdminComponent, FooterComponent],
   templateUrl: './cursos-admin.component.html',
   styleUrl: './cursos-admin.component.css'
 })
