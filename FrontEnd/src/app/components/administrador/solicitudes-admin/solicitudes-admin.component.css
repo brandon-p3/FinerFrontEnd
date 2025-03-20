@@ -1,0 +1,169 @@
+
+  .container {
+    display: flex;
+    gap: 20px;
+  }
+
+  .section {
+    flex: 1;
+    padding: 10px;
+  }
+
+  h2 {
+    text-align: left;
+    margin-bottom: 15px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+  }
+
+  .card-container {
+    display: flex;
+    justify-content: space-around;
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+
+  .card {
+    flex: 1;
+    max-width: 280px; 
+    padding: 15px;
+    border-radius: 12px;
+    margin: 8px;
+    background: linear-gradient(135deg, #FFFF, #DEF5E5);
+    box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.1);
+    border-left: 5px solid #8EC3B0;
+  }
+
+  .card p {
+    font-size: 16px;
+    margin: 6px 0;
+    color: #333;
+    line-height: 1.4;
+  }
+
+  .actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+
+/* ==== BOTONES DE INSTRUCTOR === */
+.btn-details, .btn-accept, .btn-reject {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 13px;
+  border: none;
+  border-radius: 9px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: bold;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.15);
+}
+
+/* Botón de Detalles */
+.btn-details {
+  background-color: #9ED5C5;
+  color: #055052;
+  border: 2px solid #8EC3B0;
+}
+
+.btn-details:hover {
+  background-color: #8EC3B0;
+  border-color: #7AB8A3;
+  transform: translateY(-2px);
+}
+
+/* Botón de Aceptar */
+.btn-accept {
+  background-color: #8EC3B0;
+  color: white;
+  border: 2px solid #7AB8A3;
+}
+
+.btn-accept:hover {
+  background-color: #7AB8A3;
+  border-color: #6BA494;
+  transform: translateY(-2px);
+}
+
+/* Botón de Rechazar */
+.btn-reject {
+  background-color: #E57373;
+  color: white;
+  border: 2px solid #D65B5B;
+}
+
+.btn-reject:hover {
+  background-color: #D65B5B;
+  border-color: #C44A4A;
+  transform: translateY(-2px);
+}
+
+
+  @media (max-width: 768px) {
+    .container {
+      flex-direction: column;
+    }
+
+    .card-container {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .card {
+      width: 90%;
+      max-width: 320px;
+    }
+  }
+
+  /*  ===== FILTROS ===== */
+
+  .filters {
+    display: flex;
+    justify-content: flex-end; /* Mueve los filtros a la derecha */
+    gap: 10px; /* Espaciado entre elementos */
+    padding: 10px;
+  }
+  
+  .filters input,
+  .filters select {
+    padding: 8px 12px;
+    border: 2px solid #8EC3B0;
+    border-radius: 8px;
+    font-size: 1rem;
+    background-color: #FFFF;
+    color: #333;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .filters input::placeholder {
+    color: #555;
+  }
+  
+  .filters select {
+    cursor: pointer;
+  }
+  
+  /* Efecto hover */
+  .filters input:hover,
+  .filters select:hover {
+    background-color: #9ED5C5;
+    border-color: #9ED5C5;
+    transform: scale(1.05);
+  }
+  
+  /* Responsive: Para móviles, que se apilen */
+  @media (max-width: 768px) {
+    .filters {
+      flex-direction: column;
+      align-items: flex-end;
+    }
+  
+    .filters input,
+    .filters select {
+      width: 100%;
+    }
+  }

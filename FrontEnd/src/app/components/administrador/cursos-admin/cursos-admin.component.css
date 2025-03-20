@@ -1,175 +1,299 @@
 .container {
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-    padding: 20px;
-}
-  
-.section {
-    padding: 15px;
-    background: #f9f9f9;
-    border-radius: 8px;
-}
-  
-h2 {
-    text-align: left;
-    font-size: 20px;
-    margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding: 20px;
 }
 
-/* ====== Estilos para "Cursos por Aprobar" ====== */
+/* ====== Secciones generales ====== */
+.section {
+  padding: 20px;
+  background: #EAF9F0;  /* Verde claro */
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  text-align: left;
+  font-size: 22px;
+  color: #055052; /* Verde oscuro */
+  margin-bottom: 15px;
+}
+
+/* ====== "Cursos por Aprobar" ====== */
+/* Contenedor del carrusel */
 .pending-courses {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-    flex-wrap: wrap;
+  display: flex;
+  -ms-overflow-style: none;  /* Para Internet Explorer y Edge */
+  scrollbar-width: none;  /* Para Firefox */
+  overflow-x: auto; 
+  scroll-snap-type: x mandatory; 
+  gap: 20px;
+  padding: 10px;
+  scrollbar-width: thin;  
+  scrollbar-color: #8EC3B0 #f1f1f1;
 }
-  
+
+/* Tarjetas dentro de la sección "Cursos por Aprobar" */
 .pending-card {
-    display: flex;
-    flex-direction: row;
-    background: white;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-    width: 300px;
-    align-items: center;
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  background: #FFFFFF;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 3px 5px 12px rgba(0, 0, 0, 0.15);
+  width: 370px;
+  min-width: 370px;
+  scroll-snap-align: start;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-  
+
+.pending-card:hover {
+  transform: scale(1.03);
+  box-shadow: 4px 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Imagen dentro de "Cursos por Aprobar" */
+.pending-courses .pending-card .card-image {
+  width: 80px;
+  height: 80px;
+  border-radius: 10px;
+  object-fit: cover;
+  border: 2px solid #8EC3B0;
+  position: absolute; /* La coloca en la esquina superior izquierda */
+  top: 15px;
+  left: 15px;
+}
+
+/* Contenido de la tarjeta */
 .card-content {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    justify-content: space-between;
-    gap: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  text-align: left;
+  gap: 15px;
 }
-  
-.card-image {
-    width: 80px;
-    height: 80px;
-    border-radius: 5px;
-    object-fit: cover;
-    margin-left: 10px;
+
+/* Texto y botones */
+.text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-left: 100px; /* Para que el texto no se monte sobre la imagen */
 }
-  
+
+/* Contenedor del carrusel */
+.pending-courses {
+  display: flex;
+  -ms-overflow-style: none;  /* Para Internet Explorer y Edge */
+  scrollbar-width: none;  /* Para Firefox */
+  overflow-x: auto; 
+  scroll-snap-type: x mandatory; 
+  gap: 20px;
+  padding: 10px;
+  scrollbar-width: thin;  
+  scrollbar-color: #8EC3B0 #f1f1f1;
+}
+
+/* Oculta la barra de desplazamiento en navegadores modernos */
+.pending-courses::-webkit-scrollbar {
+  display: none;
+}
+
+.pending-courses::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.pending-courses::-webkit-scrollbar-thumb {
+  background-color: #8EC3B0;
+  border-radius: 10px;
+}
+
+/* Contenido de la tarjeta */
+.card-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+}
+
+.text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+}
+
+h3 {
+  color: #055052; /* Verde oscuro */
+  font-size: 25px;
+  margin-bottom: 5px;
+}
+
+p {
+  color: #333;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+/* Botones */
 .buttons {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
-    margin-top: 10px;
-    justify-content: center;
+  display: flex;
+  gap: 5px;
+  justify-content: center;
 }
-  
+
 .btn {
-    padding: 6px 10px;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-    white-space: nowrap;
+  padding: 10px 14px;
+  border: none;
+  cursor: pointer;
+  border-radius: 9px;
+  font-size: 12px;
+  font-weight: bold;
+  transition: all 0.3s ease-in-out;
+  min-width: 75px;
 }
-  
+
+.btn:hover {
+  transform: scale(1.05);
+}
+
 .approve {
-    background: green;
-    color: white;
+  background: #4CAF50;
+  color: white;
 }
-  
+
 .reject {
-    background: red;
-    color: white;
+  background: #E63946;
+  color: white;
 }
-  
-/* ======= Estilos para "Todos los Cursos" ======= */
+
+.btn:hover.approve {
+  background: #3e8e41;
+}
+
+.btn:hover.reject {
+  background: #c62828;
+}
+
+/* Imagen del curso */
+.card-image {
+  width: 100px;
+  height: 100px;
+  border-radius: 10px;
+  object-fit: cover;
+  border: 2px solid #8EC3B0;
+}
+
+/* ======= "Todos los Cursos" ======= */
+/* Tarjetas */
+.pending-card {
+  display: flex;
+  flex-direction: column;
+  background: #FFFFFF;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 3px 5px 12px rgba(0, 0, 0, 0.15);
+  width: 370px;
+  min-width: 370px; /* Evita que las tarjetas se reduzcan */
+  scroll-snap-align: start; /* Asegura el ajuste en el scroll */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.pending-card:hover {
+  transform: scale(1.03);
+  box-shadow: 4px 6px 15px rgba(0, 0, 0, 0.2);
+}
 .all-courses {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
 }
-  
+
 .all-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-    width: 350px; /* Aumentamos el tamaño */
-    text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  transition: transform 0.3s ease;
 }
-  
+
+.all-card:hover {
+  transform: scale(1.03);
+}
+
 .all-card .card-image {
-    width: 150px; /* Aumentamos tamaño */
-    height: 150px;
-    border-radius: 5px;
-    object-fit: cover;
+  width: 160px;
+  height: 160px;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 2px solid #8EC3B0;
 }
-  
+
 .all-card .details {
-    background: blue;
-    color: white;
-    margin-top: 10px;
+  background: #055052;
+  color: white;
+  margin-top: 10px;
 }
 
 /* ====== Estilos para los Filtros ====== */
 .filters {
-    display: flex;
-    justify-content: right;
-    gap: 15px;
-    margin-bottom: 15px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-bottom: 15px;
 }
-  
-.filters input,
+
+.filters input, .filters select {
+  padding: 10px;
+  border: 2px solid #8EC3B0;
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: #FFFF;
+  color: #333;
+  transition: all 0.3s ease-in-out;
+}
+
+.filters input::placeholder {
+  color: #555;
+}
+
 .filters select {
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+  cursor: pointer;
 }
 
-  /*  ===== FILTROS ===== */
+.filters input:hover,
+.filters select:hover {
+  background-color: #9ED5C5;
+  border-color: #9ED5C5;
+  transform: scale(1.05);
+}
 
+/* ======= Responsive ======= */
+@media (max-width: 768px) {
   .filters {
-    display: flex;
-    justify-content: flex-end; /* Mueve los filtros a la derecha */
-    gap: 10px; /* Espaciado entre elementos */
-    padding: 10px;
-  }
-  
-  .filters input,
-  .filters select {
-    padding: 8px 12px;
-    border: 2px solid #8EC3B0;
-    border-radius: 8px;
-    font-size: 1rem;
-    background-color: #FFFF;
-    color: #333;
-    transition: all 0.3s ease-in-out;
-  }
-  
-  .filters input::placeholder {
-    color: #555;
-  }
-  
-  .filters select {
-    cursor: pointer;
-  }
-  
-  /* Efecto hover */
-  .filters input:hover,
-  .filters select:hover {
-    background-color: #9ED5C5;
-    border-color: #9ED5C5;
-    transform: scale(1.05);
-  }
-  
-  /* Responsive: Para móviles, que se apilen */
-  @media (max-width: 768px) {
-    .filters {
       flex-direction: column;
       align-items: flex-end;
-    }
-  
-    .filters input,
-    .filters select {
-      width: 100%;
-    }
   }
+
+  .filters input,
+  .filters select {
+      width: 100%;
+  }
+
+  .pending-card {
+      width: 100%;
+  }
+
+  .all-courses {
+      grid-template-columns: 1fr;
+  }
+}

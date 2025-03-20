@@ -1,0 +1,52 @@
+<app-navbar-admin></app-navbar-admin>
+
+<div class="container">
+    <!-- Sección de Solicitudes de Instructores -->
+    <div class="section">
+      <h2>Solicitudes Instructores</h2>
+      <div class="card-container">
+        <div class="card" *ngFor="let instructor of instructores">
+          <p><strong>Nombre Completo:</strong> {{ instructor.nombre }}</p>
+          <p><strong>Username:</strong> {{ instructor.username }}</p>
+          <div class="actions">
+            <button class="btn-details" (click)="abrirDetalles(instructor)">Detalles</button>
+            <button class="btn-accept">Aceptar</button>
+            <button class="btn-reject">Rechazar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección de Solicitudes de Categorías -->
+    <div class="section">
+      <h2>Solicitudes Categorías</h2>
+      <div class="card-container">
+        <div class="card">
+          <p><strong>Nombre Categoría:</strong> Programación Web</p>
+          <p><strong>Instructor Solicitante:</strong> Carlos Méndez</p>
+          <div class="actions">
+            <button class="btn-accept">Aceptar</button>
+            <button class="btn-reject">Rechazar</button>
+          </div>
+        </div>
+        
+        <div class="card">
+          <p><strong>Nombre Categoría:</strong> Diseño UX/UI</p>
+          <p><strong>Instructor Solicitante:</strong> Sofía Herrera</p>
+          <div class="actions">
+            <button class="btn-accept">Aceptar</button>
+            <button class="btn-reject">Rechazar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!-- Modal de Detalles del Instructor -->
+<app-detalle-instructor-admin 
+  *ngIf="mostrarModal" 
+  [instructor]="instructorSeleccionado" 
+  (cerrar)="cerrarModal()">
+</app-detalle-instructor-admin>
+
+<app-footer></app-footer>
