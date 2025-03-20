@@ -1,0 +1,119 @@
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #BCEAD5, #f0faf7); /* Fondo degradado con tonos claros */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    background-color: #ffffff; /* Fondo blanco */
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    width: 500px; /* Más ancho */
+    text-align: center;
+}
+
+.logo {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo img {
+    width: 120px; /* Más grande */
+    background: transparent; /* Asegura que la imagen no tenga fondo */
+    filter: brightness(1.2) contrast(1.2) drop-shadow(0 0 5px rgba(0, 0, 0, 0.1)); /* Filtro para eliminar fondos oscuros */
+    mix-blend-mode: multiply; /* Ayuda a eliminar fondos oscuros */
+}
+
+.logo h1 {
+    color: #333; /* Texto oscuro para contraste */
+    font-size: 28px; /* Más grande */
+    margin-left: 15px; /* Espacio entre la imagen y el texto */
+    font-family: 'Poppins', sans-serif; /* Nueva fuente */
+    font-weight: 600; /* Grosor de la fuente */
+}
+
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #555; /* Texto gris para etiquetas */
+    font-size: 14px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ddd; /* Borde gris claro */
+    border-radius: 6px;
+    font-size: 14px;
+    background-color: #f9f9f9; /* Fondo gris muy claro */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-group input:focus {
+    border-color: #BCEAD5; /* Borde verde claro al enfocar */
+    outline: none;
+    box-shadow: 0 0 8px rgba(188, 234, 213, 0.6); /* Sombra más pronunciada */
+}
+
+.checkbox-group {
+    margin-top: 15px;
+}
+
+.checkbox-group label {
+    display: flex;
+    align-items: center;
+    color: #555;
+    font-size: 14px;
+}
+
+.checkbox-group input[type="checkbox"] {
+    margin-right: 10px;
+    accent-color: #BCEAD5; /* Color del checkbox */
+}
+
+.hidden {
+    display: none;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: #BCEAD5; /* Color principal */
+    color: #333; /* Texto oscuro para contraste */
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #9DD9C7; /* Tonos más bajitos al pasar el mouse */
+}
+
+/* Estilos adicionales para los campos de instructor */
+#instructorFields {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f0faf7; /* Fondo verde muy claro */
+    border-radius: 6px;
+    border: 1px solid #d0f0e4; /* Borde verde claro */
+}
+
+#instructorFields .form-group input {
+    background-color: #ffffff; /* Fondo blanco para campos de instructor */
+}

@@ -4,6 +4,8 @@ body {
   padding: 0;
   background-color: #ffffff;
   color: #2F4F4F;
+  height: 100%;
+  overflow: hidden;
 }
 
 
@@ -36,7 +38,7 @@ header {
 
 .header-center {
   flex: 1;
-  text-align: center;
+  text-align: center;;
 }
 
 .header-center input {
@@ -44,6 +46,7 @@ header {
   width: 50%;
   border: none;
   border-radius: 5px;
+  background-color: #BCEAD5;
 }
 
 .header-right {
@@ -89,7 +92,7 @@ header {
 
 
 .course-title {
-  font-size: 22px;
+  font-size: 30px;
   font-weight: bold;
   text-align: center;
   flex-grow: 1;
@@ -107,7 +110,7 @@ header {
   transition: all 0.3s ease-in-out;
 }
 
-.enroll-btn:hover {
+.enroll-btn {
   background-color: #6FA69F;
 }
 
@@ -145,7 +148,7 @@ header {
 
 .course-image {
   max-width: 55%;
-  width: 100%;
+  width: 70%;
 }
 
 .course-image img {

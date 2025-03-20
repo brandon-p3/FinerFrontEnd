@@ -8,5 +8,10 @@ import { Component } from '@angular/core';
   styleUrl: './registro.component.css'
 })
 export class RegistroComponent {
-
-}
+    showInstructorFields = false;
+  
+    toggleInstructorFields() {
+      this.showInstructorFields = !this.showInstructorFields;
+    }
+  }
+  

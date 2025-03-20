@@ -1,11 +1,12 @@
 /* Estilos generales */
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #BCEAD5; /* Verde suave para el fondo principal */
-    color: #2C3E50; /* Texto oscuro para mejor contraste */
+    background-color: #BCEAD5; 
+    color: #2C3E50; 
     margin: 0;
     padding: 0;
     line-height: 1.6;
+    text-align: center; /* Centrar el texto globalmente */
 }
 
 /* Cabecera */
@@ -13,7 +14,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #FFFFFF; /* Cabecera blanca */
+    background-color: #FFFFFF; 
     padding: 20px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     position: relative;
@@ -33,18 +34,19 @@ body {
     margin-right: 10px;
 }
 
+/* Contenedor del buscador */
 .search-container {
     display: flex;
     align-items: center;
-    position: relative;
-    flex-grow: 1;
-    margin: 0 20px;
-    max-width: 500px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 400px; 
 }
 
 .search-bar {
-    padding: 10px 40px 10px 10px; /* Espacio para el icono */
-    border: 1px solid #9ED5C5; /* Borde con verde más claro */
+    padding: 10px 40px 10px 10px; 
+    border: 1px solid #9ED5C5; 
     border-radius: 25px;
     width: 100%;
     background-color: #F0F7F4; /* Fondo suave */
@@ -53,7 +55,7 @@ body {
 }
 
 .search-bar:focus {
-    border-color: #8EC3B0; /* Borde verde claro al enfocar */
+    border-color: #8EC3B0; 
     outline: none;
 }
 
@@ -61,15 +63,16 @@ body {
     position: absolute;
     right: 10px;
     cursor: pointer;
-    font-size: 20px;
-    color: #8EC3B0; /* Color del icono */
-    transition: color 0.3s ease;
+    width: 20px; 
+    height: 20px;
+    transition: opacity 0.3s ease;
 }
 
 .search-icon:hover {
-    color: #9ED5C5; /* Color del icono al pasar el ratón */
+    opacity: 0.8; /* Efecto hover */
 }
 
+/* Estilos para el user-info */
 .user-info {
     display: flex;
     align-items: center;
@@ -77,19 +80,19 @@ body {
     padding: 10px;
     border-radius: 25px;
     transition: background-color 0.3s ease;
-    margin-left: auto; /* Mueve el user-info a la derecha */
+    margin-left: auto; 
 }
 
 .user-info:hover {
-    background-color: #F0F7F4; /* Fondo suave al pasar el ratón */
+    background-color: #F0F7F4; /* Fondo al pasar el ratón */
 }
 
 .profile-pic {
-    width: 40px;
-    height: 40px;
+    width: 40px; 
+    height: 40px; 
     border-radius: 50%;
     margin-right: 10px;
-    border: 2px solid #8EC3B0; /* Borde verde claro */
+    border: 2px solid #8EC3B0; 
 }
 
 .role, .user-name {
@@ -98,22 +101,23 @@ body {
 
 .logout-icon {
     cursor: pointer;
-    font-size: 20px;
-    color: #8EC3B0; /* Color del icono */
-    transition: color 0.3s ease;
+    width: 20px; 
+    height: 20px; 
+    transition: opacity 0.3s ease;
+    margin-left: 10px; 
 }
 
 .logout-icon:hover {
-    color: #9ED5C5; /* Color del icono al pasar el ratón */
+    opacity: 0.8; /* Efecto hover */
 }
 
 /* Menú desplegable */
 .dropdown-menu {
     position: absolute;
-    top: 80px; /* Ajusta según el espacio debajo del header */
+    top: 80px;
     right: 20px;
-    background-color: #FFFFFF; /* Fondo blanco */
-    border: 1px solid #9ED5C5; /* Borde con verde más claro */
+    background-color: #FFFFFF; 
+    border: 1px solid #9ED5C5; 
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     display: none;
@@ -135,8 +139,8 @@ body {
 .menu-section {
     font-weight: bold;
     padding: 10px 0;
-    color: #2C3E50; /* Color de texto de las secciones */
-    border-bottom: 1px solid #9ED5C5; /* Borde inferior con verde más claro */
+    color: #2C3E50; 
+    border-bottom: 1px solid #9ED5C5; 
     margin-bottom: 10px;
 }
 
@@ -148,22 +152,109 @@ body {
 }
 
 .menu-item:hover {
-    background-color: #9ED5C5; /* Fondo de hover con verde más claro */
-    color: #FFFFFF; /* Texto blanco */
+    background-color: #9ED5C5; 
+    color: #FFFFFF; 
 }
 
 .menu-item.active {
-    background-color: #8EC3B0; /* Fondo de menú activo */
-    color: #FFFFFF; /* Texto blanco */
+    background-color: #8EC3B0; 
+    color: #FFFFFF; 
 }
 
-/* Mini-menú */
+/*Mini-menu*/
+/* Estilo general para el mini menú */
+.mini-menu {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    color: #333; /* Color del texto normal */
+}
+
+/* Estilo para la sección activa */
+.mini-menu span.active {
+    font-weight: bold;  /* Hace que el texto esté en negrita */
+    color: #8EC3B0;     /* Cambia el color del texto activo */
+}
+
+/* Estilo para las secciones normales (no activas) */
+.mini-menu span {
+    cursor: pointer;    /* Añade un cursor pointer para hacer que se vea interactivo */
+    transition: color 0.3s ease; /* Transición suave para el cambio de color */
+}
+
+/* Cambio de color al pasar el mouse por encima */
+.mini-menu span:hover {
+    color: #9ED5C5;  /* Color suave al pasar el ratón */
+}
+/* Estilo para el contenedor de las pantallas (Certificados, Historial) */
+.content-container {
+    background-color: #FFFFFF; /* Fondo blanco */
+    border-radius: 8px;         /* Bordes redondeados */
+    padding: 20px;              /* Espaciado interno */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+    margin: 20px auto;          /* Márgenes para centrar el contenido */
+    max-width: 900px;           /* Ancho máximo */
+}
+
+.content-container h2 {
+    font-size: 24px;            /* Tamaño del encabezado */
+    color: #333;                /* Color del texto */
+    margin-bottom: 15px;        /* Espaciado debajo del encabezado */
+}
+
+.content-container p {
+    font-size: 16px;            /* Tamaño del texto */
+    color: #666;                /* Color de texto más suave */
+    margin-bottom: 20px;        /* Espaciado debajo del párrafo */
+}
+
+.mini-menu {
+    margin-bottom: 20px;        /* Espaciado debajo del mini menú */
+}
+
+.mini-menu span {
+    cursor: pointer;           /* Indicar que es interactivo */
+    color: #333;                /* Color de texto normal */
+}
+
+.mini-menu span.active {
+    font-weight: bold;          /* Resalta la sección activa */
+    color: #8EC3B0;             /* Color de la sección activa */
+}
+
+.mini-menu span:hover {
+    color: #9ED5C5;             /* Cambio de color al pasar el mouse */
+}
+
+
+/* Contenedor principal para todas las pantallas */
+.container {
+    max-width: 800px; /* Ancho máximo para el contenido */
+    margin: 20px auto; /* Centrar el contenedor */
+    padding: 20px;
+    background-color: #FFFFFF; 
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Títulos de las pantallas */
+h2 {
+    color: #2C3E50;
+    margin-bottom: 20px;
+}
+
+/* Texto descriptivo */
+p {
+    color: #2C3E50;
+    margin-bottom: 20px;
+}
+
+/* Mini-Menú */
 .mini-menu {
     display: flex;
     justify-content: center;
     margin-top: 20px;
     padding: 10px;
-    background-color: #FFFFFF; /* Fondo blanco */
+    background-color: #FFFFFF;
     border-radius: 10px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
@@ -172,58 +263,132 @@ body {
     margin: 0 15px;
     cursor: pointer;
     font-size: 16px;
-    color: #2C3E50; /* Texto oscuro */
+    color: #2C3E50;
     transition: color 0.3s ease;
 }
 
 .mini-menu span:hover {
-    color: #8EC3B0; /* Color de texto activo con verde claro */
+    color: #8EC3B0; 
 }
 
 .mini-menu .active {
-    color: #8EC3B0; /* Color de texto activo con verde claro */
+    color: #8EC3B0; 
     font-weight: bold;
 }
 
+/* Listas de elementos (Certificados, Historial, Cursos) */
+.certificados-list, .historial-list, .cursos-list {
+    margin-top: 20px;
+}
+
+/* Items de las listas */
+.certificado-item, .historial-item, .curso-item {
+    background-color: #F0F7F4;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #9ED5C5;
+    text-align: left; /* Alinear el texto a la izquierda */
+}
+
+.certificado-item h3, .historial-item h3, .curso-item h3 {
+    margin: 0;
+    color: #2C3E50;
+}
+
+.certificado-item p, .historial-item p, .curso-item p {
+    margin: 5px 0;
+    color: #8EC3B0;
+}
+
+/* Botones */
+button {
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px; /* Bordes redondeados */
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    color: #FFFFFF; /* Texto blanco */
+    margin-top: 10px;
+}
+
+button:hover {
+    transform: scale(1.05); /* Efecto de escala al pasar el ratón */
+}
+
+.download-btn, .continuar-btn, .ver-certificado-btn {
+    background-color: #8EC3B0; /* Verde claro */
+}
+
+.download-btn:hover, .continuar-btn:hover, .ver-certificado-btn:hover {
+    background-color: #9ED5C5; /* Verde más claro al pasar el ratón */
+}
 /* Estilos para el formulario de actualización de perfil */
 .profile-form {
-    background-color: #FFFFFF; /* Fondo blanco */
+    background-color: #FFFFFF; 
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    margin-top: 20px;
+    margin: 20px auto; /* Centrar el formulario */
+    max-width: 600px; /* Ancho máximo para el formulario */
 }
 
 .profile-form h3 {
     margin-top: 0;
-    color: #2C3E50; /* Texto oscuro */
+    color: #2C3E50; 
+    text-align: center; /* Centrar el texto */
 }
 
-.profile-form label {
+/* Grupos de formulario */
+.form-group {
+    margin-bottom: 15px;
+    text-align: left; /* Alinear el texto a la izquierda */
+}
+
+.form-group label {
     display: block;
-    margin-top: 15px;
-    color: #2C3E50; /* Texto oscuro */
+    margin-bottom: 5px;
+    color: #2C3E50; 
+    font-weight: bold;
 }
 
-.profile-form input {
+/* Campos de entrada */
+.form-input {
     width: 100%;
     padding: 10px;
-    border: 1px solid #9ED5C5; /* Borde con verde más claro */
+    border: 1px solid #9ED5C5; 
     border-radius: 5px;
-    margin-top: 5px;
     font-size: 14px;
     transition: border-color 0.3s ease;
 }
 
-.profile-form input:focus {
-    border-color: #8EC3B0; /* Borde verde claro al enfocar */
+.form-input:focus {
+    border-color: #8EC3B0; 
     outline: none;
+}
+
+/* Botón de Guardar Cambios */
+.save-btn {
+    background-color: #8EC3B0; /* Verde claro */
+    color: #FFFFFF; /* Texto blanco */
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px; /* Espacio superior */
+    width: 100%; /* Ancho completo */
+}
+
+.save-btn:hover {
+    background-color: #9ED5C5; /* Verde más claro al pasar el ratón */
 }
 
 /* Pie de página */
 .footer {
-    background-color: #8EC3B0; /* Fondo del pie de página */
-    color: #FFFFFF; /* Texto blanco */
+    background-color: #8EC3B0; 
+    color: #FFFFFF; 
     padding: 20px;
     text-align: center;
     margin-top: 20px;
@@ -231,11 +396,11 @@ body {
 }
 
 .footer a {
-    color: #FFFFFF; /* Enlaces blancos */
+    color: #FFFFFF; 
     text-decoration: none;
     transition: color 0.3s ease;
 }
 
 .footer a:hover {
-    color: #F0F7F4; /* Enlaces con hover en verde más claro */
+    color: #F0F7F4; 
 }

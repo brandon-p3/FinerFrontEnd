@@ -1,1 +1,68 @@
-<p>cursos-instructor works!</p>
+<!-- Contenedor principal -->
+<div class="main-container">
+    <!-- Cabecera -->
+    <header class="header">
+        <div class="logo">
+            <img src="assets/logo.png" alt="Logotipo"> FINER
+        </div>
+        <div class="user-info" (click)="toggleMenu()">
+            <span class="role">Instructor</span>
+            <img src="assets/useri.png" alt="Foto de perfil" class="profile-pic">
+            <span class="user-name">{{ usuario.nombre }} {{ usuario.apellidos }}</span>
+        </div>
+        <img src="assets/salir.png" alt="Salir" class="logout-icon" (click)="logout()"> <!-- Icono de cerrar sesión -->
+    </header>
+
+    <!-- Menú Desplegable -->
+    <div class="dropdown-menu" [class.show]="menuOpen">
+        <ul>
+            <li class="menu-section">Cursos</li>
+            <li class="menu-item" [class.active]="currentPage === 'mis-cursos'" (click)="navigateTo('mis-cursos')">Mis Cursos</li>
+                <li class="menu-item" [class.active]="currentPage === 'crear-curso'" (click)="createCourse()">
+                    Crear Curso
+                  </li>
+        </ul>
+    </div>
+
+    <!-- Contenedor para el contenido -->
+    <div class="content-container">
+        <!-- Contenido de la página -->
+        <div class="container">
+            <!-- Filtro y búsqueda -->
+            <div class="filters">
+                <div class="search-container">
+                    <input type="text" [(ngModel)]="searchQuery" (input)="applyFilters()" placeholder="Buscar cursos..." class="search-bar">
+                    <img src="assets/lupa.png" alt="Buscar" class="search-icon">
+                </div>
+
+                <!-- Filtrado por fecha con calendario -->
+                <div class="filter-options">
+                    <input type="date" id="fecha" [(ngModel)]="filterDate" (change)="applyFilters()">
+                </div>
+
+                <!-- Filtro por orden A-Z y Z-A -->
+                <div class="filter-options">
+                    <select id="orden" [(ngModel)]="sortOption" (change)="applyFilters()">
+                        <option value="asc">A-Z</option>
+                        <option value="desc">Z-A</option>
+                    </select>
+                </div>
+            </div>
+
+            <div *ngIf="currentPage === 'mis-cursos'">
+                <h2>Mis Cursos</h2>
+                <div class="no-courses-message">
+                    <p>No tienes cursos creados aún. Haz clic en el botón para crear uno.</p>
+                    <button class="create-course-btn" (click)="createCourse()">+ Crear Nuevo Curso</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Pie de página -->
+<footer class="footer">
+    <div>FINER | <a href="#">Términos y Condiciones</a> | <a href="#">Soporte</a> | <a href="#">Sobre Nosotros</a></div>
+    <div>Redes Sociales | Contacto | Derechos Reservados</div>
+</footer>

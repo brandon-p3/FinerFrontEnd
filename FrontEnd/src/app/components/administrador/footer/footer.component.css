@@ -1,0 +1,50 @@
+/* Pie de página mejorado */
+.footer {
+    background-color: #9ED5C5;
+    color: #FFFFFF;
+    padding: 20px 0;
+    text-align: center;
+    font-size: 14px;
+    margin-top: 20px;
+}
+
+.footer-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Estilos de los enlaces */
+.footer-links a {
+    color: #FFFFFF;
+    text-decoration: none;
+    margin: 0 10px;
+    transition: color 0.3s ease-in-out;
+}
+
+.footer-links a:hover {
+    color: #F0F7F4;
+}
+
+/* Información de derechos */
+.footer-info {
+    font-size: 12px;
+    opacity: 0.8;
+}
+
+/* Redes sociales */
+.footer-social {
+    display: flex;
+    gap: 15px;
+}
+
+.footer-social img {
+    width: 24px;
+    height: 24px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.footer-social img:hover {
+    transform: scale(1.2);
+}
