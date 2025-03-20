@@ -14,24 +14,35 @@
 
 .modal-content {
     background: linear-gradient(to right, #DEF5E5, #ffffff);
-    padding: 25px;
+    padding: 30px; /* Aumenta el espacio interno */
     border-radius: 12px;
-    width: 60%;
-    max-width: 700px;
+    width: 100%; /* Hace que el modal sea más grande */
+    max-width: 900px; /* Define un límite máximo para evitar que sea demasiado ancho */
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     position: relative;
     border-left: 5px solid #8EC3B0;
     animation: slideIn 0.3s ease-in-out;
+}
+
+
+.content-container {
     display: flex;
     gap: 20px; /* Espacio entre las columnas */
 }
 
+/* Sección de información (más estrecha) */
 .info-section {
-    flex: 1;
-    padding-right: 15px;
+    flex: 1.5; /* Ocupa menos espacio */
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 5px solid #8EC3B0;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
+
+/* Sección del certificado (mucho más ancha) */
 .certificate-section {
-    flex: 1;
+    flex: 5; /* Ocupa más espacio */
     text-align: center;
     background: white;
     padding: 15px;
@@ -40,6 +51,15 @@
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
+/* Ajustamos el tamaño del embed para aprovechar el espacio */
+.certificate-section embed {
+    width: 100%;
+    height: 350px;
+    border-radius: 5px;
+    border: 1px solid #8EC3B0;
+}
+
+/* Botón de cerrar */
 .close-btn {
     position: absolute;
     top: 15px;
@@ -55,42 +75,20 @@
     color: #ff4d4d;
 }
 
+/* Estilos generales */
 h2 {
     color: #055052;
     text-align: center;
     margin-bottom: 15px;
 }
 
-.card {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    border-left: 5px solid #8EC3B0;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-.card p {
+p {
     color: #333;
     margin: 8px 0;
 }
 
 strong {
     color: #055052;
-}
-.certificate-section embed {
-    width: 100%;
-    height: 300px;
-    border-radius: 5px;
-    border: 1px solid #8EC3B0;
-}
-
-.certificate-section h3 {
-    color: #055052;
-}
-
-.certificate-section embed {
-    border-radius: 5px;
-    border: 1px solid #8EC3B0;
 }
 
 /* Animaciones */

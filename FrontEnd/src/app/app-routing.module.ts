@@ -22,11 +22,11 @@ export const routes: Routes = [
     component: UsuariosAdminComponent
   },
 
-  { path: 'usuarios-admin/login/login',
+  { path: 'login',
     component: LoginComponent
    },
 
-  { path: 'usuarios-admin/registro',
+  { path: 'registro',
     component: RegistroComponent
   },
   // Rutas para el administrador
