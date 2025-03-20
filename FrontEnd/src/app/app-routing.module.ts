@@ -11,7 +11,7 @@ import { CursosAdminComponent } from './components/administrador/cursos-admin/cu
 import { PerfilAlumnoComponent } from './components/alumnos/perfil-alumno/perfil-alumno.component';
 import { CursosInstructorComponent } from './components/instructores/cursos-instructor/cursos-instructor.component';
 import { CrearCursoComponent } from './components/instructores/crear-curso/crear-curso.component';
-
+import { SolicitudesAdminComponent } from './components/administrador/solicitudes-admin/solicitudes-admin.component';
 
 // Rutas combinadas
 export const routes: Routes = [
@@ -43,6 +43,12 @@ export const routes: Routes = [
         path: 'cursos',
         children: [
           { path: 'ver', component: CursosAdminComponent }
+        ]
+      },
+      {
+        path: 'solicitudes',
+        children: [
+          { path: 'ver', component: SolicitudesAdminComponent }
         ]
       }
     ]
