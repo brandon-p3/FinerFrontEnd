@@ -80,8 +80,8 @@
             <input type="email" id="email" [(ngModel)]="usuario.email" class="form-input">
         </div>
 
-        <!-- Botón de Guardar Cambios -->
-        <button class="save-btn">Guardar Cambios</button>
+      <!-- Botón de Guardar Cambios -->
+<button class="save-btn" (click)="guardarCambios()">Guardar Cambios</button>
     </div>
 </div>
 <!-- Pantalla de Certificados -->
@@ -101,12 +101,12 @@
         <div class="certificado-item">
             <h3>Curso de Angular</h3>
             <p>Fecha de finalización: 01/10/2023</p>
-            <button class="download-btn">Descargar Certificado</button>
+            <button class="download-btn" (click)="descargarCertificado()">Descargar Certificado</button>
         </div>
         <div class="certificado-item">
             <h3>Curso de TypeScript</h3>
             <p>Fecha de finalización: 15/09/2023</p>
-            <button class="download-btn">Descargar Certificado</button>
+            <button class="download-btn" (click)="descargarCertificado()">Descargar Certificado</button>
         </div>
     </div>
 </div>
