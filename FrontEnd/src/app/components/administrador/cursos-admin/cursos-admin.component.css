@@ -8,7 +8,7 @@
 /* ====== Secciones generales ====== */
 .section {
   padding: 20px;
-  background: #DEF5E5;  /* Verde claro */
+  background: #EAF9F0;  /* Verde claro */
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
@@ -21,23 +21,32 @@ h2 {
 }
 
 /* ====== "Cursos por Aprobar" ====== */
+/* Contenedor del carrusel */
 .pending-courses {
   display: flex;
+  -ms-overflow-style: none;  /* Para Internet Explorer y Edge */
+  scrollbar-width: none;  /* Para Firefox */
+  overflow-x: auto; 
+  scroll-snap-type: x mandatory; 
   gap: 20px;
-  justify-content: center;
-  flex-wrap: wrap;
+  padding: 10px;
+  scrollbar-width: thin;  
+  scrollbar-color: #8EC3B0 #f1f1f1;
 }
 
+/* Tarjetas dentro de la sección "Cursos por Aprobar" */
 .pending-card {
   display: flex;
-  background: #FFFF;
+  position: relative;
+  flex-direction: column;
+  background: #FFFFFF;
   padding: 20px;
   border-radius: 15px;
   box-shadow: 3px 5px 12px rgba(0, 0, 0, 0.15);
   width: 370px;
+  min-width: 370px;
+  scroll-snap-align: start;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  align-items: center;
-  overflow: hidden; /* Evita que el contenido sobresalga */
 }
 
 .pending-card:hover {
@@ -45,12 +54,69 @@ h2 {
   box-shadow: 4px 6px 15px rgba(0, 0, 0, 0.2);
 }
 
+/* Imagen dentro de "Cursos por Aprobar" */
+.pending-courses .pending-card .card-image {
+  width: 80px;
+  height: 80px;
+  border-radius: 10px;
+  object-fit: cover;
+  border: 2px solid #8EC3B0;
+  position: absolute; /* La coloca en la esquina superior izquierda */
+  top: 15px;
+  left: 15px;
+}
+
+/* Contenido de la tarjeta */
+.card-content {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  text-align: left;
+  gap: 15px;
+}
+
+/* Texto y botones */
+.text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-left: 100px; /* Para que el texto no se monte sobre la imagen */
+}
+
+/* Contenedor del carrusel */
+.pending-courses {
+  display: flex;
+  -ms-overflow-style: none;  /* Para Internet Explorer y Edge */
+  scrollbar-width: none;  /* Para Firefox */
+  overflow-x: auto; 
+  scroll-snap-type: x mandatory; 
+  gap: 20px;
+  padding: 10px;
+  scrollbar-width: thin;  
+  scrollbar-color: #8EC3B0 #f1f1f1;
+}
+
+/* Oculta la barra de desplazamiento en navegadores modernos */
+.pending-courses::-webkit-scrollbar {
+  display: none;
+}
+
+.pending-courses::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.pending-courses::-webkit-scrollbar-thumb {
+  background-color: #8EC3B0;
+  border-radius: 10px;
+}
+
+/* Contenido de la tarjeta */
 .card-content {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  width: 100%;
   gap: 10px;
 }
 
@@ -64,6 +130,7 @@ h2 {
 
 h3 {
   color: #055052; /* Verde oscuro */
+  font-size: 25px;
   margin-bottom: 5px;
 }
 
@@ -73,73 +140,74 @@ p {
   margin-bottom: 10px;
 }
 
-.card-image {
-  width: 100px;
-  height: 100px;
-  border-radius: 10px;
-  object-fit: cover;
-  border: 2px solid #8EC3B0;
-  flex-shrink: 0; /* Evita que la imagen se reduzca o se salga */
-}
-
-/* ==== Botones ==== */
+/* Botones */
 .buttons {
   display: flex;
-  gap: 10px;
-  margin-top: 12px;
+  gap: 5px;
   justify-content: center;
-  flex-wrap: wrap; /* Evita que los botones se solapen */
 }
 
 .btn {
   padding: 10px 14px;
   border: none;
   cursor: pointer;
-  border-radius: 8px;
-  font-size: 14px;
+  border-radius: 9px;
+  font-size: 12px;
   font-weight: bold;
   transition: all 0.3s ease-in-out;
-  min-width: 100px; /* Tamaño mínimo para mayor uniformidad */
+  min-width: 75px;
 }
 
 .btn:hover {
   transform: scale(1.05);
 }
 
-/* ===== Estilos mejorados para los botones ===== */
 .approve {
   background: #4CAF50;
   color: white;
-  box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.2);
 }
 
 .reject {
   background: #E63946;
   color: white;
-  box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.2);
 }
 
-.details {
-  background: #055052;
-  color: white;
-  box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.2);
-}
-
-/* Efecto hover mejorado */
-.approve:hover {
+.btn:hover.approve {
   background: #3e8e41;
 }
 
-.reject:hover {
+.btn:hover.reject {
   background: #c62828;
 }
 
-.details:hover {
-  background: #033d3d;
+/* Imagen del curso */
+.card-image {
+  width: 100px;
+  height: 100px;
+  border-radius: 10px;
+  object-fit: cover;
+  border: 2px solid #8EC3B0;
 }
 
-
 /* ======= "Todos los Cursos" ======= */
+/* Tarjetas */
+.pending-card {
+  display: flex;
+  flex-direction: column;
+  background: #FFFFFF;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 3px 5px 12px rgba(0, 0, 0, 0.15);
+  width: 370px;
+  min-width: 370px; /* Evita que las tarjetas se reduzcan */
+  scroll-snap-align: start; /* Asegura el ajuste en el scroll */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.pending-card:hover {
+  transform: scale(1.03);
+  box-shadow: 4px 6px 15px rgba(0, 0, 0, 0.2);
+}
 .all-courses {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -184,8 +252,7 @@ p {
   margin-bottom: 15px;
 }
 
-.filters input,
-.filters select {
+.filters input, .filters select {
   padding: 10px;
   border: 2px solid #8EC3B0;
   border-radius: 8px;

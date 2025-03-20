@@ -48,33 +48,60 @@
     margin-top: 10px;
   }
 
-  .btn-details, .btn-accept, .btn-reject {
-    padding: 6px 12px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-  }
+/* ==== BOTONES DE INSTRUCTOR === */
+.btn-details, .btn-accept, .btn-reject {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 13px;
+  border: none;
+  border-radius: 9px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: bold;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.15);
+}
 
-  .btn-details {
-    background-color: #9ED5C5;
-    color: #055052;
-  }
+/* Botón de Detalles */
+.btn-details {
+  background-color: #9ED5C5;
+  color: #055052;
+  border: 2px solid #8EC3B0;
+}
 
-  .btn-accept {
-    background-color: #8EC3B0;
-    color: white;
-  }
+.btn-details:hover {
+  background-color: #8EC3B0;
+  border-color: #7AB8A3;
+  transform: translateY(-2px);
+}
 
-  .btn-reject {
-    background-color: #E57373;
-    color: white;
-  }
+/* Botón de Aceptar */
+.btn-accept {
+  background-color: #8EC3B0;
+  color: white;
+  border: 2px solid #7AB8A3;
+}
 
-  .btn-details:hover, .btn-accept:hover, .btn-reject:hover {
-    opacity: 0.8;
-    transform: scale(1.05);
-  }
+.btn-accept:hover {
+  background-color: #7AB8A3;
+  border-color: #6BA494;
+  transform: translateY(-2px);
+}
+
+/* Botón de Rechazar */
+.btn-reject {
+  background-color: #E57373;
+  color: white;
+  border: 2px solid #D65B5B;
+}
+
+.btn-reject:hover {
+  background-color: #D65B5B;
+  border-color: #C44A4A;
+  transform: translateY(-2px);
+}
+
 
   @media (max-width: 768px) {
     .container {
