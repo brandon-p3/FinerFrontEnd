@@ -8,3 +8,6 @@ body {
     border-radius: 10px;
     box-shadow: 0
 }
+.text-registro, .text-end {
+    position: center;
+}

@@ -106,7 +106,7 @@ export class CrearCursoComponent {
 
   logout() {
     console.log('Cerrando sesión...');
-    this.router.navigate(['/login']); // Redirige al login
+    this.router.navigate(['/usuarios-admin/login/login']);  // Redirige al login
   }
 
   misCursos() {
