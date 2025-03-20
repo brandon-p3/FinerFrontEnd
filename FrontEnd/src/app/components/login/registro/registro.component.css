@@ -1,5 +1,5 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Poppins', sans-serif; /* Fuente principal */
     background: linear-gradient(135deg, #BCEAD5, #f0faf7); /* Fondo degradado con tonos claros */
     margin: 0;
     padding: 0;
@@ -12,30 +12,26 @@ body {
 .container {
     background-color: #ffffff; /* Fondo blanco */
     padding: 30px;
-    border-radius: 12px;
+    border-radius: 12px; /* Bordes redondeados */
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    width: 500px; /* Más ancho */
+    width: 400px; /* Más ancho */
     text-align: center;
+    border: 2px solid #BCEAD5; /* Borde del formulario */
 }
 
 .logo {
     margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 .logo img {
     width: 120px; /* Más grande */
     background: transparent; /* Asegura que la imagen no tenga fondo */
-    filter: brightness(1.2) contrast(1.2) drop-shadow(0 0 5px rgba(0, 0, 0, 0.1)); /* Filtro para eliminar fondos oscuros */
-    mix-blend-mode: multiply; /* Ayuda a eliminar fondos oscuros */
 }
 
 .logo h1 {
     color: #333; /* Texto oscuro para contraste */
-    font-size: 28px; /* Más grande */
-    margin-left: 15px; /* Espacio entre la imagen y el texto */
+    font-size: 24px; /* Más grande */
+    margin-top: 15px;
     font-family: 'Poppins', sans-serif; /* Nueva fuente */
     font-weight: 600; /* Grosor de la fuente */
 }
@@ -50,6 +46,7 @@ body {
     margin-bottom: 8px;
     color: #555; /* Texto gris para etiquetas */
     font-size: 14px;
+    font-family: 'Poppins', sans-serif; /* Fuente para etiquetas */
 }
 
 .form-group input {
@@ -61,6 +58,7 @@ body {
     font-size: 14px;
     background-color: #f9f9f9; /* Fondo gris muy claro */
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    font-family: 'Poppins', sans-serif; /* Fuente para inputs */
 }
 
 .form-group input:focus {
@@ -71,13 +69,16 @@ body {
 
 .checkbox-group {
     margin-top: 15px;
+    text-align: center; /* Centrar el checkbox */
 }
 
-.checkbox-group label {
+.checkbox-label {
     display: flex;
     align-items: center;
+    justify-content: center; /* Centrar el texto y el checkbox */
     color: #555;
     font-size: 14px;
+    font-family: 'Poppins', sans-serif; /* Fuente para el checkbox */
 }
 
 .checkbox-group input[type="checkbox"] {
@@ -99,6 +100,7 @@ button {
     cursor: pointer;
     font-size: 16px;
     transition: background-color 0.3s ease;
+    font-family: 'Poppins', sans-serif; /* Fuente para el botón */
 }
 
 button:hover {
