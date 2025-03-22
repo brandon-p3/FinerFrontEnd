@@ -24,14 +24,6 @@ export const routes: Routes = [
   { path: 'home/registro', component: RegistroComponent }, 
 
 
-  { path: 'login',
-    component: LoginComponent
-   },
-
-  { path: 'registro',
-    component: RegistroComponent
-  },
-
   // Rutas para el administrador
   {
     path: 'administrador',
@@ -63,14 +55,13 @@ export const routes: Routes = [
   { path: 'descripcion-curso-alumno', component: DescripcionCursoAlumnoComponent },
   { path: 'perfil-alumno', component: PerfilAlumnoComponent },
 
+    //Rutas para el instructor
+    {path: 'cursos-instructor', component: CursosInstructorComponent},
+    {path: 'crear-curso', component:CrearCursoComponent},
+
 
   // Redirección por defecto (en caso de ruta no encontrada)
   { path: '**', redirectTo: 'home/inicio' },
-
-
-  //Rutas para el instructor
-  {path: 'cursos-instructor', component: CursosInstructorComponent},
-  {path: 'crear-curso', component:CrearCursoComponent},
 
 ];
 
