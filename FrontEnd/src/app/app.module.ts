@@ -11,6 +11,10 @@ import { NavbarAdminComponent } from './components/administrador/navbar-admin/na
 import { DetalleInstructorAdminComponent } from './components/administrador/detalle-instructor-admin/detalle-instructor-admin.component';
 import { SolicitudesAdminComponent } from './components/administrador/solicitudes-admin/solicitudes-admin.component';
 import { CursosAdminComponent } from './components/administrador/cursos-admin/cursos-admin.component';
+import { InicioComponent } from './components/inicio/inicio.component';
+import { SolicitarCategoriaComponent } from './components/instructores/solicitar-categoria/solicitar-categoria.component';
+import { CrearCursoComponent } from './components/instructores/crear-curso/crear-curso.component';
+
 
 @NgModule({
   declarations: [
@@ -21,7 +25,10 @@ import { CursosAdminComponent } from './components/administrador/cursos-admin/cu
     NavbarAdminComponent,
     DetalleInstructorAdminComponent,
     SolicitudesAdminComponent,
-    CursosAdminComponent
+    CursosAdminComponent,
+    InicioComponent,
+    SolicitarCategoriaComponent,
+    CrearCursoComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,21 @@
+<div class="modal-overlay">
+    <div class="modal-content">
+      <h2>Solicitar Nueva Categoría</h2>
+  
+      <div class="form-group">
+        <label for="nombreCategoria">Nombre de la Categoría</label>
+        <input type="text" id="nombreCategoria" class="form-input" [(ngModel)]="nombreCategoria" placeholder="Ejemplo: Desarrollo Web">
+      </div>
+  
+      <div class="form-group">
+        <label for="descripcion">Descripción</label>
+        <textarea id="descripcion" class="form-input" [(ngModel)]="descripcion" placeholder="Escribe una breve descripción..."></textarea>
+      </div>
+  
+      <div class="button-container">
+        <button class="btn-submit">Solicitar</button>
+        <button class="btn-cancel" (click)="cerrarModal()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+  

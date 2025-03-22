@@ -7,16 +7,18 @@ import Swal from 'sweetalert2'; // Importa SweetAlert2
 
 @Component({
   selector: 'app-crear-curso',
-  standalone: true,
-  imports: [FormsModule, CommonModule],  // Añade FormsModule aquí
   templateUrl: './crear-curso.component.html',
   styleUrls: ['./crear-curso.component.css']
 })
 export class CrearCursoComponent {
   isModalOpen: boolean = false;
+  isCategoriaModalOpen: boolean = false;
   @ViewChild('vistaPreviaModal') vistaPreviaModal!: ElementRef; // Referencia al modal
  
   courseName: string = '';  // Nombre del curso
+  selectedCategory: string = '';  // Categoría seleccionada
+  categories: string[] = ['Desarrollo Web', 'Marketing', 'Negocios', 'Diseño Gráfico']; // Lista de categorías disponibles
+
   sections: { title: string, subsections: { title: string, content: string }[] }[] = [
     { title: '', subsections: [{ title: '', content: '' }] }  // Sección y subsección por defecto
   ];
@@ -58,7 +60,6 @@ export class CrearCursoComponent {
 
   // Método para enviar el curso a revisión
   submitForReview() {
-    // Muestra una alerta de confirmación
     Swal.fire({
       title: '¿Estás seguro?',
       text: '¿Deseas enviar el curso a revisión?',
@@ -66,26 +67,31 @@ export class CrearCursoComponent {
       showCancelButton: true,
       confirmButtonText: 'Sí, enviar',
       cancelButtonText: 'Cancelar',
-      confirmButtonColor: '#8EC3B0', // Color del botón de confirmación
-      cancelButtonColor: '#FF6B6B', // Color del botón de cancelación
+      confirmButtonColor: '#8EC3B0',
+      cancelButtonColor: '#FF6B6B',
     }).then((result) => {
       if (result.isConfirmed) {
-        // Si el usuario confirma, envía el curso a revisión
         console.log('Enviando curso a revisión...');
         console.log('Nombre del curso:', this.courseName);
+        console.log('Categoría:', this.selectedCategory);
         console.log('Secciones:', this.sections);
 
-        // Redirige después de confirmar
         this.router.navigate(['/crear-curso']);
       }
     });
   }
 
+  solicitarNuevaCategoria() {
+    this.isCategoriaModalOpen  = true; 
+  }
+
+  cerrarModal() {
+    this.isCategoriaModalOpen  = false;
+  }
 
   toggleMenu() {
     this.menuOpen = !this.menuOpen;
   }
-
 
   // Método para abrir el modal
   vistaPrevia() {
@@ -100,17 +106,17 @@ export class CrearCursoComponent {
 
   eliminarCurso() {
     console.log('Eliminando curso...');
-    this.courseName = ''; // Limpiar el nombre del curso
-    this.sections = [{ title: '', subsections: [{ title: '', content: '' }] }]; // Reiniciar secciones
+    this.courseName = ''; 
+    this.selectedCategory = '';
+    this.sections = [{ title: '', subsections: [{ title: '', content: '' }] }];
   }
 
   logout() {
     console.log('Cerrando sesión...');
-    this.router.navigate(['/usuarios-admin/login/login']);  // Redirige al login
+    this.router.navigate(['/usuarios-admin/login/login']);
   }
 
   misCursos() {
     this.router.navigate(['/cursos-instructor']);
   }
 }
-
