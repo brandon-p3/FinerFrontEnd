@@ -16,6 +16,7 @@ import { SolicitarCategoriaComponent } from './components/instructores/solicitar
 import { CrearCursoComponent } from './components/instructores/crear-curso/crear-curso.component';
 import { withFetch } from '@angular/common/http';
 import { HttpClientModule, provideHttpClient } from '@angular/common/http';
+import { PerfilAlumnoComponent } from './components/alumnos/perfil-alumno/perfil-alumno.component';
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import { HttpClientModule, provideHttpClient } from '@angular/common/http';
     CursosAdminComponent,
     InicioComponent,
     SolicitarCategoriaComponent,
-    CrearCursoComponent
+    CrearCursoComponent,
+    PerfilAlumnoComponent
   ],
   imports: [
     BrowserModule,
