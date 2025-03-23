@@ -10,7 +10,7 @@
     <div class="user-info" (click)="toggleMenu()">
         <span class="role">Estudiante</span>
         <img src="assets/useri.png" alt="Foto de perfil" class="profile-pic">
-        <span class="user-name">{{ usuario.nombre }} {{ usuario.apellidos }}</span>
+        <span class="user-name">{{ usuario.nombre }} {{ usuario.apellidoPaterno }}</span>
     </div>
     <img src="assets/salir.png" alt="Salir" class="logout-icon" (click)="logout()"> <!-- Icono de cerrar sesión -->
 </header>
@@ -36,7 +36,6 @@
             [class.active]="currentPage === 'historial'" 
             (click)="navigateTo('historial')">Historial de Aprendizaje</li>
 
-
        <li class="menu-section">Cerrar Sesión</li>
         <li class="menu-item logout" (click)="logout()">Cerrar Sesión</li>
     </ul>
@@ -44,7 +43,7 @@
 
 <!-- Pantalla de Actualizar Perfil -->
 <div class="container" *ngIf="currentPage === 'actualizar-perfil'">
-    <h2>Bienvenido, {{ usuario.nombre }} {{ usuario.apellidos }}</h2>
+    <h2>Bienvenido, {{ usuario.nombre }} {{ usuario.apellidoPaterno }}</h2>
     <p>Rol: Estudiante</p>
     <p>FINER</p>
     <p>Cursos Completados: {{ usuario.cursosCompletados }}</p>
@@ -57,8 +56,6 @@
         <span [class.active]="currentSection === 'mis-cursos'" (click)="navigateTo('mis-cursos')">Mis Cursos</span>
     </nav>
    
-      
-
     <!-- Formulario de Actualización de Perfil -->
     <div class="profile-form">
         <h3>Información Básica</h3>
@@ -67,8 +64,12 @@
             <input type="text" id="nombre" [(ngModel)]="usuario.nombre" class="form-input">
         </div>
         <div class="form-group">
-            <label for="apellidos">Apellidos:</label>
-            <input type="text" id="apellidos" [(ngModel)]="usuario.apellidos" class="form-input">
+            <label for="apellidoPaterno">Apellido Paterno:</label>
+            <input type="text" id="apellidoPaterno" [(ngModel)]="usuario.apellidoPaterno" class="form-input">
+        </div>
+        <div class="form-group">
+            <label for="apellidoMaterno">Apellido Materno:</label>
+            <input type="text" id="apellidoMaterno" [(ngModel)]="usuario.apellidoMaterno" class="form-input">
         </div>
         
         <h3>Información de Contacto</h3>
@@ -77,17 +78,18 @@
             <input type="email" id="email" [(ngModel)]="usuario.email" class="form-input">
         </div>
 
-      <!-- Botón de Guardar Cambios -->
-<button class="save-btn" (click)="guardarCambios()">Guardar Cambios</button>
+        <!-- Botón de Guardar Cambios -->
+        <button class="save-btn" (click)="guardarCambios()">Guardar Cambios</button>
     </div>
 </div>
+
 <!-- Pantalla de Certificados -->
 <div class="content-container" *ngIf="currentPage === 'certificados'">
     <h2>Certificados</h2>
     <p>Aquí puedes ver y descargar tus certificados obtenidos.</p>
     
-      <!-- Mini-Menú -->
-      <nav class="mini-menu">
+    <!-- Mini-Menú -->
+    <nav class="mini-menu">
         <span [class.active]="currentSection === 'perfil'" (click)="navigateTo('actualizar-perfil')">Actualizar Perfil</span> |
         <span [class.active]="currentSection === 'certificados'" (click)="navigateTo('certificados')">Certificaciones</span> |
         <span [class.active]="currentSection === 'historial'" (click)="navigateTo('historial')">Historial de Aprendizaje</span> |
@@ -98,12 +100,12 @@
         <div class="certificado-item">
             <h3>Curso de Angular</h3>
             <p>Fecha de finalización: 01/10/2023</p>
-            <button class="download-btn" (click)="descargarCertificado()">Descargar Certificado</button>
+            <button class="download-btn" (click)="descargarCertificado(1)">Descargar Certificado</button>
         </div>
         <div class="certificado-item">
             <h3>Curso de TypeScript</h3>
             <p>Fecha de finalización: 15/09/2023</p>
-            <button class="download-btn" (click)="descargarCertificado()">Descargar Certificado</button>
+            <button class="download-btn" (click)="descargarCertificado(2)">Descargar Certificado</button>
         </div>
     </div>
 </div>
@@ -113,8 +115,8 @@
     <h2>Historial de Aprendizaje</h2>
     <p>Revisa tu progreso y actividades realizadas.</p>
     
-     <!-- Mini-Menú -->
-     <nav class="mini-menu">
+    <!-- Mini-Menú -->
+    <nav class="mini-menu">
         <span [class.active]="currentSection === 'perfil'" (click)="navigateTo('actualizar-perfil')">Actualizar Perfil</span> |
         <span [class.active]="currentSection === 'certificados'" (click)="navigateTo('certificados')">Certificaciones</span> |
         <span [class.active]="currentSection === 'historial'" (click)="navigateTo('historial')">Historial de Aprendizaje</span> |
@@ -166,4 +168,4 @@
 <footer class="footer">
     <div>FINER | <a href="#">Términos y Condiciones</a> | <a href="#">Soporte</a> | <a href="#">Sobre Nosotros</a></div>
     <div>Redes Sociales | Contacto | Derechos Reservados</div>
-
+</footer>
