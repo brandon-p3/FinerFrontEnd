@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { CONFIG } from '../config/config';
 import { Observable } from 'rxjs';
 import { AlumnoDocumento, InstructorDocumento } from '../documentos/usuarioDocumento'
+import { Curso } from '../documentos/cursosDocumento';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +11,7 @@ import { AlumnoDocumento, InstructorDocumento } from '../documentos/usuarioDocum
 export class UsuariosService {
 
   private apiUri = CONFIG.apiUrl + '/administrador';
+  private apiUri2 = CONFIG.apiUrl;
 
   constructor(private http: HttpClient) { }
 
@@ -20,4 +22,8 @@ export class UsuariosService {
   getInstructores(): Observable<InstructorDocumento[]>{
     return this.http.get<InstructorDocumento[]>(`${this.apiUri}/getUsuarios/instructores`)
   }
+
+
+
+
 }
