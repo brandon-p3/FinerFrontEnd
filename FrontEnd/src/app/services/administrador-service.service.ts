@@ -12,6 +12,17 @@ export class AdministradorServiceService {
 
   constructor(private http: HttpClient) { }
 
+  filtrarAlumnosPorNombre(nombre: string, orden: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUri}/usuario/filtrar-alumno-nombre`, {
+      params: { nombre, orden }
+    });
+  }
+
+  buscarUsuarioNombre(busqueda: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUri}/administrador/buscarUsuarioNombre`, { busqueda });
+  }
+   
+
   // Soloicitudes
   obtenerSolicitudesCategorias(id: number): Observable<any> {
     return this.http.get<any>(`${this.apiUri}/instructor/${id}`);

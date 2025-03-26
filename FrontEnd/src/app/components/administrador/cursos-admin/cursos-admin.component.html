@@ -39,35 +39,32 @@
   <!-- Sección 2: Todos los Cursos -->
   <section class="section">
     <h2>Todos los cursos</h2>
+
+    <!-- Filtros -->
     <div class="filters">
-      <input type="text" placeholder="Buscar por nombre">
-      <select>
+      <input type="text" placeholder="Buscar por nombre" [(ngModel)]="nombreCurso"
+        (input)="onNombreCursoChange($event)">
+      <select [(ngModel)]="categoriaSeleccionada" (change)="onCategoriaChange($event)">
         <option value="">Filtrar por categoría</option>
-        <option value="programacion">Programación</option>
-        <option value="diseño">Diseño</option>
+        <option value="programacion">Programaci¢n</option>
+        <option value="diseño">Idiomas</option>
         <option value="marketing">Marketing</option>
       </select>
     </div>
+
+    <!-- Lista de cursos dinámicos -->
     <div class="all-courses">
-      <div class="all-card">
-        <img src="assets/noImage.jpg" alt="Imagen del curso" class="card-image">
-        <h3>Nombre del Curso</h3>
-        <p>Descripción breve del curso.</p>
-        <button class="btn details">Detalles</button>
-      </div>
-      <div class="all-card">
-        <img src="assets/noImage.jpg" alt="Imagen del curso" class="card-image">
-        <h3>Nombre del Curso</h3>
-        <p>Descripción breve del curso.</p>
-        <button class="btn details">Detalles</button>
-      </div>
-      <div class="all-card">
-        <img src="assets/noImage.jpg" alt="Imagen del curso" class="card-image">
-        <h3>Nombre del Curso</h3>
-        <p>Descripción breve del curso.</p>
+      <div *ngFor="let curso of cursosFiltrados" class="all-card">
+        <h3>{{ curso.tituloCurso }}</h3>
+        <p>{{ curso.descripcion }}</p>
+        <p><strong>Instructor:</strong> {{ curso.nombreInstructor }} {{ curso.apellidoPaterno }} {{
+          curso.apellidoMaterno }}</p>
+        <p><strong>Categoría:</strong> {{ curso.nombreCategoria }}</p>
         <button class="btn details">Detalles</button>
       </div>
     </div>
   </section>
+
+
 </div>
 <app-footer></app-footer>
