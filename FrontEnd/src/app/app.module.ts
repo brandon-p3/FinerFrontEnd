@@ -17,6 +17,10 @@ import { CrearCursoComponent } from './components/instructores/crear-curso/crear
 import { withFetch } from '@angular/common/http';
 import { HttpClientModule, provideHttpClient } from '@angular/common/http';
 import { PerfilAlumnoComponent } from './components/alumnos/perfil-alumno/perfil-alumno.component';
+import { FooterContactoComponent } from './components/inicio/footer-contacto/footer-contacto.component';
+import { QuienesSomosComponent } from './components/inicio/quienes-somos/quienes-somos.component';
+import { NavbarInicioComponent } from './components/inicio/navbar-inicio/navbar-inicio.component';
+import { ContactoComponent } from './components/inicio/contacto/contacto.component';
 
 
 @NgModule({
@@ -32,7 +36,11 @@ import { PerfilAlumnoComponent } from './components/alumnos/perfil-alumno/perfil
     InicioComponent,
     SolicitarCategoriaComponent,
     CrearCursoComponent,
-    PerfilAlumnoComponent
+    PerfilAlumnoComponent,
+    FooterContactoComponent,
+    QuienesSomosComponent,
+    NavbarInicioComponent,
+    ContactoComponent
   ],
   imports: [
     BrowserModule,

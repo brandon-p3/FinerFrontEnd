@@ -13,6 +13,8 @@ import { InicioComponent } from './components/inicio/inicio.component';
 import { CursosInstructorComponent } from './components/instructores/cursos-instructor/cursos-instructor.component';
 import { CrearCursoComponent } from './components/instructores/crear-curso/crear-curso.component';
 import { SolicitudesAdminComponent } from './components/administrador/solicitudes-admin/solicitudes-admin.component';
+import { QuienesSomosComponent } from './components/inicio/quienes-somos/quienes-somos.component';
+import { ContactoComponent } from './components/inicio/contacto/contacto.component';
 
 
 export const routes: Routes = [
@@ -20,6 +22,8 @@ export const routes: Routes = [
 
 
   { path: 'home/inicio', component: InicioComponent }, 
+  { path: 'home/quienesSomos', component: QuienesSomosComponent},
+  { path: 'home/contacto', component: ContactoComponent },
   { path: 'home/login', component: LoginComponent }, 
   { path: 'home/registro', component: RegistroComponent }, 
 

@@ -4,7 +4,6 @@ import { CONFIG } from '../config/config';
 import { Observable } from 'rxjs';
 import { AlumnoDocumento, InstructorDocumento } from '../documentos/usuarioDocumento'
 
-
 @Injectable({
   providedIn: 'root'
 })
