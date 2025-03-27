@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { CursoVerDTO } from '../../../documentos/cursoDocumento';
+import { CursoServiceService } from '../../../services/curso-service.service';
 
 @Component({
   selector: 'app-cursos-instructor',
@@ -10,85 +12,148 @@ import { Router } from '@angular/router';
   templateUrl: './cursos-instructor.component.html',
   styleUrls: ['./cursos-instructor.component.css']
 })
-export class CursosInstructorComponent {
-  constructor(private router: Router) { } 
+export class CursosInstructorComponent implements OnInit {
+  constructor(
+    private router: Router,
+    private cursoService: CursoServiceService
+  ) { } 
+
   usuario = {
-    nombre: 'Juan',
-    apellidos: 'Pérez',
-    email: 'juan.perez@finer.com',
+    id: 3,
+    nombre: 'Ana',
+    apellidoPaterno: 'Ramírez',
+    apellidoMaterno: 'Díaz',
+    email: 'ana.ramirez@finer.edu',
+    username: 'ana_instructor'
   };
 
   menuOpen = false;
   currentPage = 'mis-cursos';
-  searchQuery = ''; // Almacena el texto de búsqueda
-  filterDate: string = ''; // Almacena la fecha seleccionada para el filtro
-  sortOption = 'asc'; // Orden de los cursos (ascendente o descendente)
-  cursos = [
-    { nombre: 'Curso de Angular', imagen: 'assets/angular.jpg', fecha: '2025-03-10' },
-    { nombre: 'Curso de React', imagen: 'assets/react.jpg', fecha: '2025-03-11' },
-    { nombre: 'Curso de Vue', imagen: 'assets/vue.jpg', fecha: '2025-03-12' },
-    // Agrega más cursos con fechas aquí
-  ];
-  filteredCourses = [...this.cursos]; // Lista de cursos filtrados
+  searchQuery = ''; 
+  sortOption = 'asc'; 
+  
+  cursos: CursoVerDTO[] = [];
+  filteredCourses: CursoVerDTO[] = [];
+  isLoading = false;
+  errorMessage = '';
+  courseToDelete: number | null = null;
+  showDeleteModal = false;
+  
+  // Variables para vista previa
+  showPreviewModal = false;
+  selectedCourse: CursoVerDTO | null = null;
 
+  ngOnInit() {
+    this.loadCursos();
+  }
+
+  loadCursos() {
+    this.isLoading = true;
+    this.errorMessage = '';
+  
+    this.cursoService.verCursosInstructor(this.usuario.id).subscribe({
+      next: (cursos) => {
+        this.cursos = cursos;
+        this.filteredCourses = [...this.cursos];
+        this.applyFilters();
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Error al cargar los cursos', error);
+        this.errorMessage = 'No se pudieron cargar los cursos. Por favor, intente nuevamente.';
+        this.isLoading = false;
+      }
+    });
+  }
+  
   toggleMenu() {
     this.menuOpen = !this.menuOpen;
   }
 
   navigateTo(page: string) {
     this.currentPage = page;
-    this.menuOpen = false; // Cierra el menú al seleccionar una opción
+    this.menuOpen = false;
   }
 
   applyFilters() {
     let filtered = [...this.cursos];
 
-    // Filtro por búsqueda de nombre
+    // Filtro por búsqueda de nombre de curso
     if (this.searchQuery) {
       filtered = filtered.filter(curso =>
-        curso.nombre.toLowerCase().includes(this.searchQuery.toLowerCase())
+        curso.titulo.toLowerCase().includes(this.searchQuery.toLowerCase())
       );
-    }
-
-    // Filtro por fecha (si se selecciona una)
-    if (this.filterDate) {
-      filtered = filtered.filter(curso => curso.fecha === this.filterDate);
     }
 
     // Filtro por orden
     if (this.sortOption === 'asc') {
-      filtered.sort((a, b) => a.nombre.localeCompare(b.nombre));
+      filtered.sort((a, b) => a.titulo.localeCompare(b.titulo));
     } else if (this.sortOption === 'desc') {
-      filtered.sort((a, b) => b.nombre.localeCompare(a.nombre));
+      filtered.sort((a, b) => b.titulo.localeCompare(a.titulo));
     }
 
-    this.filteredCourses = filtered; // Actualiza los cursos filtrados
+    this.filteredCourses = filtered;
   }
 
   createCourse() {
     this.currentPage = 'crear-curso';
     this.router.navigate(['/crear-curso']);
   }
-  
 
-  previewCourse(curso: any) {
-    // Lógica para previsualizar el curso
-    console.log('Previsualizando el curso', curso);
+  openPreviewModal(curso: CursoVerDTO) {
+    this.selectedCourse = { ...curso }; // Crear una copia del curso
+    this.showPreviewModal = true;
   }
 
-  editCourse(curso: any) {
-    // Lógica para editar el curso
-    console.log('Editando el curso', curso);
+  closePreviewModal() {
+    this.showPreviewModal = false;
+    this.selectedCourse = null;
   }
 
-  deleteCourse(curso: any) {
-    // Lógica para eliminar el curso
-    console.log('Eliminando el curso', curso);
-    this.cursos = this.cursos.filter(c => c !== curso);
-    this.applyFilters(); // Vuelve a aplicar los filtros
+  editCourse(curso: CursoVerDTO) {
+    if (!curso) {
+      console.error('Intento de editar un curso nulo');
+      return;
+    }
+    
+    console.log('Editando curso:', curso);
+    this.selectedCourse = { ...curso }; // Crear una copia del curso
+    this.showPreviewModal = true;
+    
+    
+  }
+
+  confirmDelete(idCurso: number) {
+    this.courseToDelete = idCurso;
+    this.showDeleteModal = true;
+  }
+
+  cancelDelete() {
+    this.showDeleteModal = false;
+    this.courseToDelete = null;
+  }
+
+  deleteCourse() {
+    if (this.courseToDelete) {
+      this.isLoading = true;
+      this.cursoService.eliminarCurso(this.courseToDelete.toString()).subscribe({
+        next: () => {
+          this.loadCursos();
+          this.showDeleteModal = false;
+          this.isLoading = false;
+        },
+        error: (error) => {
+          console.error('Error al eliminar el curso', error);
+          this.errorMessage = 'No se pudo eliminar el curso. Por favor, intente nuevamente.';
+          this.showDeleteModal = false;
+          this.isLoading = false;
+        }
+      });
+    }
   }
 
   logout() {
     console.log('Cerrando sesión...');
+    this.router.navigate(['/login']);
   }
 }

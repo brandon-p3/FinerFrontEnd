@@ -37,10 +37,12 @@ import { ContactoComponent } from './components/inicio/contacto/contacto.compone
     SolicitarCategoriaComponent,
     CrearCursoComponent,
     PerfilAlumnoComponent,
+
     FooterContactoComponent,
     QuienesSomosComponent,
     NavbarInicioComponent,
     ContactoComponent
+
   ],
   imports: [
     BrowserModule,

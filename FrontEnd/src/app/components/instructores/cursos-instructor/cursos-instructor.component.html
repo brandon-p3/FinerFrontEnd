@@ -8,9 +8,9 @@
         <div class="user-info" (click)="toggleMenu()">
             <span class="role">Instructor</span>
             <img src="assets/useri.png" alt="Foto de perfil" class="profile-pic">
-            <span class="user-name">{{ usuario.nombre }} {{ usuario.apellidos }}</span>
+            <span class="user-name">{{ usuario.nombre }} {{ usuario.apellidoPaterno }} {{ usuario.apellidoMaterno }}</span>
         </div>
-        <img src="assets/salir.png" alt="Salir" class="logout-icon" (click)="logout()"> <!-- Icono de cerrar sesión -->
+        <img src="assets/salir.png" alt="Salir" class="logout-icon" (click)="logout()"> 
     </header>
 
     <!-- Menú Desplegable -->
@@ -18,9 +18,9 @@
         <ul>
             <li class="menu-section">Cursos</li>
             <li class="menu-item" [class.active]="currentPage === 'mis-cursos'" (click)="navigateTo('mis-cursos')">Mis Cursos</li>
-                <li class="menu-item" [class.active]="currentPage === 'crear-curso'" (click)="createCourse()">
-                    Crear Curso
-                  </li>
+            <li class="menu-item" [class.active]="currentPage === 'crear-curso'" (click)="createCourse()">
+                Crear Curso
+            </li>
         </ul>
     </div>
 
@@ -28,35 +28,104 @@
     <div class="content-container">
         <!-- Contenido de la página -->
         <div class="container">
-            <!-- Filtro y búsqueda -->
-            <div class="filters">
-                <div class="search-container">
-                    <input type="text" [(ngModel)]="searchQuery" (input)="applyFilters()" placeholder="Buscar cursos..." class="search-bar">
+            <!-- Barra de búsqueda -->
+            <div class="search-filter-create-container">
+                <!-- Buscador -->
+                <div class="search-wrapper">
+                    <input type="text" class="search-bar" placeholder="Buscar cursos..." [(ngModel)]="searchQuery" (input)="applyFilters()">
                     <img src="assets/lupa.png" alt="Buscar" class="search-icon">
                 </div>
-
-                <!-- Filtrado por fecha con calendario -->
-                <div class="filter-options">
-                    <input type="date" id="fecha" [(ngModel)]="filterDate" (change)="applyFilters()">
-                </div>
-
-                <!-- Filtro por orden A-Z y Z-A -->
-                <div class="filter-options">
+                
+                <!-- Filtro A-Z/Z-A -->
+                <div class="order-wrapper">
                     <select id="orden" [(ngModel)]="sortOption" (change)="applyFilters()">
                         <option value="asc">A-Z</option>
                         <option value="desc">Z-A</option>
                     </select>
                 </div>
+                
+                <!-- Botón Crear Curso -->
+                <button class="create-course-btn" (click)="createCourse()">
+                    + Crear Curso
+                </button>
             </div>
 
             <div *ngIf="currentPage === 'mis-cursos'">
                 <h2>Mis Cursos</h2>
-                <div class="no-courses-message">
-                    <p>No tienes cursos creados aún. Haz clic en el botón para crear uno.</p>
-                    <button class="create-course-btn" (click)="createCourse()">+ Crear Nuevo Curso</button>
+                
+                <!-- Estado de carga -->
+                <div *ngIf="isLoading" class="loading-container">
+                    <p>Cargando cursos...</p>
+                </div>
 
+                <!-- Mensaje de error -->
+                <div *ngIf="errorMessage" class="error-message">
+                    <p>{{ errorMessage }}</p>
+                </div>
+                
+                <!-- Mensaje cuando no hay cursos -->
+                <div *ngIf="!isLoading && filteredCourses.length === 0 && !errorMessage" class="no-courses-message">
+                    <p>No se encontraron coincidencias o no tienes cursos creados aún. Haz clic en el botón para crear uno.</p>
+                    <button class="create-course-btn" (click)="createCourse()">+ Crear Nuevo Curso</button>
+                </div>
+
+                <!-- Lista de cursos -->
+                <div *ngIf="!isLoading && filteredCourses.length > 0" class="courses-grid">
+                    <div *ngFor="let curso of filteredCourses" class="course-card">
+                        <div class="course-status" [ngClass]="{
+                            'approved': curso.estatus === 'Aprobado',
+                            'pending': curso.estatus === 'Pendiente',
+                            'rejected': curso.estatus === 'Rechazado'
+                        }">
+                            {{ curso.estatus }}
+                        </div>
+                        <div class="course-content">
+                            <h3>{{ curso.titulo }}</h3>
+                            <p class="course-description">{{ curso.descripcion }}</p>
+                            <p *ngIf="curso.origen" class="course-origin"><strong>Origen:</strong> {{ curso.origen }}</p>
+                            <div class="course-actions">
+                                <button class="action-btn preview-btn" (click)="openPreviewModal(curso)">Vista Previa</button>
+                                <button *ngIf="curso.estatus !== 'Aprobado'" class="action-btn edit-btn" (click)="editCourse(curso)">Editar</button>
+                                <button class="action-btn delete-btn" (click)="confirmDelete(curso.idCurso)">Eliminar</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<!--Modal Vista Previa-->
+<div *ngIf="showPreviewModal && selectedCourse" class="modal-overlay">
+    <div class="modal-content">
+        <button class="close-modal-btn" (click)="closePreviewModal()">&times;</button>
+        <h3 class="modal-course-title">{{ selectedCourse.titulo }}</h3>
+        <div class="modal-status" [ngClass]="{
+            'approved': (selectedCourse.estatus || '').toLowerCase().trim() === 'aprobado',
+            'pending': (selectedCourse.estatus || '').toLowerCase().trim() === 'en revision',
+            'rejected': (selectedCourse.estatus || '').toLowerCase().trim() === 'rechazada'
+        }">
+            {{ selectedCourse.estatus }}
+        </div>
+        <p class="modal-course-detail"><strong>Descripción:</strong> {{ selectedCourse.descripcion }}</p>
+        <p *ngIf="selectedCourse.origen" class="modal-course-detail"><strong>Origen:</strong> {{ selectedCourse.origen }}</p>
+        
+        <div class="modal-actions">
+            <button *ngIf="selectedCourse.estatus !== 'Aprobado'" class="action-btn edit-btn" (click)="editCourse(selectedCourse)">Editar</button>
+            <button class="action-btn close-btn" (click)="closePreviewModal()">Cerrar</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de confirmación para eliminar -->
+<div *ngIf="showDeleteModal" class="modal-overlay">
+    <div class="modal-content">
+        <h3>Confirmar eliminación</h3>
+        <p>¿Estás seguro que deseas eliminar este curso? Esta acción no se puede deshacer.</p>
+        <div class="modal-actions">
+            <button class="action-btn cancel-btn" (click)="cancelDelete()">Cancelar</button>
+            <button class="action-btn delete-btn" (click)="deleteCourse()">Eliminar</button>
         </div>
     </div>
 </div>

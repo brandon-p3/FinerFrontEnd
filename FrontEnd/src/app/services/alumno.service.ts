@@ -1,19 +1,27 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { CONFIG } from '../config/config';
 import { Observable } from 'rxjs';
+import { CONFIG } from '../config/config';
+import { AlumnoDocumento } from '../documentos/usuarioDocumento';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AlumnoService {
-
   private apiUri = CONFIG.apiUrl + '/api/alumno';
 
   constructor(private http: HttpClient) { }
 
   /**
-   * Método para actualizar el perfil del alumno.
+   * Actualiza el perfil del alumno
+   * @param idUsuario ID del usuario a actualizar
+   * @param nombre Nuevo nombre
+   * @param apellidoPaterno Nuevo apellido paterno
+   * @param apellidoMaterno Nuevo apellido materno
+   * @param nombreUsuario Nuevo nombre de usuario
+   * @param correo Nuevo correo electrónico
+   * @param contrasenia Nueva contraseña
+   * @returns Observable con la respuesta del servidor
    */
   actualizarPerfil(
     idUsuario: number,
@@ -24,36 +32,68 @@ export class AlumnoService {
     contrasenia: string,
     nombreUsuario: string
   ): Observable<any> {
-    const params = new HttpParams()
-      .set('idUsuario', idUsuario.toString())
-      .set('nombre', nombre)
-      .set('apellidoPaterno', apellidoPaterno)
-      .set('apellidoMaterno', apellidoMaterno)
-      .set('correo', correo)
-      .set('contrasenia', contrasenia)
-      .set('nombreUsuario', nombreUsuario);
+    const params = {
+      idUsuario: idUsuario.toString(),
+      nombre,
+      apellidoPaterno,
+      apellidoMaterno,
+      correo,
+      contrasenia,
+      nombreUsuario
+    };
 
     return this.http.put(`${this.apiUri}/editar-cuenta`, null, { params });
   }
 
   /**
-   * Método para generar y descargar un certificado.
-   * @param idCertificado - ID del certificado a descargar.
-   * @returns Observable con el archivo del certificado en formato Blob.
+   * Actualiza solo la contraseña del alumno
+   * @param correo Correo electrónico del alumno
+   * @param nuevaContrasenia Nueva contraseña
+   * @returns Observable con la respuesta del servidor
    */
-  generarCertificado(idCertificado: number): Observable<Blob> {
-    return this.http.get(`${this.apiUri}/generar-certificado/${idCertificado}`, {
-      responseType: 'blob' // Indica que la respuesta es un archivo binario
+  actualizarContrasenia(correo: string, nuevaContrasenia: string): Observable<any> {
+    const params = {
+      correo,
+      nuevaContrasenia
+    };
+
+    return this.http.put(`${this.apiUri}/actualizar-contrasenia`, null, { params });
+  }
+
+  /**
+   * Genera un certificado para el alumno
+   * @param idInscripcion ID de la inscripción
+   * @returns Observable con el PDF del certificado
+   */
+  generarCertificado(idInscripcion: number): Observable<Blob> {
+    return this.http.get(`${this.apiUri}/generar-certificado/${idInscripcion}`, {
+      responseType: 'blob'
     });
   }
 
-    /**
-   * Método para obtener el progreso de un alumno en un curso específico.
-   * @param idEstudiante - ID del estudiante.
-   * @param idCurso - ID del curso.
-   * @returns Observable con el progreso del alumno.
+  /**
+   * Busca cursos por nombre
+   * @param termino Término de búsqueda
+   * @returns Observable con la lista de cursos encontrados
    */
-    verProgresoAlumno(idEstudiante: number, idCurso: number): Observable<any> {
-      return this.http.get(`${this.apiUri}/progresoCurso/${idEstudiante}/${idCurso}`);
-    }
+  buscarCursoPorNombre(termino: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUri}/buscar-cursos`, {
+      params: { termino }
+    });
+  }
+
+  /**
+   * Obtiene el progreso de un alumno en un curso específico
+   * @param idEstudiante ID del estudiante
+   * @param idCurso ID del curso
+   * @returns Observable con el progreso del alumno
+   */
+  verProgresoAlumno(idEstudiante: number, idCurso: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUri}/progreso`, {
+      params: {
+        idEstudiante: idEstudiante.toString(),
+        idCurso: idCurso.toString()
+      }
+    });
+  }
 }
