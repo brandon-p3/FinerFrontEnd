@@ -1,0 +1,93 @@
+<app-navbar-inicio></app-navbar-inicio>
+<div class="quienes-somos-container">
+    <div class="header-section">
+        <h1>¿Quiénes Somos?</h1>
+        <p>Una plataforma educativa comprometida con democratizar el conocimiento y empoderar a estudiantes en su journey de aprendizaje.</p>
+    </div>
+
+    <div class="carousel-container">
+        <div class="carousel">
+            <div class="carousel-track">
+                <ng-container *ngIf="learningImages.length; else noImages">
+                    <ng-container *ngFor="let image of learningImages; let i = index">
+                        <img 
+                            [src]="image" 
+                            [alt]="'Imagen de aprendizaje ' + (i + 1)"
+                            class="carousel-slide"
+                            loading="lazy"
+                        >
+                    </ng-container>
+                </ng-container>
+                <ng-template #noImages>
+                    <p>No hay imágenes disponibles</p>
+                </ng-template>
+            </div>
+            <div class="carousel-controls" *ngIf="learningImages.length > 1">
+                <button (click)="prevSlide()" class="carousel-btn prev">‹</button>
+                <button (click)="nextSlide()" class="carousel-btn next">›</button>
+            </div>
+            <div class="carousel-indicators" *ngIf="learningImages.length > 1">
+                <span 
+                    *ngFor="let image of learningImages; let i = index" 
+                    [class.active]="currentSlide === i"
+                    (click)="goToSlide(i)"
+                    class="indicator"
+                ></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="mission-vision-container">
+        <div class="section mission">
+            <h2>Nuestra Misión</h2>
+            <p>Transformar vidas a través de la educación digital, proporcionando herramientas, recursos y experiencias de aprendizaje accesibles, innovadoras y de alta calidad que permitan a cada individuo desarrollar su máximo potencial.</p>
+        </div>
+        <div class="section vision">
+            <h2>Nuestra Visión</h2>
+            <p>Ser la plataforma líder en educación digital a nivel global, reconocida por nuestra capacidad de inspirar, conectar y empoderar a millones de personas a través de soluciones educativas personalizadas y significativas.</p>
+        </div>
+    </div>
+
+    <!-- Resto del contenido permanece igual -->
+    <div class="objetivo-section">
+        <h2>Nuestro Objetivo</h2>
+        <div class="objetivo-content">
+            <div class="objetivo-text">
+                <p>Nuestro objetivo principal es derribar las barreras tradicionales del aprendizaje, ofreciendo una plataforma que:</p>
+                <ul>
+                    <li>Democratiza el acceso a la educación de calidad</li>
+                    <li>Permite el aprendizaje a tu propio ritmo</li>
+                    <li>Conecta a estudiantes con las mejores herramientas y conocimientos</li>
+                    <li>Impulsa el crecimiento personal y profesional</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="fortalezas-section">
+        <h2>¿Por qué Nuestro Trabajo es Diferente?</h2>
+        <div class="fortalezas-grid">
+            <div class="fortaleza">
+                <i class="fas fa-laptop-code"></i>
+                <h3>Tecnología de Vanguardia</h3>
+                <p>Utilizamos las últimas tecnologías para crear experiencias de aprendizaje inmersivas y efectivas.</p>
+            </div>
+            <div class="fortaleza">
+                <i class="fas fa-user-graduate"></i>
+                <h3>Contenido Personalizado</h3>
+                <p>Adaptamos nuestros cursos a las necesidades y ritmo de cada estudiante.</p>
+            </div>
+            <div class="fortaleza">
+                <i class="fas fa-globe"></i>
+                <h3>Alcance Global</h3>
+                <p>Conectamos estudiantes y conocimiento sin límites geográficos.</p>
+            </div>
+            <div class="fortaleza">
+                <i class="fas fa-hands-helping"></i>
+                <h3>Soporte Integral</h3>
+                <p>Acompañamiento continuo en tu journey de aprendizaje.</p>
+            </div>
+        </div>
+    </div>
+</div>
+<app-footer-contacto></app-footer-contacto>

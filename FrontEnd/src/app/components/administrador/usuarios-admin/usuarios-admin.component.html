@@ -1,13 +1,7 @@
 <app-navbar-admin></app-navbar-admin>
 
 <div class="filters">
-    <input type="text" placeholder="Buscar por nombre">
-    <select>
-      <option value="">Filtrar por categoría</option>
-      <option value="programacion">Programación</option>
-      <option value="diseño">Diseño</option>
-      <option value="marketing">Marketing</option>
-    </select>
+  <input type="text" placeholder="Buscar por nombre" (input)="filtrarAlumnos($event, 'asc')">
 </div>
 
 <div class="container">
@@ -15,7 +9,7 @@
     <div class="section">
       <h2>Estudiantes</h2>
       <div class="card-container">
-        <div class="card" *ngFor="let alumno of alumnos">
+        <div class="card" *ngFor="let alumno of alumnosFiltrados">
           <p><strong>Nombre:</strong> {{ alumno.nombre }} {{ alumno.apellidoPaterno }} {{ alumno.apellidoMaterno }}</p>
           <div class="details">
             <p><strong>Username:</strong> {{ alumno.nombreUsuario }}</p>
@@ -30,7 +24,7 @@
     <div class="section">
       <h2>Instructores</h2>
       <div class="card-container">
-        <div class="card" *ngFor="let instructor of instructores">
+        <div class="card" *ngFor="let instructor of instructoresFiltrados">
           <p><strong>Nombre:</strong> {{ instructor.nombre }} {{ instructor.apellidoPaterno }} {{ instructor.apellidoMaterno }}</p>
           <div class="details">
             <p><strong>Username:</strong> {{ instructor.nombreUsuario }}</p>
