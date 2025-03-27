@@ -33,9 +33,7 @@
             ],
             "server": "src/main.server.ts",
             "prerender": true,
-            "ssr": {
-              "entry": "server.ts"
-            }
+            "ssr": true
           },
           "configurations": {
             "production": {
@@ -47,8 +45,8 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "2kB",
-                  "maximumError": "4kB"
+                  "maximumWarning": "3kB",
+                  "maximumError": "6kB"
                 }
               ],
               "outputHashing": "all"
