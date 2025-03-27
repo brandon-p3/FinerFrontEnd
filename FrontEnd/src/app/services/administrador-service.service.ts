@@ -18,17 +18,22 @@ export class AdministradorServiceService {
     });
   }
 
-  buscarUsuarioNombre(busqueda: string): Observable<any> {
-    return this.http.post<any>(`${this.apiUri}/administrador/buscarUsuarioNombre`, { busqueda });
-  }
+  buscarUsuarioNombre(nombreUsuario: string): Observable<any> {
+    console.log(`Buscando usuario: ${nombreUsuario}`);
+    return this.http.get<any>(`${this.apiUri}/administrador/buscarUsuario/${nombreUsuario}`);
+  }  
    
-
-  // Soloicitudes
-  obtenerSolicitudesCategorias(id: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUri}/instructor/${id}`);
+  // ===================== Servicios de categorias =============================
+  obtenerTodasLasSolicitudes(): Observable<any[]> { // Solicitud de categorias
+    return this.http.get<any[]>(`${this.apiUri}/solicitudes/todas`);
   }
 
-  obtenerSolicitudesCursos(): Observable<any> {
+  obtenerCategoriasAprobadas(): Observable<any> {
+    return this.http.get<any>(`${this.apiUri}/api/categorias/ver-categoria-aprobada`);
+  }
+
+  // ===================== Servicios de Cursos =================================
+  obtenerSolicitudesCursos(): Observable<any> { //Solicitud de cursos
     return this.http.get<any>(`${this.apiUri}/solicitudes-curso/pendientes`);
   }
 
