@@ -49,25 +49,35 @@ export class UsuariosAdminComponent implements OnInit {
     );
   }
 
-  filtrarAlumnos(event: Event, orden: string = 'asc'): void {
+  filtrarUsuarios(event: Event): void {
     const inputElement = event.target as HTMLInputElement;
     const terminoBusqueda = inputElement.value.trim().toLowerCase();
-
+  
     if (terminoBusqueda === '') {
-      this.alumnosFiltrados = this.alumnos; // Si no hay búsqueda, muestra todos
+      this.alumnosFiltrados = this.alumnos;
+      this.instructoresFiltrados = this.instructores;
       return;
     }
-
-    // Usar el servicio para buscar los alumnos por nombre
+  
     this.administradorService.buscarUsuarioNombre(terminoBusqueda).subscribe(
       (response) => {
-        // El resultado que viene del backend tiene un campo 'usuarios', así que lo asignamos a alumnosFiltrados
-        this.alumnosFiltrados = response.usuarios; // Asegúrate de que el backend esté devolviendo un campo 'usuarios'
+        console.log('Respuesta de la búsqueda:', response); // Verifica lo que está llegando
+        if (response.usuarios) {
+          // Asigna a los filtros correctamente, utilizando los nombres de campo correctos
+          this.alumnosFiltrados = response.usuarios.filter((usuario: any) => usuario.id_rol === 3);
+          this.instructoresFiltrados = response.usuarios.filter((usuario: any) => usuario.id_rol === 2); 
+        } else {
+          this.alumnosFiltrados = [];
+          this.instructoresFiltrados = [];
+        }
       },
       (error) => {
-        console.error('Error al filtrar alumnos:', error);
+        console.error('Error al filtrar usuarios:', error);
         this.alumnosFiltrados = [];
+        this.instructoresFiltrados = [];
       }
     );
   }
+  
+
 }

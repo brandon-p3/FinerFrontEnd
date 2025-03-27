@@ -29,8 +29,8 @@ export class SolicitudesAdminComponent implements OnInit {
     this.mostrarModal = false;
   }
 
-  obtenerSolicitudesCategorias(id: number) {
-    this.adminService.obtenerSolicitudesCategorias(id).subscribe(
+  obtenerSolicitudesCategorias() {
+    this.adminService.obtenerTodasLasSolicitudes().subscribe(
       (data) => {
         this.solicitudesCategorias = data;
       },
