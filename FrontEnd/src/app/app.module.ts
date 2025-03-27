@@ -32,7 +32,7 @@ import { PerfilAlumnoComponent } from './components/alumnos/perfil-alumno/perfil
     InicioComponent,
     SolicitarCategoriaComponent,
     CrearCursoComponent,
-    PerfilAlumnoComponent
+    PerfilAlumnoComponent,
   ],
   imports: [
     BrowserModule,

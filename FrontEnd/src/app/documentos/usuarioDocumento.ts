@@ -17,4 +17,5 @@ export interface InstructorDocumento {
     telefono: string;
     direccion: string;
     cedula: File;
+    
 }

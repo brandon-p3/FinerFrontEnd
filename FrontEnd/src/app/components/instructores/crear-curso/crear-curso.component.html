@@ -99,27 +99,27 @@
           </button>
         </div>
 
-        <!-- Iterar sobre las subsecciones de la sección actual -->
+        <!-- Iterar sobre los temas  de la sección actual -->
         <div class="subsection" *ngFor="let subsection of section.subsections; let subsectionIndex = index">
           <div class="form-group">
-            <label for="subsection-title">Título de Subsección</label>
-            <input type="text" id="subsection-title" class="form-input" placeholder="Ingrese el título de la subsección"
+            <label for="subsection-title">Tema</label>
+            <input type="text" id="subsection-title" class="form-input" placeholder="Ingrese el tema"
               [(ngModel)]="subsection.title">
           </div>
           <div class="form-group">
             <label for="subsection-content">Contenido</label>
-            <textarea id="subsection-content" class="form-input" placeholder="Ingrese el contenido de la subsección"
+            <textarea id="subsection-content" class="form-input" placeholder="Ingrese el contenido del tema"
               [(ngModel)]="subsection.content"></textarea>
           </div>
           <!-- Botón para eliminar subsección -->
           <button *ngIf="section.subsections.length > 1" class="btn-delete"
             (click)="removeSubsection(sectionIndex, subsectionIndex)">
-            <i class="fas fa-trash"></i> Eliminar Subsección
+            <i class="fas fa-trash"></i> Eliminar Tema
           </button>
 
           <!-- Botón para añadir subsección -->
           <button class="add-subsection-btn" (click)="addSubsection(sectionIndex)">
-            <i class="fas fa-plus"></i> Añadir Subsección
+            <i class="fas fa-plus"></i> Añadir Tema
           </button>
         </div>
 
