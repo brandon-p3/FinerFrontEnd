@@ -21,19 +21,15 @@ import { ContactoComponent } from './components/inicio/contacto/contacto.compone
 
 
 export const routes: Routes = [
-<<<<<<< HEAD
 
-  { path: '', redirectTo: 'usuarios-admin', pathMatch: 'full' },
-=======
-  { path: '', redirectTo: 'home/inicio', pathMatch: 'full' }, 
->>>>>>> f58ff088e0ee4e8a0449b22e502b663e023e2379
+  { path: '', redirectTo: 'home/inicio', pathMatch: 'full' },
 
 
-  { path: 'home/inicio', component: InicioComponent }, 
+  { path: 'home/inicio', component: InicioComponent },
   { path: 'home/quienesSomos', component: QuienesSomosComponent},
   { path: 'home/contacto', component: ContactoComponent },
-  { path: 'home/login', component: LoginComponent }, 
-  { path: 'home/registro', component: RegistroComponent }, 
+  { path: 'home/login', component: LoginComponent },
+  { path: 'home/registro', component: RegistroComponent },
 
 
   // Rutas para el administrador
@@ -87,13 +83,8 @@ export const routes: Routes = [
     {path: 'crear-curso', component:CrearCursoComponent},
 
 
-<<<<<<< HEAD
-  // Redirección por defecto
-  { path: '**', redirectTo: 'administrador/usuarios/ver' }
-=======
   // Redirección por defecto (en caso de ruta no encontrada)
   { path: '**', redirectTo: 'home/inicio' },
->>>>>>> f58ff088e0ee4e8a0449b22e502b663e023e2379
 
 ];
 
