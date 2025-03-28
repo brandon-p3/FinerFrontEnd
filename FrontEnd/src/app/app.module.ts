@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser'; 
-import { FormsModule } from '@angular/forms'; 
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component'; 
+import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { UsuariosAdminComponent } from './components/administrador/usuarios-admin/usuarios-admin.component';
 import { FooterComponent } from './components/administrador/footer/footer.component';
@@ -14,14 +14,12 @@ import { CursosAdminComponent } from './components/administrador/cursos-admin/cu
 import { InicioComponent } from './components/inicio/inicio.component';
 import { SolicitarCategoriaComponent } from './components/instructores/solicitar-categoria/solicitar-categoria.component';
 import { CrearCursoComponent } from './components/instructores/crear-curso/crear-curso.component';
-import { withFetch } from '@angular/common/http';
 import { HttpClientModule, provideHttpClient } from '@angular/common/http';
 import { PerfilAlumnoComponent } from './components/alumnos/perfil-alumno/perfil-alumno.component';
 import { FooterContactoComponent } from './components/inicio/footer-contacto/footer-contacto.component';
 import { QuienesSomosComponent } from './components/inicio/quienes-somos/quienes-somos.component';
 import { NavbarInicioComponent } from './components/inicio/navbar-inicio/navbar-inicio.component';
 import { ContactoComponent } from './components/inicio/contacto/contacto.component';
-
 
 @NgModule({
   declarations: [
@@ -37,12 +35,10 @@ import { ContactoComponent } from './components/inicio/contacto/contacto.compone
     SolicitarCategoriaComponent,
     CrearCursoComponent,
     PerfilAlumnoComponent,
-
     FooterContactoComponent,
     QuienesSomosComponent,
     NavbarInicioComponent,
     ContactoComponent
-
   ],
   imports: [
     BrowserModule,
@@ -52,7 +48,7 @@ import { ContactoComponent } from './components/inicio/contacto/contacto.compone
     NgbModule
   ],
   providers: [
-    provideHttpClient(withFetch())
+    provideHttpClient()
   ],
   bootstrap: [AppComponent]
 })

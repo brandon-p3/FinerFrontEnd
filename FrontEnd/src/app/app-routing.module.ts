@@ -1,6 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+
+
 //Components
+
 import { UsuariosAdminComponent } from './components/administrador/usuarios-admin/usuarios-admin.component';
 import { LoginComponent} from './components/login/login/login.component';
 import { RegistroComponent } from './components/login/registro/registro.component';
@@ -18,7 +21,12 @@ import { ContactoComponent } from './components/inicio/contacto/contacto.compone
 
 
 export const routes: Routes = [
+<<<<<<< HEAD
+
+  { path: '', redirectTo: 'usuarios-admin', pathMatch: 'full' },
+=======
   { path: '', redirectTo: 'home/inicio', pathMatch: 'full' }, 
+>>>>>>> f58ff088e0ee4e8a0449b22e502b663e023e2379
 
 
   { path: 'home/inicio', component: InicioComponent }, 
@@ -29,7 +37,7 @@ export const routes: Routes = [
 
 
   // Rutas para el administrador
-  {
+ {
     path: 'administrador',
     children: [
       {
@@ -53,6 +61,21 @@ export const routes: Routes = [
     ]
   },
 
+  {
+    path: 'alumnos',
+    children: [
+      { path: 'cursos', component: CursosAlumnosComponent },
+      { path: 'contenido', component: ContenidoCursoComponent },
+      { path: 'descripcion/:id', component: DescripcionCursoAlumnoComponent },
+      { path: 'perfil', component: PerfilAlumnoComponent },
+      { path: '', redirectTo: 'cursos', pathMatch: 'full' },
+      { path: '**', redirectTo: 'cursos' }
+    ]
+  },
+  { path: '', redirectTo: 'alumnos/cursos', pathMatch: 'full' },
+  { path: '**', redirectTo: 'alumnos/cursos' },
+
+
   // Rutas para los alumnos
   { path: 'cursos-alumnos', component: CursosAlumnosComponent },
   { path: 'contenido-curso', component: ContenidoCursoComponent },
@@ -64,8 +87,13 @@ export const routes: Routes = [
     {path: 'crear-curso', component:CrearCursoComponent},
 
 
+<<<<<<< HEAD
+  // Redirección por defecto
+  { path: '**', redirectTo: 'administrador/usuarios/ver' }
+=======
   // Redirección por defecto (en caso de ruta no encontrada)
   { path: '**', redirectTo: 'home/inicio' },
+>>>>>>> f58ff088e0ee4e8a0449b22e502b663e023e2379
 
 ];
 
