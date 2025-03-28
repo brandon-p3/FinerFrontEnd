@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
@@ -20,6 +20,8 @@ import { FooterContactoComponent } from './components/inicio/footer-contacto/foo
 import { QuienesSomosComponent } from './components/inicio/quienes-somos/quienes-somos.component';
 import { NavbarInicioComponent } from './components/inicio/navbar-inicio/navbar-inicio.component';
 import { ContactoComponent } from './components/inicio/contacto/contacto.component';
+import { NavbarAlumnoComponent } from './components/alumnos/navbar-alumno/navbar-alumno.component';
+import { CursosAlumnosComponent } from './components/alumnos/cursos-alumnos/cursos-alumnos.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +40,11 @@ import { ContactoComponent } from './components/inicio/contacto/contacto.compone
     FooterContactoComponent,
     QuienesSomosComponent,
     NavbarInicioComponent,
-    ContactoComponent
+    ContactoComponent,
+    NavbarAdminComponent,
+    NavbarAlumnoComponent,
+    CursosAlumnosComponent
+
   ],
   imports: [
     BrowserModule,
@@ -50,6 +56,7 @@ import { ContactoComponent } from './components/inicio/contacto/contacto.compone
   providers: [
     provideHttpClient()
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
