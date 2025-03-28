@@ -1,5 +1,5 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Poppins', sans-serif; /* Fuente principal */
     background: linear-gradient(135deg, #BCEAD5, #f0faf7); /* Fondo degradado con tonos claros */
     margin: 0;
     padding: 0;
@@ -11,33 +11,38 @@ body {
 
 .container {
     background-color: #ffffff; /* Fondo blanco */
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    width: 500px; /* Más ancho */
+    padding: 40px;
+    border-radius: 12px; /* Bordes redondeados */
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+    width: 600px; /* Más ancho para las dos columnas */
     text-align: center;
+    border: 2px solid #BCEAD5; /* Borde del formulario */
 }
 
 .logo {
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    margin-bottom: 30px;
 }
 
 .logo img {
-    width: 120px; /* Más grande */
+    width: 120px; /* Imagen más grande */
     background: transparent; /* Asegura que la imagen no tenga fondo */
-    filter: brightness(1.2) contrast(1.2) drop-shadow(0 0 5px rgba(0, 0, 0, 0.1)); /* Filtro para eliminar fondos oscuros */
-    mix-blend-mode: multiply; /* Ayuda a eliminar fondos oscuros */
 }
 
 .logo h1 {
     color: #333; /* Texto oscuro para contraste */
     font-size: 28px; /* Más grande */
-    margin-left: 15px; /* Espacio entre la imagen y el texto */
+    margin-top: 15px;
     font-family: 'Poppins', sans-serif; /* Nueva fuente */
     font-weight: 600; /* Grosor de la fuente */
+}
+
+.form-row {
+    display: flex; /* Usamos Flexbox para las dos columnas */
+    justify-content: space-between;
+}
+
+.form-column {
+    width: 48%; /* Las columnas ocupan un 48% del ancho */
 }
 
 .form-group {
@@ -49,40 +54,42 @@ body {
     display: block;
     margin-bottom: 8px;
     color: #555; /* Texto gris para etiquetas */
-    font-size: 14px;
+    font-size: 16px;
+    font-weight: 500;
 }
 
 .form-group input {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     box-sizing: border-box;
     border: 1px solid #ddd; /* Borde gris claro */
     border-radius: 6px;
     font-size: 14px;
-    background-color: #f9f9f9; /* Fondo gris muy claro */
+    background-color: #f9f9f9;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .form-group input:focus {
     border-color: #BCEAD5; /* Borde verde claro al enfocar */
     outline: none;
-    box-shadow: 0 0 8px rgba(188, 234, 213, 0.6); /* Sombra más pronunciada */
+    box-shadow: 0 0 8px rgba(188, 234, 213, 0.6);
 }
 
 .checkbox-group {
     margin-top: 15px;
+    text-align: left;
 }
 
-.checkbox-group label {
+.checkbox-label {
     display: flex;
     align-items: center;
     color: #555;
-    font-size: 14px;
+    font-size: 16px;
 }
 
 .checkbox-group input[type="checkbox"] {
     margin-right: 10px;
-    accent-color: #BCEAD5; /* Color del checkbox */
+    accent-color: #BCEAD5;
 }
 
 .hidden {
@@ -91,29 +98,55 @@ body {
 
 button {
     width: 100%;
-    padding: 12px;
-    background-color: #BCEAD5; /* Color principal */
-    color: #333; /* Texto oscuro para contraste */
+    padding: 14px;
+    background-color: #BCEAD5;
+    color: #333;
     border: none;
     border-radius: 6px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 18px;
     transition: background-color 0.3s ease;
 }
 
 button:hover {
-    background-color: #9DD9C7; /* Tonos más bajitos al pasar el mouse */
+    background-color: #9DD9C7;
 }
 
 /* Estilos adicionales para los campos de instructor */
 #instructorFields {
     margin-top: 20px;
     padding: 15px;
-    background-color: #f0faf7; /* Fondo verde muy claro */
+    background-color: #f0faf7;
     border-radius: 6px;
-    border: 1px solid #d0f0e4; /* Borde verde claro */
+    border: 1px solid #d0f0e4;
 }
 
 #instructorFields .form-group input {
-    background-color: #ffffff; /* Fondo blanco para campos de instructor */
+    background-color: #ffffff;
+}
+
+@media screen and (max-width: 768px) {
+    .form-row {
+        flex-direction: column; /* En pantallas pequeñas, se apilan los campos */
+    }
+
+    .form-column {
+        width: 100%; /* Las columnas ocupan todo el ancho */
+    }
+
+    .container {
+        width: 90%; /* Ajuste para pantallas pequeñas */
+    }
+
+    .logo h1 {
+        font-size: 22px; /* Reducir tamaño de texto en pantallas pequeñas */
+    }
+
+    .form-group label {
+        font-size: 14px;
+    }
+
+    button {
+        font-size: 14px;
+    }
 }

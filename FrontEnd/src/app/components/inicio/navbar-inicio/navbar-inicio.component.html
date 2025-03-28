@@ -1,0 +1,22 @@
+<!-- Barra de navegación -->
+<div class="navbar" [class.scrolled]="isScrolled">
+    <div class="navbar-container">
+        <div class="navbar-logo">
+            <img src="assets/logo.png" alt="Logo Finer">
+            <span>Finer</span>
+        </div>
+        <div class="navbar-links">
+            <a href="#" routerLink="/home/inicio">Inicio</a>
+            <a href="#" routerLink="/home/quienesSomos">Nosotros</a>
+            <a href="#" routerLink="/contacto">Contacto</a>
+        </div>
+        <div class="navbar-buttons">
+            <button class="btn-secondary" (click)="navigateToLogin()">
+                Iniciar Sesión
+            </button>
+            <button class="btn-primary" (click)="navigateToRegister()">
+                Regístrate Ahora
+            </button>
+        </div>
+    </div>
+</div>

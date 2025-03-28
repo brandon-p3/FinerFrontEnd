@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-detalle-instructor-admin',
-  standalone: true,
   templateUrl: './detalle-instructor-admin.component.html',
   styleUrls: ['./detalle-instructor-admin.component.css']
 })

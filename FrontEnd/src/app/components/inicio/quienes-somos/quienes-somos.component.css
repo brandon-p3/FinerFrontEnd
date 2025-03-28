@@ -1,0 +1,212 @@
+    .quienes-somos-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        margin-top: 100px;
+        padding: 40px 15px;
+    }
+
+    .header-section {
+        text-align: center;
+        margin-bottom: 50px;
+        color: #333;
+    }
+
+    .header-section h1 {
+        font-size: 36px;
+        color: #2c3e50;
+        margin-bottom: 20px;
+    }
+
+    .content-section {
+        display: flex;
+        gap: 40px;
+        margin-bottom: 50px;
+    }
+
+    .text-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .section {
+        background-color: #BCEAD5;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .section h2 {
+        color: #333;
+        margin-bottom: 20px;
+        border-bottom: 2px solid #8EC3B0;
+        padding-bottom: 10px;
+    }
+
+/* ===== CARRUSEL ====== */
+
+.carousel-container {
+    width: 100%;
+    overflow: hidden;
+    margin-bottom: 40px;
+}
+
+.carousel {
+    position: relative;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.carousel-track {
+    display: flex;
+    transition: transform 0.5s ease;
+    width: 100%;
+}
+
+.carousel-slide {
+    min-width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.carousel-controls {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    transform: translateY(-50%);
+}
+
+.carousel-btn {
+    background: rgba(0,0,0,0.5);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 24px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.carousel-btn:hover {
+    background: rgba(0,0,0,0.7);
+}
+
+.carousel-indicators {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.indicator {
+    width: 10px;
+    height: 10px;
+    background: #ccc;
+    border-radius: 50%;
+    margin: 0 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.indicator.active {
+    background: #2c3e50;
+}
+
+.mission-vision-container {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 50px;
+}
+
+.mission, .vision {
+    flex: 1;
+}
+
+@media (max-width: 768px) {
+    .mission-vision-container {
+        flex-direction: column;
+    }
+
+    .carousel-slide {
+        height: 250px;
+    }
+}
+
+/*  */
+
+    .objetivo-section,
+    .fortalezas-section {
+        margin-top: 50px;
+        text-align: center;
+    }
+
+    .objetivo-section h2,
+    .fortalezas-section h2 {
+        color: #2c3e50;
+        margin-bottom: 40px;
+    }
+
+    .objetivo-content {
+        background-color: #9DD9C7;
+        padding: 30px;
+        border-radius: 10px;
+    }
+
+    .objetivo-text ul {
+        list-style-type: none;
+        padding: 0;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+    }
+
+    .objetivo-text li {
+        background-color: #8EC3B0;
+        color: white;
+        padding: 10px 15px;
+        border-radius: 20px;
+    }
+
+    .fortalezas-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 30px;
+    }
+
+    .fortaleza {
+        background-color: #BCEAD5;
+        padding: 30px;
+        border-radius: 10px;
+        text-align: center;
+        transition: transform 0.3s ease;
+    }
+
+    .fortaleza:hover {
+        transform: scale(1.05);
+    }
+
+    .fortaleza i {
+        font-size: 48px;
+        color: #8EC3B0;
+        margin-bottom: 20px;
+    }
+
+    @media (max-width: 1024px) {
+        .content-section {
+            flex-direction: column;
+        }
+
+        .fortalezas-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 768px) {
+        .fortalezas-grid {
+            grid-template-columns: 1fr;
+        }
+    }

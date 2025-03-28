@@ -4,25 +4,39 @@
         <h1>Bienvenido a Finner</h1>
     </div>
     <form>
-        <div class="form-group">
-            <label for="nombreCompleto">Nombre Completo</label>
-            <input type="text" id="nombreCompleto" name="nombreCompleto" required>
-        </div>
-        <div class="form-group">
-            <label for="correoElectronico">Correo Electrónico</label>
-            <input type="email" id="correoElectronico" name="correoElectronico" required>
-        </div>
-        <div class="form-group">
-            <label for="contrasena">Contraseña</label>
-            <input type="password" id="contrasena" name="contrasena" required>
-        </div>
-        <div class="form-group">
-            <label for="verificacionContrasena">Verificación de Contraseña</label>
-            <input type="password" id="verificacionContrasena" name="verificacionContrasena" required>
+        <div class="form-row">
+            <div class="form-column">
+                <div class="form-group">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" id="nombre" name="nombre" required>
+                </div>
+                <div class="form-group">
+                    <label for="apellidoPaterno">Apellido Paterno</label>
+                    <input type="text" id="apellidoPaterno" name="apellidoPaterno" required>
+                </div>
+                <div class="form-group">
+                    <label for="apellidoMaterno">Apellido Materno</label>
+                    <input type="text" id="apellidoMaterno" name="apellidoMaterno" required>
+                </div>
+            </div>
+            <div class="form-column">
+                <div class="form-group">
+                    <label for="correoElectronico">Correo Electrónico</label>
+                    <input type="email" id="correoElectronico" name="correoElectronico" required>
+                </div>
+                <div class="form-group">
+                    <label for="contrasena">Contraseña</label>
+                    <input type="password" id="contrasena" name="contrasena" required>
+                </div>
+                <div class="form-group">
+                    <label for="verificacionContrasena">Verificación de Contraseña</label>
+                    <input type="password" id="verificacionContrasena" name="verificacionContrasena" required>
+                </div>
+            </div>
         </div>
         <div class="form-group checkbox-group">
-            <label>
-                <input type="checkbox" id="soyInstructor" name="soyInstructor" (change)="toggleInstructorFields()"> Soy Instructor
+            <label class="checkbox-label">
+                <input type="checkbox" id="soyInstructor" name="soyInstructor" (change)="toggleInstructorFields()"> Solicitud de Instructor
             </label>
         </div>
         <div id="instructorFields" [class.hidden]="!showInstructorFields">

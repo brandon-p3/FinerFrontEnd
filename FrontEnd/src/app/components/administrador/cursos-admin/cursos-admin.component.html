@@ -1,102 +1,70 @@
 <app-navbar-admin></app-navbar-admin>
 <div class="container">
-    <!-- Sección 1: Cursos por Aprobar -->
-    <section class="section">
-      <h2>Cursos por Aprobar</h2>
-      <div class="pending-courses">
-        <div class="pending-card">
-          <div class="card-content">
-            <div class="text">
-              <h3>Nombre del Curso</h3>
-              <p>Descripción breve del curso.</p>
-              <div class="buttons">
-                <button class="btn">Contenido</button>
-                <button class="btn approve">Aprobar</button>
-                <button class="btn reject">Rechazar</button>
-              </div>
+  <!-- Sección 1: Cursos por Aprobar -->
+  <section class="section">
+    <h2>Cursos por Aprobar</h2>
+    <div class="pending-courses">
+      <div *ngFor="let solicitud of solicitudesPendientes" class="pending-card">
+        <div class="card-content">
+          <div class="text">
+            <!-- Accedemos directamente a las propiedades de 'solicitud' -->
+            <h3>{{ solicitud.tituloCursoSolicitado }}</h3>
+            <p>{{ solicitud.descripcion }}</p>
+            <p>{{ solicitud.correo }}</p>
+            <div class="buttons">
+              <button class="btn">Contenido</button>
+              <button class="btn approve" (click)="aprobarCurso(solicitud.idSolicitudCurso)">Aprobar</button>
+              <button class="btn reject" (click)="abrirModalRechazo(solicitud)">Rechazar</button>
             </div>
-            <img src="assets/noImage.jpg" alt="Imagen del curso" class="card-image">
           </div>
-        </div>
-        <div class="pending-card">
-          <div class="card-content">
-            <div class="text">
-              <h3>Nombre del Curso</h3>
-              <p>Descripción breve del curso.</p>
-              <div class="buttons">
-                <button class="btn">Contenido</button>
-                <button class="btn approve">Aprobar</button>
-                <button class="btn reject">Rechazar</button>
-              </div>
-            </div>
-            <img src="assets/noImage.jpg" alt="Imagen del curso" class="card-image">
-          </div>
-        </div>
-        <div class="pending-card">
-          <div class="card-content">
-            <div class="text">
-              <h3>Nombre del Curso</h3>
-              <p>Descripción breve del curso.</p>
-              <div class="buttons">
-                <button class="btn">Contenido</button>
-                <button class="btn approve">Aprobar</button>
-                <button class="btn reject">Rechazar</button>
-              </div>
-            </div>
-            <img src="assets/noImage.jpg" alt="Imagen del curso" class="card-image">
-          </div>
-        </div>
-        <div class="pending-card">
-          <div class="card-content">
-            <div class="text">
-              <h3>Nombre del Curso</h3>
-              <p>Descripción breve del curso.</p>
-              <div class="buttons">
-                <button class="btn">Contenido</button>
-                <button class="btn approve">Aprobar</button>
-                <button class="btn reject">Rechazar</button>
-              </div>
-            </div>
-            <img src="assets/noImage.jpg" alt="Imagen del curso" class="card-image">
-          </div>
-        </div>
-        <!-- Repite las demás tarjetas con la misma estructura -->
-      </div>
-    </section>
-  
-    <!-- Sección 2: Todos los Cursos -->
-    <section class="section">
-      <h2>Todos los cursos</h2>
-      <div class="filters">
-        <input type="text" placeholder="Buscar por nombre">
-        <select>
-          <option value="">Filtrar por categoría</option>
-          <option value="programacion">Programación</option>
-          <option value="diseño">Diseño</option>
-          <option value="marketing">Marketing</option>
-        </select>
-      </div>
-      <div class="all-courses">
-        <div class="all-card">
-          <img src="assets/noImage.jpg" alt="Imagen del curso" class="card-image">
-          <h3>Nombre del Curso</h3>
-          <p>Descripción breve del curso.</p>
-          <button class="btn details">Detalles</button>
-        </div>
-        <div class="all-card">
-          <img src="assets/noImage.jpg" alt="Imagen del curso" class="card-image">
-          <h3>Nombre del Curso</h3>
-          <p>Descripción breve del curso.</p>
-          <button class="btn details">Detalles</button>
-        </div>
-        <div class="all-card">
-          <img src="assets/noImage.jpg" alt="Imagen del curso" class="card-image">
-          <h3>Nombre del Curso</h3>
-          <p>Descripción breve del curso.</p>
-          <button class="btn details">Detalles</button>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
+
+  <!-- Modal de Rechazo -->
+  <div *ngIf="modalVisible" class="modal-overlay">
+    <div class="modal-content">
+      <h3>Motivo de Rechazo</h3>
+      <textarea [(ngModel)]="motivoRechazo" placeholder="Ingrese el motivo de rechazo"></textarea>
+
+      <button class="btn reject" (click)="rechazarCurso()">Confirmar Rechazo</button>
+      <button class="btn cancel" (click)="cerrarModal()">Cancelar</button>
+    </div>
+  </div>
+
+
+
+
+  <!-- Sección 2: Todos los Cursos -->
+  <section class="section">
+    <h2>Todos los cursos</h2>
+
+    <!-- Filtros -->
+    <div class="filters">
+      <input type="text" placeholder="Buscar por nombre" [(ngModel)]="nombreCurso"
+        (input)="onNombreCursoChange($event)">
+      <select [(ngModel)]="categoriaSeleccionada" (change)="onCategoriaChange($event)">
+        <option value="">Filtrar por categoría</option>
+        <option *ngFor="let categoria of categoriasAprobadas" [value]="categoria.nombreCategoria">
+          {{ categoria.nombreCategoria }}
+        </option>
+      </select>
+    </div>
+
+    <!-- Lista de cursos dinámicos -->
+    <div class="all-courses">
+      <div *ngFor="let curso of cursosFiltrados" class="all-card">
+        <h3>{{ curso.tituloCurso }}</h3>
+        <p>{{ curso.descripcion }}</p>
+        <p><strong>Instructor:</strong> {{ curso.nombreInstructor }} {{ curso.apellidoPaterno }} {{
+          curso.apellidoMaterno }}</p>
+        <p><strong>Categoría:</strong> {{ curso.nombreCategoria }}</p>
+        <button class="btn details">Detalles</button>
+      </div>
+    </div>
+  </section>
+
+
 </div>
 <app-footer></app-footer>
-

@@ -12,26 +12,30 @@ import { ContenidoCursoComponent } from './components/alumnos/contenido-curso/co
 import { DescripcionCursoAlumnoComponent } from './components/alumnos/descripcion-curso-alumno/descripcion-curso-alumno.component';
 import { CursosAdminComponent } from './components/administrador/cursos-admin/cursos-admin.component';
 import { PerfilAlumnoComponent } from './components/alumnos/perfil-alumno/perfil-alumno.component';
+import { InicioComponent } from './components/inicio/inicio.component';
 import { CursosInstructorComponent } from './components/instructores/cursos-instructor/cursos-instructor.component';
 import { CrearCursoComponent } from './components/instructores/crear-curso/crear-curso.component';
 import { SolicitudesAdminComponent } from './components/administrador/solicitudes-admin/solicitudes-admin.component';
+import { QuienesSomosComponent } from './components/inicio/quienes-somos/quienes-somos.component';
+import { ContactoComponent } from './components/inicio/contacto/contacto.component';
+
 
 export const routes: Routes = [
+<<<<<<< HEAD
 
   { path: '', redirectTo: 'usuarios-admin', pathMatch: 'full' },
+=======
+  { path: '', redirectTo: 'home/inicio', pathMatch: 'full' }, 
+>>>>>>> f58ff088e0ee4e8a0449b22e502b663e023e2379
 
-  {
-    path: 'usuarios-admin',
-    component: UsuariosAdminComponent
-  },
 
-  { path: 'login',
-    component: LoginComponent
-   },
+  { path: 'home/inicio', component: InicioComponent }, 
+  { path: 'home/quienesSomos', component: QuienesSomosComponent},
+  { path: 'home/contacto', component: ContactoComponent },
+  { path: 'home/login', component: LoginComponent }, 
+  { path: 'home/registro', component: RegistroComponent }, 
 
-  { path: 'registro',
-    component: RegistroComponent
-  },
+
   // Rutas para el administrador
  {
     path: 'administrador',
@@ -78,13 +82,18 @@ export const routes: Routes = [
   { path: 'descripcion-curso-alumno', component: DescripcionCursoAlumnoComponent },
   { path: 'perfil-alumno', component: PerfilAlumnoComponent },
 
+    //Rutas para el instructor
+    {path: 'cursos-instructor', component: CursosInstructorComponent},
+    {path: 'crear-curso', component:CrearCursoComponent},
 
-  //Rutas para el instructor
-  {path: 'cursos-instructor', component: CursosInstructorComponent},
-  {path: 'crear-curso', component:CrearCursoComponent},
 
+<<<<<<< HEAD
   // Redirección por defecto
   { path: '**', redirectTo: 'administrador/usuarios/ver' }
+=======
+  // Redirección por defecto (en caso de ruta no encontrada)
+  { path: '**', redirectTo: 'home/inicio' },
+>>>>>>> f58ff088e0ee4e8a0449b22e502b663e023e2379
 
 ];
 

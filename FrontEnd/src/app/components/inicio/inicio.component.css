@@ -1,0 +1,248 @@
+
+/* ==== CONTENIDO ======= */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #BCEAD5, #f0faf7);
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.presentacion-fullscreen {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+    max-width: 1200px;
+    margin-top: 170px; /* Lo bajé más */
+    text-align: left;
+    gap: 50px; /* Espaciado entre imagen y texto */
+}
+
+.header .logo {
+    width: 320px; /* Imagen más grande */
+    height: auto;
+}
+
+.text-content {
+    flex: 1;
+}
+
+.text-content h1 {
+    font-size: 36px;
+    color: #2c3e50;
+    margin-bottom: 15px;
+}
+
+.text-content .slogan {
+    font-size: 18px;
+    color: #555;
+}
+
+.btn-adarle {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 24px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #8EC3B0;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-adarle:hover {
+    background-color: #6fa896;
+    transform: scale(1.05);
+}
+
+/* ====== RECUADROS DE ABAJO ===== */
+
+.features-intro {
+    text-align: center;
+    max-width: 800px;
+    margin: 80px auto 20px;
+    padding: 0 20px;
+}
+
+.features-intro h2 {
+    font-size: 28px;
+    color: #2c3e50;
+    margin-bottom: 15px
+}
+
+.features-intro p {
+    font-size: 16px;
+    color: #555;
+    line-height: 1.6;
+}
+
+.content {
+    margin-top: 20px;
+    max-width: 800px;
+    width: 100%;
+}
+
+.features {
+    display: flex;
+    margin-top: 5px;
+    justify-content: center; /* Centrado en la pantalla */
+    gap: 40px; /* Espaciado entre los recuadros */
+    flex-wrap: nowrap; /* Permite adaptabilidad en pantallas pequeñas */
+    width: 100%; /* Ocupar más espacio en la pantalla */
+}
+
+.feature {
+    flex: 1;
+    min-width: 280px; /* Evita que sean demasiado pequeños en pantallas chicas */
+    max-width: 400px; /* Aumenta el ancho sin que se desborde */
+    text-align: center;
+    background-color: #f0faf7;
+    border-radius: 8px;
+    padding: 30px; /* Más espacio interno */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+.feature i {
+    font-size: 32px;
+    color: #2c3e50;
+    margin-bottom: 15px;
+}
+
+.feature h3 {
+    font-size: 20px;
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+.feature p {
+    font-size: 14px;
+    color: #555;
+}
+
+/* ====== LMS BENEFITS SECTION ===== */
+.lms-benefits {
+    width: 100%;
+    background-color: transparent;
+    padding: 60px 0;
+    text-align: center;
+}
+
+.lms-benefits h2 {
+    font-size: 32px;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+.lms-benefits > p {
+    color: #333;
+    max-width: 800px;
+    margin: 0 auto 40px;
+    padding: 0 15px;
+}
+
+.benefits-container {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.benefit-column {
+    flex: 1;
+    background-color: #F0FBF6;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    transition: transform 0.3s ease;
+}
+
+.benefit-column:hover {
+    transform: scale(1.03);
+}
+
+.benefit-column h3 {
+    font-size: 22px;
+    color: #333;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    border-bottom: 2px solid #8EC3B0;
+    padding-bottom: 10px;
+}
+
+.benefit-column h3 i {
+    margin-right: 15px;
+    color: #333;
+}
+
+.benefit-column ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.benefit-column ul li {
+    margin-bottom: 10px;
+    color: #333;
+    position: relative;
+    padding-left: 20px;
+}
+
+.benefit-column ul li::before {
+    content: '•';
+    color: #8EC3B0;
+    position: absolute;
+    left: 0;
+    font-size: 20px;
+}
+
+
+/* Vertical Divider Styles */
+.vertical-divider {
+    width: 100%;
+    height: 1px;
+    background-color: #8EC3B0; /* Using the color from the previous palette */
+    margin: 40px 0;
+    margin-top: 100px;
+    position: relative;
+}
+
+.vertical-divider::before {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 20px;
+    background-color: #8EC3B0;
+    border-radius: 50%;
+}
+
+/* Optional: Responsive adjustments */
+@media (max-width: 768px) {
+    .vertical-divider {
+        margin: 30px 0;
+    }
+}
+
+

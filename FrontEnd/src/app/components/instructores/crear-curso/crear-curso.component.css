@@ -138,6 +138,43 @@ body {
     margin-left: 10px;
 }
 
+/* Para la categoria */
+
+.category-group {
+    align-items: center;
+    gap: 10px;
+}
+
+.category-selection {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-add-category {
+    width: 40px;
+    height: 40px;
+    background-color: #8EC3B0;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-add-category i {
+    font-size: 18px;
+}
+
+.btn-add-category:hover {
+    background-color: #9ED5C5;
+    transform: scale(1.1);
+}
+
 /* Secciones y subsecciones */
 .sections-container {
     margin-top: 25px;

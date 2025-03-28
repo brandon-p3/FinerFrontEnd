@@ -385,6 +385,7 @@ button:hover {
     background-color: #9ED5C5; /* Verde más claro al pasar el ratón */
 }
 
+
 /* Pie de página */
 .footer {
     background-color: #8EC3B0; 
@@ -402,5 +403,137 @@ button:hover {
 }
 
 .footer a:hover {
-    color: #F0F7F4; 
+    color: #8EC3B0; 
+}
+
+/* Estilos para el contenedor del campo de contraseña */
+.password-input-container {
+    position: relative;
+    width: 100%; /* Asegura que tome el ancho completo */
+}
+
+/* Estilo para el input con el ojito */
+.form-input.with-eye {
+    padding-right: 35px; /* Espacio para el icono del ojo */
+    width: 100%;
+    box-sizing: border-box; /* Asegura que el padding no afecte el ancho total */
+}
+
+/* Estilos para el toggle del ojo */
+.toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    z-index: 2;
+}
+
+.eye-icon {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    transition: opacity 0.2s;
+}
+
+/* Estilo para el contenedor principal */
+.password-field {
+    margin-top: 15px;
+}
+
+/* Estilo para el texto de ayuda */
+.text-hint {
+    display: block;
+    margin-top: 5px;
+    font-size: 12px;
+    color: #666;
+}
+
+/* Estilo para el botón de cambiar contraseña */
+.btn-password-toggle {
+    background-color: #8EC3B0; /* Verde */
+    color: #8EC3B0 !important; /* Texto blanco */
+    border: none;
+    border-radius: 4px;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    margin-bottom: 10px;
+}
+
+.btn-password-toggle:hover {
+    background-color: #7DAF9D; /* Verde más oscuro al hover */
+    color: #8EC3B0;
+    text-decoration: none;
+}
+
+/* Estilos para el ojito (toggle) */
+.password-toggle {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    z-index: 2;
+}
+
+.eye-icon {
+    width: 20px;
+    height: 20px;
+    filter: brightness(0) invert(1); /* Icono blanco */
+    transition: all 0.2s ease;
+}
+
+.password-toggle:hover .eye-icon {
+    filter: brightness(0) invert(0.8); /* Icono blanco ligeramente atenuado al hover */
+}
+
+/* Contenedor del campo de contraseña */
+.password-input-container {
+    position: relative;
+    width: 100%;
+}
+
+/* Input con espacio para el ojito */
+.form-input.with-eye {
+    padding-right: 35px;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #BCEAD5;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px 15px;
+}
+
+/* Texto de ayuda */
+.text-hint {
+    display: block;
+    margin-top: 5px;
+    font-size: 12px;
+    color: #666;
+}
+
+.btn-link {
+    background-color: #8EC3B0;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-link:hover {
+    background-color: #7DAF9D;
+}
+
+.btn-link:active {
+    background-color: #9ED5C5;
 }

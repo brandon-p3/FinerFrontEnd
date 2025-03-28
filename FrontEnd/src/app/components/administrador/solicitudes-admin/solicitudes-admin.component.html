@@ -21,18 +21,9 @@
     <div class="section">
       <h2>Solicitudes Categorías</h2>
       <div class="card-container">
-        <div class="card">
-          <p><strong>Nombre Categoría:</strong> Programación Web</p>
-          <p><strong>Instructor Solicitante:</strong> Carlos Méndez</p>
-          <div class="actions">
-            <button class="btn-accept">Aceptar</button>
-            <button class="btn-reject">Rechazar</button>
-          </div>
-        </div>
-        
-        <div class="card">
-          <p><strong>Nombre Categoría:</strong> Diseño UX/UI</p>
-          <p><strong>Instructor Solicitante:</strong> Sofía Herrera</p>
+        <div class="card" *ngFor="let solicitud of solicitudesCategorias">
+          <p><strong>Nombre Categoría:</strong> {{ solicitud.categoria }}</p>
+          <p><strong>Instructor Solicitante:</strong> {{ solicitud.instructor.nombre }}</p>
           <div class="actions">
             <button class="btn-accept">Aceptar</button>
             <button class="btn-reject">Rechazar</button>
