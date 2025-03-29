@@ -1,55 +1,63 @@
+.container {
+  display: flex;
+  gap: 20px;
+}
 
-  .container {
-    display: flex;
-    gap: 20px;
-  }
+.section {
+  flex: 1;
+  padding: 10px;
+}
 
-  .section {
-    flex: 1;
-    padding: 10px;
-  }
+h2 {
+  text-align: left;
+  margin-bottom: 15px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+}
 
-  h2 {
-    text-align: left;
-    margin-bottom: 15px;
-    font-size: 20px;
-    font-weight: bold;
-    color: #333;
-  }
+.card-container {
+  display: flex;
+  justify-content: space-around;
+  gap: 15px;
+  flex-wrap: wrap;
+  max-width: 100%;
+}
 
-  .card-container {
-    display: flex;
-    justify-content: space-around;
-    gap: 15px;
-    flex-wrap: wrap;
-  }
+.card-container .card {
+  flex-basis: calc(50% - 22.5px);
+  /* Ajusta para dos columnas con gap */
+  max-width: 280px;
+}
 
-  .card {
-    flex: 1;
-    max-width: 280px; 
-    padding: 15px;
-    border-radius: 12px;
-    margin: 8px;
-    background: linear-gradient(135deg, #FFFF, #DEF5E5);
-    box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.1);
-    border-left: 5px solid #8EC3B0;
-  }
+.card {
+  flex: 1;
+  max-width: 280px;
+  padding: 15px;
+  border-radius: 12px;
+  margin: 8px;
+  background: linear-gradient(135deg, #FFFF, #DEF5E5);
+  box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.1);
+  border-left: 5px solid #8EC3B0;
+}
 
-  .card p {
-    font-size: 16px;
-    margin: 6px 0;
-    color: #333;
-    line-height: 1.4;
-  }
+.card p {
+  font-size: 16px;
+  margin: 6px 0;
+  color: #333;
+  line-height: 1.4;
+}
 
-  .actions {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 10px;
-  }
+.actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
 
 /* ==== BOTONES DE INSTRUCTOR === */
-.btn-details, .btn-accept, .btn-reject {
+.btn-details,
+.btn-accept,
+.btn-reject {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -103,67 +111,160 @@
 }
 
 
-  @media (max-width: 768px) {
-    .container {
-      flex-direction: column;
-    }
-
-    .card-container {
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .card {
-      width: 90%;
-      max-width: 320px;
-    }
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
   }
 
-  /*  ===== FILTROS ===== */
+  .card-container .card {
+    flex-basis: 100%;
+    /* Una columna en pantallas pequeñas */
+  }
 
+  .card {
+    width: 90%;
+    max-width: 320px;
+  }
+}
+
+/*  ===== FILTROS ===== */
+
+.filters {
+  display: flex;
+  justify-content: flex-end;
+  /* Mueve los filtros a la derecha */
+  gap: 10px;
+  /* Espaciado entre elementos */
+  padding: 10px;
+}
+
+.filters input,
+.filters select {
+  padding: 8px 12px;
+  border: 2px solid #8EC3B0;
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: #FFFF;
+  color: #333;
+  transition: all 0.3s ease-in-out;
+}
+
+.filters input::placeholder {
+  color: #555;
+}
+
+.filters select {
+  cursor: pointer;
+}
+
+/* Efecto hover */
+.filters input:hover,
+.filters select:hover {
+  background-color: #9ED5C5;
+  border-color: #9ED5C5;
+  transform: scale(1.05);
+}
+
+/* Responsive: Para móviles, que se apilen */
+@media (max-width: 768px) {
   .filters {
-    display: flex;
-    justify-content: flex-end; /* Mueve los filtros a la derecha */
-    gap: 10px; /* Espaciado entre elementos */
-    padding: 10px;
+    flex-direction: column;
+    align-items: flex-end;
   }
-  
+
   .filters input,
   .filters select {
-    padding: 8px 12px;
-    border: 2px solid #8EC3B0;
-    border-radius: 8px;
-    font-size: 1rem;
-    background-color: #FFFF;
-    color: #333;
-    transition: all 0.3s ease-in-out;
+    width: 100%;
   }
-  
-  .filters input::placeholder {
-    color: #555;
-  }
-  
-  .filters select {
-    cursor: pointer;
-  }
-  
-  /* Efecto hover */
-  .filters input:hover,
-  .filters select:hover {
-    background-color: #9ED5C5;
-    border-color: #9ED5C5;
-    transform: scale(1.05);
-  }
-  
-  /* Responsive: Para móviles, que se apilen */
-  @media (max-width: 768px) {
-    .filters {
-      flex-direction: column;
-      align-items: flex-end;
-    }
-  
-    .filters input,
-    .filters select {
-      width: 100%;
-    }
-  }
+}
+
+/*  ======= MENSAJE DE EXITO ======= */
+
+.mensaje-exito {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #4CAF50;
+  color: white;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  z-index: 1000;
+  animation: fadeIn 0.5s, fadeOut 0.5s 4.5s;
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+@keyframes fadeOut {
+  from {opacity: 1;}
+  to {opacity: 0;}
+}
+
+/*  ========== MODAL DE RECHAZO ========== */
+/* Estilos para el modal de rechazo */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+  gap: 10px;
+}
+
+.btn-cancel {
+  background-color: #e0e0e0;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-confirm {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-control {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+}
