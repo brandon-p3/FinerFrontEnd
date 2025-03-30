@@ -21,6 +21,9 @@ import { FooterContactoComponent } from './components/inicio/footer-contacto/foo
 import { QuienesSomosComponent } from './components/inicio/quienes-somos/quienes-somos.component';
 import { NavbarInicioComponent } from './components/inicio/navbar-inicio/navbar-inicio.component';
 import { ContactoComponent } from './components/inicio/contacto/contacto.component';
+import { CursosInstructorComponent } from './components/instructores/cursos-instructor/cursos-instructor.component';
+import { CursoServiceService } from './services/curso-service.service';
+import { CategoriaServiceService } from './services/categorias-service.service';
 
 
 @NgModule({
@@ -37,11 +40,11 @@ import { ContactoComponent } from './components/inicio/contacto/contacto.compone
     SolicitarCategoriaComponent,
     CrearCursoComponent,
     PerfilAlumnoComponent,
-
     FooterContactoComponent,
     QuienesSomosComponent,
     NavbarInicioComponent,
-    ContactoComponent
+    ContactoComponent,
+    CursosInstructorComponent
 
   ],
   imports: [
@@ -52,7 +55,10 @@ import { ContactoComponent } from './components/inicio/contacto/contacto.compone
     NgbModule
   ],
   providers: [
-    provideHttpClient(withFetch())
+    provideHttpClient(withFetch()),
+    CursoServiceService,
+    CategoriaServiceService
+
   ],
   bootstrap: [AppComponent]
 })
