@@ -2,14 +2,16 @@ body {
   font-family: 'Arial', sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #DEF5E5;
+  background-color: #ffffff;
   color: #2F4F4F;
+  height: 100%;
+  overflow: hidden;
 }
 
 
 header {
-  background-color: #8EC3B0;
-  color: white;
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -36,7 +38,7 @@ header {
 
 .header-center {
   flex: 1;
-  text-align: center;
+  text-align: center;;
 }
 
 .header-center input {
@@ -44,6 +46,7 @@ header {
   width: 50%;
   border: none;
   border-radius: 5px;
+  background-color: #BCEAD5;
 }
 
 .header-right {
@@ -89,7 +92,7 @@ header {
 
 
 .course-title {
-  font-size: 22px;
+  font-size: 30px;
   font-weight: bold;
   text-align: center;
   flex-grow: 1;
@@ -107,7 +110,7 @@ header {
   transition: all 0.3s ease-in-out;
 }
 
-.enroll-btn:hover {
+.enroll-btn {
   background-color: #6FA69F;
 }
 
@@ -129,6 +132,9 @@ header {
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
 }
 
+.icono-negro {
+  color: black;
+}
 
 .course-description {
   width: 40%;
@@ -142,7 +148,7 @@ header {
 
 .course-image {
   max-width: 55%;
-  width: 100%;
+  width: 70%;
 }
 
 .course-image img {

@@ -1,6 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+
+
 //Components
+
 import { UsuariosAdminComponent } from './components/administrador/usuarios-admin/usuarios-admin.component';
 import { LoginComponent} from './components/login/login/login.component';
 import { RegistroComponent } from './components/login/registro/registro.component';
@@ -18,18 +21,19 @@ import { ContactoComponent } from './components/inicio/contacto/contacto.compone
 
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'home/inicio', pathMatch: 'full' }, 
+
+  { path: '', redirectTo: 'home/inicio', pathMatch: 'full' },
 
 
-  { path: 'home/inicio', component: InicioComponent }, 
+  { path: 'home/inicio', component: InicioComponent },
   { path: 'home/quienesSomos', component: QuienesSomosComponent},
   { path: 'home/contacto', component: ContactoComponent },
-  { path: 'home/login', component: LoginComponent }, 
-  { path: 'home/registro', component: RegistroComponent }, 
+  { path: 'home/login', component: LoginComponent },
+  { path: 'home/registro', component: RegistroComponent },
 
 
   // Rutas para el administrador
-  {
+ {
     path: 'administrador',
     children: [
       {
@@ -52,6 +56,21 @@ export const routes: Routes = [
       }
     ]
   },
+
+  {
+    path: 'alumnos',
+    children: [
+      { path: 'cursos', component: CursosAlumnosComponent },
+      { path: 'contenido', component: ContenidoCursoComponent },
+      { path: 'descripcion/:id', component: DescripcionCursoAlumnoComponent },
+      { path: 'perfil', component: PerfilAlumnoComponent },
+      { path: '', redirectTo: 'cursos', pathMatch: 'full' },
+      { path: '**', redirectTo: 'cursos' }
+    ]
+  },
+  { path: '', redirectTo: 'alumnos/cursos', pathMatch: 'full' },
+  { path: '**', redirectTo: 'alumnos/cursos' },
+
 
   // Rutas para los alumnos
   { path: 'cursos-alumnos', component: CursosAlumnosComponent },

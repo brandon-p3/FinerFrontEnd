@@ -46,10 +46,11 @@
         (input)="onNombreCursoChange($event)">
       <select [(ngModel)]="categoriaSeleccionada" (change)="onCategoriaChange($event)">
         <option value="">Filtrar por categoría</option>
-        <option value="programacion">Programaci¢n</option>
-        <option value="diseño">Idiomas</option>
-        <option value="marketing">Marketing</option>
+        <option *ngFor="let categoria of categoriasAprobadas" [value]="categoria.nombreCategoria">
+          {{ categoria.nombreCategoria }}
+        </option>
       </select>
+
     </div>
 
     <!-- Lista de cursos dinámicos -->

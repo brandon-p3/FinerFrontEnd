@@ -6,7 +6,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styleUrls: ['./detalle-instructor-admin.component.css']
 })
 export class DetalleInstructorAdminComponent {
-  @Input() instructor!: {  // <- Se usa @Input para recibir datos desde el padre
+  @Input() instructor!: { 
     nombre: string;
     correo: string;
     telefono: string;

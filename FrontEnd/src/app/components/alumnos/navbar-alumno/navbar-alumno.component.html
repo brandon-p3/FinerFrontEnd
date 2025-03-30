@@ -1,0 +1,29 @@
+<header class="header">
+  <div class="logo">
+      <img src="assets/logo.png" alt="Logotipo"> FINER
+  </div>
+  <div class="search-container">
+      <input type="text" placeholder="Buscar cursos..." class="search-bar">
+      <img src="assets/lupa.png" alt="Buscar" class="search-icon">
+  </div>
+  <div class="user-info" (click)="toggleMenu()">
+      <span class="role">Estudiante</span>
+      <img src="assets/useri.png" alt="Foto de perfil" class="profile-pic">
+      <span class="user-name">{{ usuario.nombre }} {{ usuario.apellidoPaterno }}</span>
+  </div>
+  <img src="assets/salir.png" alt="Salir" class="logout-icon" (click)="logout()">
+</header>
+
+<div class="dropdown-menu" [class.show]="menuOpen">
+  <ul>
+      <li class="menu-section">Cursos</li>
+      <li class="menu-item" [class.active]="currentPage === 'mis-cursos'" (click)="navigateTo('mis-cursos')">Mis Cursos</li>
+      <li class="menu-section">Perfil</li>
+      <li class="menu-item" [class.active]="currentPage === 'actualizar-perfil'" (click)="navigateTo('actualizar-perfil')">Actualizar Perfil</li>
+      <li class="menu-item" [class.active]="currentPage === 'certificados'" (click)="navigateTo('certificados')">Certificados</li>
+      <li class="menu-section">Historial</li>
+      <li class="menu-item" [class.active]="currentPage === 'historial'" (click)="navigateTo('historial')">Historial de Aprendizaje</li>
+      <li class="menu-section">Cerrar Sesión</li>
+      <li class="menu-item logout" (click)="logout()">Cerrar Sesión</li>
+  </ul>
+</div>

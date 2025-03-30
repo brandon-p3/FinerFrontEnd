@@ -1,100 +1,42 @@
-
-body {
-  font-family: 'Arial', sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: #DEF5E5;
-  color: #2F4F4F;
-}
-
-header {
-  background-color: #8EC3B0;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 15px 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.header-left {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-.header-left img {
-  width: 50px;
-  height: auto;
-}
-
-.header-left h1 {
-  font-size: 21px;
-  font-weight: bold;
-  margin: 0;
-}
-
-.header-center {
-  flex: 1;
-  text-align: center;
-}
-
-.header-center input {
-  padding: 8px;
-  width: 50%;
-  border: none;
-  border-radius: 5px;
-}
-
-
-.header-right {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-.username {
-  font-size: 16px;
-  font-weight: bold;
-}
-
-.header-right i {
-  font-size: 20px;
-  cursor: pointer;
-}
-
-
 .filters-container {
   display: flex;
-  justify-content: center;
+  flex-wrap: wrap;
+  justify-content: left;
   gap: 20px;
   padding: 20px;
+  margin: 0px 0px 0px 0px;
+  background-color: #F0F7F4;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .filter {
   display: flex;
-  align-items: center;
+  flex-direction: column;
   gap: 10px;
 }
 
-.filter input {
-  padding: 8px;
-  border: none;
-  border-radius: 5px;
-  width: 200px;
-  background: #BCEAD5;
+.filter input,
+.filter select {
+  padding: 10px;
+  border: 1px solid #9ED5C5;
+  border-radius: 25px;
+  background-color: #e3f5ed;
+  width: 250px;
+  font-size: 14px;
 }
 
-.filter i {
-  font-size: 20px;
-  cursor: pointer;
+.filter input:focus,
+.filter select:focus {
+  border-color: #8EC3B0;
+  outline: none;
 }
 
 .courses-container {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
-  padding: 20px;
+  padding: 0px;
   width: 100vw;
   margin: 0 auto;
   justify-content: center;
@@ -106,14 +48,17 @@ header {
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   width: 50vw;
-  max-width: 500px;
+  max-width: 650px;
   text-align: center;
   margin-bottom: 20px;
   transition: transform 0.3s ease-in-out;
+  border: 2px solid #BCEAD5;
+  min-width: 300px;
 }
 
 .course-card:hover {
   transform: scale(1.05);
+  border-color: #6FA69F;
 }
 
 .course-card h3 {
@@ -126,6 +71,14 @@ header {
   color: #555;
 }
 
+.course-card .button-container {
+  display: flex;
+  justify-content: space-evenly; /* Esto distribuye el espacio de manera más equitativa */
+  align-items: center;
+  margin-top: 20px; /* Mayor espacio encima de los botones */
+  gap: 15px; /* Añadido para separar los botones */
+}
+
 .course-card button {
   background-color: #8EC3B0;
   color: white;
@@ -133,15 +86,21 @@ header {
   padding: 10px 15px;
   border-radius: 5px;
   cursor: pointer;
-  margin-top: 10px;
   transition: background 0.3s;
 }
 
 .course-card button:hover {
   background-color: #6FA69F;
+  border: 1px solid #9ED5C5;
+  border-radius: 25px;
 }
 
+.center-button {
+  margin-left: auto;
+  margin-right: auto;
+}
 
+/* Media Queries */
 @media (max-width: 768px) {
   .courses-container {
     flex-direction: column;
@@ -150,5 +109,15 @@ header {
 
   .course-card {
     width: 80%;
+    min-width: 300px;
+  }
+
+  .course-card .button-container {
+    flex-direction: column;
+    gap: 0px; /* Espacio adicional entre botones en pantallas pequeñas */
+  }
+
+  .course-card button {
+    margin: 10px 0;
   }
 }

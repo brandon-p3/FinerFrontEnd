@@ -11,6 +11,7 @@ import { Curso } from '../../../documentos/cursosDocumento';
 export class CursosAdminComponent implements OnInit {
   solicitudesPendientes: any[] = [];
   cursos: Curso[] = []; 
+  categoriasAprobadas: any[] = [];
   cursosFiltrados: Curso[] = []; 
 
   modalVisible: boolean = false;
@@ -29,6 +30,7 @@ export class CursosAdminComponent implements OnInit {
   ngOnInit(): void {
     this.obtenerSolicitudesCursos();
     this.obtenerCursosAprobados(); // Llamamos al nuevo método
+    this.obtenerCategoriasAprobadas();
   }
 
   obtenerSolicitudesCursos() {
@@ -45,6 +47,23 @@ export class CursosAdminComponent implements OnInit {
       },
       (error) => {
         console.error('Error al obtener los cursos aprobados', error);
+      }
+    );
+  }
+
+  obtenerCategoriasAprobadas() {
+    this.administradorService.obtenerCategoriasAprobadas().subscribe(
+      (data) => {
+        if (Array.isArray(data)) {
+          this.categoriasAprobadas = data;
+        } else {
+          console.error("Respuesta inesperada al obtener categorías aprobadas:", data);
+          this.categoriasAprobadas = [];
+        }
+      },
+      (error) => {
+        console.error("Error al obtener las categorías aprobadas", error);
+        this.categoriasAprobadas = [];
       }
     );
   }

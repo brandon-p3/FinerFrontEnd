@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders  } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CONFIG } from '../config/config';
 
@@ -18,17 +18,40 @@ export class AdministradorServiceService {
     });
   }
 
-  buscarUsuarioNombre(busqueda: string): Observable<any> {
-    return this.http.post<any>(`${this.apiUri}/administrador/buscarUsuarioNombre`, { busqueda });
+  buscarUsuarioNombre(nombreUsuario: string): Observable<any> {
+    console.log(`Buscando usuario: ${nombreUsuario}`);
+    return this.http.get<any>(`${this.apiUri}/administrador/buscarUsuario/${nombreUsuario}`);
+  }  
+
+  verSolicitudesInstructor(): Observable<any> {
+    return this.http.get<any>(`${this.apiUri}/administrador/solicitudes-instructor`);
+  }
+
+  aceptarInstructor(idSolicitudInstructor: number): Observable<any> {
+    return this.http.post<any>(`${this.apiUri}/administrador/aceptar-instructor`, { idSolicitudInstructor });
+  }
+
+  rechazarInstructor(id: number, motivo: string): Observable<any> {
+    const url = `${this.apiUri}/administrador/solicitudes/rechazar/${id}`;
+    
+    const headers = new HttpHeaders({
+      'Content-Type': 'text/plain'
+    });
+    
+    return this.http.post(url, motivo, { headers });
   }
    
-
-  // Soloicitudes
-  obtenerSolicitudesCategorias(id: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUri}/instructor/${id}`);
+  // ===================== Servicios de categorias =============================
+  obtenerTodasLasSolicitudes(): Observable<any[]> { // Solicitud de categorias
+    return this.http.get<any[]>(`${this.apiUri}/solicitudes/todas`);
   }
 
-  obtenerSolicitudesCursos(): Observable<any> {
+  obtenerCategoriasAprobadas(): Observable<any> {
+    return this.http.get<any>(`${this.apiUri}/token/ver-categoria-aprobada`);
+  }
+
+  // ===================== Servicios de Cursos =================================
+  obtenerSolicitudesCursos(): Observable<any> { //Solicitud de cursos
     return this.http.get<any>(`${this.apiUri}/solicitudes-curso/pendientes`);
   }
 
