@@ -27,7 +27,7 @@
     <p class="category">{{ curso.nombreCategoria }}</p>
     <div class="buttons-container">
       <button (click)="accederCurso(curso)">Acceder</button>
-      <button (click)="redirigirDetalleCurso(curso)">Ver Detalles</button>
+      <button [routerLink]="['/descripcion', curso.id]">Ver detalles</button>
     </div>
   </div>
 </main>

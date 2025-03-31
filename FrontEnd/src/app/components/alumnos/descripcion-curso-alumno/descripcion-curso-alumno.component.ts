@@ -1,18 +1,28 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Curso } from '../../../documentos/cursosDocumento';
+import { CursosServiceService } from '../../../services/cursos-service';
 
 @Component({
   selector: 'app-descripcion-curso-alumno',
-  standalone: true,
-  imports: [],
   templateUrl: './descripcion-curso-alumno.component.html',
   styleUrls: ['./descripcion-curso-alumno.component.css']
 })
-export class DescripcionCursoAlumnoComponent {
+export class DescripcionCursoAlumnoComponent implements OnInit {
+  curso!: Curso;
 
-  constructor(private router: Router) {}
+  constructor(
+    private route: ActivatedRoute,
+    private cursosService: CursosServiceService
+  ) {}
 
-  volver() {
-    this.router.navigateByUrl('/cursos-alumnos');
+  ngOnInit(): void {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.cursosService.obtenerDetalles(+id).subscribe(
+        (data) => this.curso = data,
+        (error) => console.error('Error al obtener detalles:', error)
+      );
+    }
   }
 }

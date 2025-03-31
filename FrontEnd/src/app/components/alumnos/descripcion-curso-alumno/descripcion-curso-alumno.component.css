@@ -9,61 +9,6 @@ body {
 }
 
 
-header {
-  background-color: #ffffff;
-  color: rgb(0, 0, 0);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 15px 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.header-left {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-.header-left img {
-  width: 50px;
-  height: auto;
-}
-
-.header-left h1 {
-  font-size: 21px;
-  font-weight: bold;
-  margin: 0;
-}
-
-.header-center {
-  flex: 1;
-  text-align: center;;
-}
-
-.header-center input {
-  padding: 8px;
-  width: 50%;
-  border: none;
-  border-radius: 5px;
-  background-color: #BCEAD5;
-}
-
-.header-right {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-.username {
-  font-size: 16px;
-  font-weight: bold;
-}
-
-.header-right i {
-  font-size: 20px;
-  cursor: pointer;
-}
 
 .course-header {
   display: flex;

@@ -22,6 +22,7 @@ import { NavbarInicioComponent } from './components/inicio/navbar-inicio/navbar-
 import { ContactoComponent } from './components/inicio/contacto/contacto.component';
 import { NavbarAlumnoComponent } from './components/alumnos/navbar-alumno/navbar-alumno.component';
 import { CursosAlumnosComponent } from './components/alumnos/cursos-alumnos/cursos-alumnos.component';
+import { DescripcionCursoAlumnoComponent } from './components/alumnos/descripcion-curso-alumno/descripcion-curso-alumno.component';
 
 @NgModule({
   declarations: [
@@ -41,9 +42,11 @@ import { CursosAlumnosComponent } from './components/alumnos/cursos-alumnos/curs
     QuienesSomosComponent,
     NavbarInicioComponent,
     ContactoComponent,
+    
     NavbarAdminComponent,
     NavbarAlumnoComponent,
-    CursosAlumnosComponent
+    CursosAlumnosComponent,
+    DescripcionCursoAlumnoComponent
 
   ],
   imports: [

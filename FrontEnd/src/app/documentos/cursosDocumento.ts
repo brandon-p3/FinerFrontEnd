@@ -1,4 +1,5 @@
 export interface Curso {
+id: any|string;
     tituloCurso: String;
     descripcion: string;
     nombreInstructor: string;

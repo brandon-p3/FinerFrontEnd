@@ -1,48 +1,20 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mis Cursos</title>
-    <link rel="stylesheet" href="descripcion-curso-alumno.component.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-</head>
-<body>
+<app-navbar-alumno></app-navbar-alumno>
 
-  <header>
-    <div class="header-left">
-        <img src="assets/logo.png" alt="Logo Finner">
-        <h1>FINNER</h1>
-    </div>
-    <div class="header-center">
-      <input type="text" placeholder="Buscar curso...">
-    </div>
-    <div class="header-right">
-        <span class="username">Nombre_Alumno</span>
-        <i class="fa-solid fa-right-from-bracket icono-negro"></i>
-
-    </div>
-  </header>
-
-  <div class="course-container">
-    <div class="course-header">
-      <a href="/cursos-alumnos">
-        <i class="fa-solid fa-arrow-left"></i>
+<div class="course-container">
+  <div class="course-header">
+    <a href="/cursos-alumnos" class="back-button">
+      <i class="fa-solid fa-arrow-left icono-negro"></i>
     </a>
-      <strong class="course-title">Nombre_del_curso</strong>
-      <button class="enroll-btn">Inscribirme</button>
-    </div>
-    <div class="course-details">
-      <div class="course-body">
-        <div class="course-description">
-          <p><strong>Descripción del curso...</strong></p>
-        </div>
-        <div class="course-image">
-          <img src="assets/img.png" alt="Imagen curso">
-        </div>
+    <strong class="course-title">{{ curso.tituloCurso }}</strong>
+    <button class="enroll-btn">Inscribirme</button>
+  </div>
+  <div class="course-details">
+    <div class="course-body">
+      <div class="course-description">
+        <p><strong>{{ curso.descripcion }}</strong></p>
+      </div>
+      <div class="course-image">
       </div>
     </div>
   </div>
-
-</body>
-</html>
+</div>
