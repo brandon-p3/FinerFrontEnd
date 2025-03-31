@@ -14,7 +14,7 @@ import { CursosAdminComponent } from './components/administrador/cursos-admin/cu
 import { InicioComponent } from './components/inicio/inicio.component';
 import { SolicitarCategoriaComponent } from './components/instructores/solicitar-categoria/solicitar-categoria.component';
 import { CrearCursoComponent } from './components/instructores/crear-curso/crear-curso.component';
-import { HttpClientModule, provideHttpClient } from '@angular/common/http';
+import { HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
 import { PerfilAlumnoComponent } from './components/alumnos/perfil-alumno/perfil-alumno.component';
 import { FooterContactoComponent } from './components/inicio/footer-contacto/footer-contacto.component';
 import { QuienesSomosComponent } from './components/inicio/quienes-somos/quienes-somos.component';
@@ -25,6 +25,7 @@ import { CursoServiceService } from './services/curso-service.service';
 import { CategoriaServiceService } from './services/categorias-service.service';
 import { NavbarAlumnoComponent } from './components/alumnos/navbar-alumno/navbar-alumno.component';
 import { CursosAlumnosComponent } from './components/alumnos/cursos-alumnos/cursos-alumnos.component';
+import { DescripcionCursoAlumnoComponent } from './components/alumnos/descripcion-curso-alumno/descripcion-curso-alumno.component';
 
 @NgModule({
   declarations: [
@@ -44,11 +45,11 @@ import { CursosAlumnosComponent } from './components/alumnos/cursos-alumnos/curs
     QuienesSomosComponent,
     NavbarInicioComponent,
     ContactoComponent,
-
-    CursosInstructorComponent
+    CursosInstructorComponent,
     NavbarAdminComponent,
     NavbarAlumnoComponent,
-    CursosAlumnosComponent
+    CursosAlumnosComponent,
+    DescripcionCursoAlumnoComponent
 
 
   ],
@@ -63,7 +64,7 @@ import { CursosAlumnosComponent } from './components/alumnos/cursos-alumnos/curs
 
     provideHttpClient(withFetch()),
     CursoServiceService,
-    CategoriaServiceService
+    CategoriaServiceService,
 
 
     provideHttpClient()

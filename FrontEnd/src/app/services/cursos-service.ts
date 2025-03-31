@@ -25,4 +25,9 @@ export class CursosServiceService {
   filtrarCursoPorCategoria(categoria: string): Observable<Curso[]> {
     return this.http.get<Curso[]>(`${this.apiUri2}/filtrar-categoria/${categoria}`);
   }
+
+  obtenerDetalles(titulo: string): Observable<Curso[]> {
+    return this.http.get<Curso[]>(`${this.apiUri}/cursos/alumno/detalles/${titulo}`);
+  }
+
 }
