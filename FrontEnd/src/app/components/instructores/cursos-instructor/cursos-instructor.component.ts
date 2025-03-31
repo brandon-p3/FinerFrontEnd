@@ -1,21 +1,21 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { CursoVerDTO } from '../../../documentos/cursoDocumento';
+import { CursoVerDTO, VerCategoriasDTO } from '../../../documentos/cursoDocumento';
 import { CursoServiceService } from '../../../services/curso-service.service';
+import { CategoriaServiceService } from '../../../services/categorias-service.service';
 
 @Component({
   selector: 'app-cursos-instructor',
-  standalone: true,
-  imports: [FormsModule, CommonModule],
+  standalone: false,
   templateUrl: './cursos-instructor.component.html',
   styleUrls: ['./cursos-instructor.component.css']
 })
 export class CursosInstructorComponent implements OnInit {
   constructor(
     private router: Router,
-    private cursoService: CursoServiceService
+    private cursoService: CursoServiceService,
+    private categoriaService: CategoriaServiceService // Inyectamos el nuevo servicio
   ) { } 
 
   usuario = {
@@ -43,8 +43,21 @@ export class CursosInstructorComponent implements OnInit {
   showPreviewModal = false;
   selectedCourse: CursoVerDTO | null = null;
 
+  // Variables para edición
+  showEditModal = false;
+  editFormData: any = {
+    idCurso: null,
+    idInstructor: null,
+    descripcion: '',
+    idCategoria: null
+  };
+  categorias: VerCategoriasDTO[] = []; // Mejor tipado
+  isEditing = false;
+  categoriaSeleccionada: VerCategoriasDTO | null = null; // Para búsqueda por nombre
+
   ngOnInit() {
     this.loadCursos();
+    this.loadCategorias();
   }
 
   loadCursos() {
@@ -65,7 +78,44 @@ export class CursosInstructorComponent implements OnInit {
       }
     });
   }
+
+  // Método modificado para usar CategoriaService
+  loadCategorias() {
+    this.categoriaService.obtenerCategoriasAprobadas().subscribe({
+      next: (categorias) => {
+        this.categorias = categorias;
+        console.log('Categorías cargadas:', this.categorias);
+      },
+      error: (error) => {
+        console.error('Error al cargar categorías', error);
+        this.errorMessage = 'No se pudieron cargar las categorías.';
+      }
+    });
+  }
+
+  // Nuevo método para buscar categoría por nombre
+  buscarCategoriaPorNombre(nombre: string) {
+    if (!nombre.trim()) {
+      this.categoriaSeleccionada = null;
+      return;
+    }
+
+    // Versión con filtrado local (sin llamar al backend)
+    const encontrada = this.categorias.find(c => 
+      c.nombreCategoria.toLowerCase().includes(nombre.toLowerCase())
+    );
+    
+    if (encontrada) {
+      this.categoriaSeleccionada = encontrada;
+    } else {
+      this.errorMessage = `No se encontró la categoría "${nombre}"`;
+      this.categoriaSeleccionada = null;
+    }
+
+ 
+  }
   
+  // Resto de métodos se mantienen igual...
   toggleMenu() {
     this.menuOpen = !this.menuOpen;
   }
@@ -78,14 +128,12 @@ export class CursosInstructorComponent implements OnInit {
   applyFilters() {
     let filtered = [...this.cursos];
 
-    // Filtro por búsqueda de nombre de curso
     if (this.searchQuery) {
       filtered = filtered.filter(curso =>
         curso.titulo.toLowerCase().includes(this.searchQuery.toLowerCase())
       );
     }
 
-    // Filtro por orden
     if (this.sortOption === 'asc') {
       filtered.sort((a, b) => a.titulo.localeCompare(b.titulo));
     } else if (this.sortOption === 'desc') {
@@ -101,7 +149,7 @@ export class CursosInstructorComponent implements OnInit {
   }
 
   openPreviewModal(curso: CursoVerDTO) {
-    this.selectedCourse = { ...curso }; // Crear una copia del curso
+    this.selectedCourse = { ...curso };
     this.showPreviewModal = true;
   }
 
@@ -115,12 +163,61 @@ export class CursosInstructorComponent implements OnInit {
       console.error('Intento de editar un curso nulo');
       return;
     }
+  
+    this.editFormData = {
+      idCurso: curso.idCurso,
+      idInstructor: this.usuario.id,
+      descripcion: curso.descripcion || '',
+      idCategoria: curso.idCategoria 
+    };
     
-    console.log('Editando curso:', curso);
-    this.selectedCourse = { ...curso }; // Crear una copia del curso
-    this.showPreviewModal = true;
-    
-    
+    this.showEditModal = true;
+    this.isEditing = true;
+  }
+
+  submitEditForm() {
+    if (!this.editFormData.descripcion || !this.editFormData.idCategoria) {
+      this.errorMessage = 'Por favor complete todos los campos requeridos';
+      return;
+    }
+
+    this.isLoading = true;
+    this.errorMessage = '';
+        // Asegúrate de que el objeto tenga la estructura correcta
+        const cursoData = {
+          idCurso: this.editFormData.idCurso,
+          idInstructor: this.editFormData.idInstructor,
+          descripcion: this.editFormData.descripcion,
+          idCategoria: this.editFormData.idCategoria
+        };
+
+    this.cursoService.editarCurso(this.editFormData).subscribe({
+      next: (response) => {
+        console.log('Curso actualizado:', response);
+        this.loadCursos();
+        this.closeEditModal();
+      },
+      error: (error) => {
+        console.error('Error al editar el curso', error);
+        this.errorMessage = error.error?.message || 'No se pudo actualizar el curso. Por favor, intente nuevamente.';
+        this.isLoading = false;
+      },
+      complete: () => {
+        this.isLoading = false;
+      }
+    });
+  }
+
+  closeEditModal() {
+    this.showEditModal = false;
+    this.editFormData = {
+      idCurso: null,
+      idInstructor: null,
+      descripcion: '',
+      idCategoria: null
+    };
+    this.errorMessage = '';
+    this.isEditing = false;
   }
 
   confirmDelete(idCurso: number) {
@@ -134,18 +231,19 @@ export class CursosInstructorComponent implements OnInit {
   }
 
   deleteCourse() {
-    if (this.courseToDelete) {
+    if (this.courseToDelete && this.usuario.id) {
       this.isLoading = true;
-      this.cursoService.eliminarCurso(this.courseToDelete.toString()).subscribe({
+      this.cursoService.eliminarCurso(this.usuario.id, this.courseToDelete).subscribe({
         next: () => {
           this.loadCursos();
           this.showDeleteModal = false;
-          this.isLoading = false;
         },
         error: (error) => {
           console.error('Error al eliminar el curso', error);
-          this.errorMessage = 'No se pudo eliminar el curso. Por favor, intente nuevamente.';
+          this.errorMessage = error.error?.message || 'No se pudo eliminar el curso. Por favor, intente nuevamente.';
           this.showDeleteModal = false;
+        },
+        complete: () => {
           this.isLoading = false;
         }
       });

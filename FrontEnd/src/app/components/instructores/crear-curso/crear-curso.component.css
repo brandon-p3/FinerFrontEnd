@@ -439,3 +439,48 @@ body {
     background-color: #8EC3B0;
     transform: scale(1.05); /* Efecto de escala al pasar el mouse */
 }
+/* Mensajes de estado */
+.loading-message {
+    background-color: #f8f9fa;
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 4px;
+    text-align: center;
+  }
+  
+  .error-message {
+    background-color: #ffecec;
+    color: #d32f2f;
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 4px;
+    border-left: 4px solid #d32f2f;
+  }
+  
+  /* Campos requeridos */
+  label[required]::after {
+    content: " *";
+    color: #d32f2f;
+  }
+  
+  /* Errores de formulario */
+  .form-error {
+    color: #d32f2f;
+    font-size: 0.8em;
+  }
+  
+  /* Botones deshabilitados */
+  button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  
+  /* Mejoras para selectores */
+  .category-selection {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .category-selection select {
+    flex-grow: 1;
+  }

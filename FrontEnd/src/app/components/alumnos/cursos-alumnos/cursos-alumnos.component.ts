@@ -17,7 +17,9 @@ export class CursosAlumnosComponent implements OnInit {
     email: 'ejemplo@gmail.com',
     contrasenia: 'password123',
     nombreUsuario: 'nombreUsuario',
-    cursosCompletados: 5
+    cursosCompletados: 5,
+
+
   };
 
   cursos: Curso[] = [];
@@ -25,6 +27,9 @@ export class CursosAlumnosComponent implements OnInit {
   nombreCurso: string = '';
   categoriaSeleccionada: string = '';
   menuOpen = false;
+  curso: any = {};
+
+
 
   constructor(private cursosService: CursosServiceService, private router: Router) {}
 
@@ -98,14 +103,23 @@ export class CursosAlumnosComponent implements OnInit {
     console.log('Accediendo al curso:', curso);
   }
 
-  redirigirDetalleCurso(curso: any) {
-    this.router.navigate(['/descripcion-curso-alumno', curso.tituloCurso]);
-  }
-
   logout() {
     console.log('Cerrando sesión...');
     this.router.navigate(['/login']);
   }
+
+
+  verDetallesCurso(tituloCurso: string) {
+    console.log("Título recibido:", tituloCurso);
+
+    if (tituloCurso) {
+      const tituloCodificado = encodeURIComponent(tituloCurso); // Evitar problemas con caracteres especiales
+      this.router.navigate([`/alumnos/descripcion`, tituloCurso]);
+    } else {
+      console.error("Título de curso inválido");
+    }
+  }
+
+
+
 }
-
-

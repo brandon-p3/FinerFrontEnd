@@ -9,7 +9,7 @@ import { CursosServiceService } from '../../../services/cursos-service';
   styleUrls: ['./descripcion-curso-alumno.component.css']
 })
 export class DescripcionCursoAlumnoComponent implements OnInit {
-  curso!: Curso;
+  cursos: Curso[] =[];
 
   constructor(
     private route: ActivatedRoute,
@@ -17,12 +17,18 @@ export class DescripcionCursoAlumnoComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      this.cursosService.obtenerDetalles(+id).subscribe(
-        (data) => this.curso = data,
+    const titulo = this.route.snapshot.paramMap.get('id');
+
+    if (titulo) {
+      this.cursosService.obtenerDetalles(titulo).subscribe(
+        (data) => {
+          this.cursos = data;
+          console.log(this.cursos)
+        },
         (error) => console.error('Error al obtener detalles:', error)
       );
+    } else {
+      console.error("Título de curso inválido");
     }
   }
 }

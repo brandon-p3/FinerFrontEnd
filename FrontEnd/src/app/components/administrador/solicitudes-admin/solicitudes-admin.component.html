@@ -10,8 +10,8 @@
           <p><strong>Username:</strong> {{ instructor.username }}</p>
           <div class="actions">
             <button class="btn-details" (click)="abrirDetalles(instructor)">Detalles</button>
-            <button class="btn-accept">Aceptar</button>
-            <button class="btn-reject">Rechazar</button>
+            <button class="btn-accept" (click)="aceptarInstructor(instructor)">Aceptar</button>
+            <button class="btn-reject" (click)="abrirModalRechazo(instructor)">Rechazar</button>
           </div>
         </div>
       </div>
@@ -31,6 +31,29 @@
         </div>
       </div>
     </div>
+</div>
+
+<!-- Mensaje de éxito -->
+<div *ngIf="mostrarMensaje" class="mensaje-exito">
+  {{ mensajeExito }}
+</div>
+
+<!-- Modal de rechazo -->
+<div *ngIf="mostrarModalRechazo" class="modal-overlay">
+  <div class="modal-content">
+    <h3>Rechazar solicitud de instructor</h3>
+    
+    <div class="form-group">
+      <label for="motivoRechazo">Motivo del rechazo:</label>
+      <textarea id="motivoRechazo" [(ngModel)]="motivoRechazo" 
+        class="form-control" rows="3" placeholder="Explique el motivo del rechazo"></textarea>
+    </div>
+    
+    <div class="modal-actions">
+      <button class="btn-cancel" (click)="cancelarRechazo()">Cancelar</button>
+      <button class="btn-confirm" (click)="confirmarRechazo()">Confirmar rechazo</button>
+    </div>
+  </div>
 </div>
 
 <!-- Modal de Detalles del Instructor -->

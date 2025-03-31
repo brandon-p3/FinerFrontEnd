@@ -117,7 +117,48 @@
         </div>
     </div>
 </div>
-
+<!-- Modal de Edición -->
+<div *ngIf="showEditModal" class="modal-overlay">
+    <div class="modal-content">
+      <button class="close-modal-btn" (click)="closeEditModal()">&times;</button>
+      <h3>Editar Curso</h3>
+      
+      <form (ngSubmit)="submitEditForm()">
+        <div class="form-group">
+          <label>Descripción:</label>
+          <textarea [(ngModel)]="editFormData.descripcion" 
+                   name="descripcion" 
+                   required
+                   class="form-control"></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label>Categoría:</label>
+          <select [(ngModel)]="editFormData.idCategoria" name="idCategoria" required class="form-control">
+            <option value="" disabled selected>Seleccione categoría</option>
+            <option *ngFor="let cat of categorias" [value]="cat.idCategoria">
+              {{ cat.nombreCategoria }}
+            </option>
+          </select>
+        </div>
+        
+        <div *ngIf="errorMessage" class="error-message">
+          {{ errorMessage }}
+        </div>
+        
+        <div class="modal-actions">
+          <button type="button" class="action-btn cancel-btn" 
+                 (click)="closeEditModal()">
+            Cancelar
+          </button>
+          <button type="submit" class="action-btn edit-btn"
+                 [disabled]="isLoading">
+            {{ isLoading ? 'Guardando...' : 'Guardar Cambios' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 <!-- Modal de confirmación para eliminar -->
 <div *ngIf="showDeleteModal" class="modal-overlay">
     <div class="modal-content">
@@ -125,7 +166,9 @@
         <p>¿Estás seguro que deseas eliminar este curso? Esta acción no se puede deshacer.</p>
         <div class="modal-actions">
             <button class="action-btn cancel-btn" (click)="cancelDelete()">Cancelar</button>
-            <button class="action-btn delete-btn" (click)="deleteCourse()">Eliminar</button>
+            <button class="action-btn delete-btn" (click)="deleteCourse()" [disabled]="isLoading">
+                {{ isLoading ? 'Eliminando...' : 'Eliminar' }}
+            </button>
         </div>
     </div>
 </div>

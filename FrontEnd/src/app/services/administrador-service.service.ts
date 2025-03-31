@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders  } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CONFIG } from '../config/config';
 
@@ -22,6 +22,24 @@ export class AdministradorServiceService {
     console.log(`Buscando usuario: ${nombreUsuario}`);
     return this.http.get<any>(`${this.apiUri}/administrador/buscarUsuario/${nombreUsuario}`);
   }  
+
+  verSolicitudesInstructor(): Observable<any> {
+    return this.http.get<any>(`${this.apiUri}/administrador/solicitudes-instructor`);
+  }
+
+  aceptarInstructor(idSolicitudInstructor: number): Observable<any> {
+    return this.http.post<any>(`${this.apiUri}/administrador/aceptar-instructor`, { idSolicitudInstructor });
+  }
+
+  rechazarInstructor(id: number, motivo: string): Observable<any> {
+    const url = `${this.apiUri}/administrador/solicitudes/rechazar/${id}`;
+    
+    const headers = new HttpHeaders({
+      'Content-Type': 'text/plain'
+    });
+    
+    return this.http.post(url, motivo, { headers });
+  }
    
   // ===================== Servicios de categorias =============================
   obtenerTodasLasSolicitudes(): Observable<any[]> { // Solicitud de categorias
@@ -29,7 +47,7 @@ export class AdministradorServiceService {
   }
 
   obtenerCategoriasAprobadas(): Observable<any> {
-    return this.http.get<any>(`${this.apiUri}/api/categorias/ver-categoria-aprobada`);
+    return this.http.get<any>(`${this.apiUri}/token/ver-categoria-aprobada`);
   }
 
   // ===================== Servicios de Cursos =================================
