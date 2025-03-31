@@ -24,6 +24,7 @@ export class SolicitudesAdminComponent implements OnInit {
 
   ngOnInit(): void {
     this.obtenerSolicitudesInstructores();
+    this.obtenerSolicitudesCategorias();
   }
 
   abrirDetalles(instructor: any) {
@@ -184,6 +185,7 @@ export class SolicitudesAdminComponent implements OnInit {
   obtenerSolicitudesCategorias() {
     this.adminService.obtenerTodasLasSolicitudes().subscribe(
       (data) => {
+        console.log('Datos de solicitudes de instructores:', data);
         this.solicitudesCategorias = data;
       },
       (error) => {

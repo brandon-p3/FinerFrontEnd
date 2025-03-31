@@ -6,6 +6,10 @@
     <div class="pending-courses">
       <div *ngFor="let solicitud of solicitudesPendientes" class="pending-card">
         <div class="card-content">
+          <div class="curso-imagen-pendiente">
+            <img [src]="solicitud.imagen" alt="Imagen de {{ solicitud.tituloCursoSolicitado }}" 
+                 onerror="this.src='assets/images/default-curso.jpg'">
+          </div>
           <div class="text">
             <!-- Accedemos directamente a las propiedades de 'solicitud' -->
             <h3>{{ solicitud.tituloCursoSolicitado }}</h3>
@@ -56,6 +60,10 @@
     <!-- Lista de cursos dinámicos -->
     <div class="all-courses">
       <div *ngFor="let curso of cursosFiltrados" class="all-card">
+        <div class="curso-imagen">
+          <img [src]="curso.imagen" alt="Imagen de {{ curso.tituloCurso }}"
+            onerror="this.src='assets/images/default-curso.jpg'">
+        </div>
         <h3>{{ curso.tituloCurso }}</h3>
         <p>{{ curso.descripcion }}</p>
         <p><strong>Instructor:</strong> {{ curso.nombreInstructor }} {{ curso.apellidoPaterno }} {{

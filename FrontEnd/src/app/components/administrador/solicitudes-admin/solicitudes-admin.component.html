@@ -7,7 +7,7 @@
       <div class="card-container">
         <div class="card" *ngFor="let instructor of instructores">
           <p><strong>Nombre Completo:</strong> {{ instructor.nombre }}</p>
-          <p><strong>Username:</strong> {{ instructor.username }}</p>
+          <p><strong>Username:</strong> {{ instructor.nombre_usuario }}</p>
           <div class="actions">
             <button class="btn-details" (click)="abrirDetalles(instructor)">Detalles</button>
             <button class="btn-accept" (click)="aceptarInstructor(instructor)">Aceptar</button>
@@ -22,8 +22,8 @@
       <h2>Solicitudes Categorías</h2>
       <div class="card-container">
         <div class="card" *ngFor="let solicitud of solicitudesCategorias">
-          <p><strong>Nombre Categoría:</strong> {{ solicitud.categoria }}</p>
-          <p><strong>Instructor Solicitante:</strong> {{ solicitud.instructor.nombre }}</p>
+          <p><strong>Nombre Categoría:</strong> {{ solicitud.nombreCategoria }}</p>
+          <p><strong>Descripcion:</strong> {{ solicitud.descripcion }}</p>
           <div class="actions">
             <button class="btn-accept">Aceptar</button>
             <button class="btn-reject">Rechazar</button>
