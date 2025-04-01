@@ -1,134 +1,299 @@
+/* CSS Mejorado */
 body {
-  font-family: 'Arial', sans-serif;
+  font-family: 'Roboto', 'Arial', sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #f4f7f6;
+  background-color: #f8f9fa;
   color: #333;
-  height: 100%;
-  overflow: hidden;
+  line-height: 1.6;
 }
 
+.course-page {
+  min-height: calc(100vh - 60px); /* Ajustar según altura de navbar */
+  padding: 20px 0;
+}
+
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Cabecera del curso */
 .course-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #ffffff;
-  padding: 20px 25px;
-  border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin: 20px;
+  padding: 20px 0;
+  margin-bottom: 30px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.header-left, .header-right {
+  flex: 1;
+}
+
+.header-right {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.course-title {
+  flex: 2;
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  margin: 0;
+  color: #2c3e50;
 }
 
 .back-button {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   color: #6FA69F;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: color 0.3s ease-in-out;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.back-button i {
+  margin-right: 8px;
+  font-size: 0.9rem;
 }
 
 .back-button:hover {
   color: #4a8f7b;
 }
 
-.back-button i {
-  margin-right: 8px;
-}
-
-.course-title {
-  font-size: 32px;
-  font-weight: 600;
-  text-align: center;
-  color: #333;
-  flex-grow: 1;
-}
-
 .enroll-btn {
   background-color: #6FA69F;
   color: white;
-  padding: 12px 22px;
   border: none;
-  border-radius: 8px;
-  font-size: 16px;
+  border-radius: 50px;
+  padding: 12px 24px;
+  font-weight: 600;
+  font-size: 1rem;
   cursor: pointer;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 6px rgba(111, 166, 159, 0.2);
 }
 
 .enroll-btn:hover {
   background-color: #4a8f7b;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(111, 166, 159, 0.3);
 }
 
-.course-details {
-  display: flex;
-  justify-content: center;
-  margin-top: 30px;
+.enroll-btn:active {
+  transform: translateY(0);
 }
 
-.course-body {
+.enroll-btn i {
+  font-size: 0.9rem;
+}
+
+/* Contenido principal */
+.course-content {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  width: 90%;
-  max-width: 1200px;
-  flex-wrap: wrap;
-  background: white;
-  padding: 25px;
+  gap: 40px;
+  margin-bottom: 40px;
+}
+
+/* Sección de imagen */
+.course-image-container {
+  flex: 5;
   border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.icono-negro {
-  color: #333;
-}
-
-.course-description {
-  width: 45%;
-  font-size: 18px;
-  font-weight: 500;
-  background: #E3F5F1;
-  padding: 25px;
-  border-radius: 10px;
-  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s ease;
-}
-
-.course-description:hover {
-  background-color: #c6e2df;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
 
 .course-image {
-  width: 50%;
-  max-width: 600px;
-}
-
-.course-image img {
   width: 100%;
   height: auto;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.course-image:hover {
+  transform: scale(1.03);
+}
+
+.course-tags {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  display: flex;
+  gap: 8px;
+}
+
+.tag {
+  background-color: rgba(255, 255, 255, 0.85);
+  color: #4a8f7b;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 30px;
+  backdrop-filter: blur(4px);
+}
+
+/* Sección de información */
+.course-info {
+  flex: 7;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.course-description {
+  background-color: white;
+  padding: 24px;
   border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.course-description h2 {
+  font-size: 1.5rem;
+  color: #2c3e50;
+  margin-top: 0;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #6FA69F;
+}
+
+.course-description p {
+  margin: 0;
+  line-height: 1.7;
+  color: #555;
+}
+
+.course-meta {
+  display: flex;
+  gap: 20px;
+}
+
+.instructor-info, .course-stats {
+  background-color: white;
+  padding: 20px;
+  border-radius: 12px;
+  flex: 1;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.instructor-info h3, .course-stats h3 {
+  font-size: 1.2rem;
+  color: #2c3e50;
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
+.instructor-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.instructor-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #e0f2f1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6FA69F;
+  font-size: 1.4rem;
+}
+
+.instructor-name {
+  font-weight: 600;
+  color: #444;
+}
+
+.course-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.stat-item i {
+  color: #6FA69F;
+  font-size: 1.2rem;
+  width: 24px;
+  text-align: center;
+}
+
+/* Inscripción móvil - oculta en desktop */
+.mobile-enroll-section {
+  display: none;
+}
+
+.btn-full-width {
+  width: 100%;
+  justify-content: center;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .course-meta {
+    flex-direction: column;
+  }
 }
 
 @media (max-width: 768px) {
-  .course-body {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .course-description, .course-image {
-    width: 90%;
-    text-align: center;
-  }
-
   .course-header {
     flex-direction: column;
+    gap: 16px;
     text-align: center;
-    gap: 15px;
   }
 
-  .enroll-btn {
+  .header-left, .header-right {
     width: 100%;
-    max-width: 220px;
+    justify-content: center;
+  }
+
+  .header-right {
+    display: none; /* Ocultar botón de inscripción en cabecera */
+  }
+
+  .course-content {
+    flex-direction: column;
+  }
+
+  .course-title {
+    font-size: 1.6rem;
+  }
+
+  .mobile-enroll-section {
+    display: block;
+    margin-top: 16px;
+  }
+}
+
+@media (max-width: 576px) {
+  .container {
+    width: 95%;
+  }
+
+  .course-description h2 {
+    font-size: 1.3rem;
+  }
+
+  .back-button span {
+    display: none; /* Ocultar texto y dejar solo icono */
+  }
+
+  .back-button i {
+    font-size: 1.2rem;
+    margin: 0;
   }
 }

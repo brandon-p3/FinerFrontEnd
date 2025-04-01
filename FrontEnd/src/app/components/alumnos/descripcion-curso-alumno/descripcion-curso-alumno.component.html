@@ -1,24 +1,74 @@
+<!-- HTML Mejorado -->
 <app-navbar-alumno></app-navbar-alumno>
 
-<div class="course-container" *ngFor="let curso of cursos">
-  <div class="course-header">
-    <a href="/cursos-alumnos" class="back-button">
-      <i class="fa-solid fa-arrow-left icono-negro"></i>
-      Regresar
-    </a>
-    <strong class="course-title">{{ curso.titulo }}</strong>
-    <button class="enroll-btn">Inscribirme</button>
-  </div>
+<div class="course-page">
+  <div class="container" *ngFor="let curso of cursos">
+    <!-- Cabecera con navegación y acción principal -->
+    <header class="course-header">
+      <div class="header-left">
+        <a href="/cursos-alumnos" class="back-button">
+          <i class="fa-solid fa-arrow-left"></i>
+          <span>Regresar</span>
+        </a>
+      </div>
+      <h1 class="course-title">{{ curso.titulo }}</h1>
+      <div class="header-right">
+        <button class="enroll-btn">
+          <i class="fa-solid fa-user-plus"></i>
+          <span>Inscribirme</span>
+        </button>
+      </div>
+    </header>
 
-  <div class="course-details">
-    <div class="course-body">
-      <div class="course-description">
-        <p><strong>{{ curso.descripcion }}</strong></p>
-        <p><strong>Instructor:</strong> {{ curso.instructor }}</p>
+    <!-- Contenido principal del curso -->
+    <main class="course-content">
+      <!-- Imagen a la izquierda en desktop, arriba en móvil -->
+      <div class="course-image-container">
+        <img [src]="curso.imagen" alt="Imagen del curso: {{ curso.titulo }}" class="course-image">
+        <div class="course-tags">
+          <span class="tag">{{ curso.categoria }}</span>
+          <span class="tag">{{ curso.cantidadTemas }} temas</span>
+        </div>
       </div>
-      <div class="course-image">
-        <img [src]="curso.imagen" alt="Imagen del curso">
+
+      <!-- Información a la derecha en desktop, abajo en móvil -->
+      <div class="course-info">
+        <div class="course-description">
+          <h2>Descripción del curso</h2>
+          <p>{{ curso.descripcion }}</p>
+        </div>
+
+        <div class="course-meta">
+          <div class="instructor-info">
+            <h3>Instructor</h3>
+            <div class="instructor-profile">
+              <div class="instructor-avatar">
+                <i class="fa-solid fa-chalkboard-teacher"></i>
+              </div>
+              <div class="instructor-name">{{ curso.instructor }}</div>
+            </div>
+          </div>
+
+          <div class="course-stats">
+            <div class="stat-item">
+              <i class="fa-solid fa-book"></i>
+              <span>{{ curso.cantidadTemas }} temas</span>
+            </div>
+            <div class="stat-item">
+              <i class="fa-solid fa-tag"></i>
+              <span>{{ curso.categoria }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sección de inscripción móvil (se muestra sólo en móvil) -->
+        <div class="mobile-enroll-section">
+          <button class="enroll-btn btn-full-width">
+            <i class="fa-solid fa-user-plus"></i>
+            <span>Inscribirme al curso</span>
+          </button>
+        </div>
       </div>
-    </div>
+    </main>
   </div>
 </div>

@@ -9,6 +9,9 @@ id: any|string;
     nombreCategoria: string
     imagen: string;
     instructor: string;
+    categoria: string;
+    cantidadTemas: string;
+
 }
 
 export interface CategoriaCursos {

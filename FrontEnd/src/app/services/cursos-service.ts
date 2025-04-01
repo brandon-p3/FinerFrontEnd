@@ -30,4 +30,8 @@ export class CursosServiceService {
     return this.http.get<Curso[]>(`${this.apiUri}/cursos/alumno/detalles/${titulo}`);
   }
 
+
+  ///api/cursos/alumno/inscripcionCurso/{idCurso}/{idAlumno}
+
+  
 }
