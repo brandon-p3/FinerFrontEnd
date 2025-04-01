@@ -72,12 +72,6 @@ export const routes: Routes = [
   { path: '**', redirectTo: 'alumnos/cursos' },
 
 
-  // Rutas para los alumnos
-  { path: 'cursos-alumnos', component: CursosAlumnosComponent },
-  { path: 'contenido-curso', component: ContenidoCursoComponent },
-  { path: 'descripcion-curso-alumno', component: DescripcionCursoAlumnoComponent },
-  { path: 'perfil-alumno', component: PerfilAlumnoComponent },
-
     //Rutas para el instructor
     {path: 'cursos-instructor', component: CursosInstructorComponent},
     {path: 'crear-curso', component:CrearCursoComponent},
