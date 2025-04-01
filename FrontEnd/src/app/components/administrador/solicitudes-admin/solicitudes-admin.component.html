@@ -1,36 +1,39 @@
 <app-navbar-admin></app-navbar-admin>
 
 <div class="container">
-    <!-- Sección de Solicitudes de Instructores -->
-    <div class="section">
-      <h2>Solicitudes Instructores</h2>
-      <div class="card-container">
-        <div class="card" *ngFor="let instructor of instructores">
-          <p><strong>Nombre Completo:</strong> {{ instructor.nombre }}</p>
-          <p><strong>Username:</strong> {{ instructor.username }}</p>
-          <div class="actions">
-            <button class="btn-details" (click)="abrirDetalles(instructor)">Detalles</button>
-            <button class="btn-accept" (click)="aceptarInstructor(instructor)">Aceptar</button>
-            <button class="btn-reject" (click)="abrirModalRechazo(instructor)">Rechazar</button>
-          </div>
+  <!-- Sección de Solicitudes de Instructores -->
+  <div class="section">
+    <h2>Solicitudes Instructores</h2>
+    <div class="card-container">
+      <div class="card" *ngFor="let instructor of instructores">
+        <p><strong>Nombre Completo:</strong> {{ instructor.nombre }}</p>
+        <p><strong>Username:</strong> {{ instructor.nombre_usuario }}</p>
+        <div class="actions">
+          <button class="btn-details" (click)="abrirDetalles(instructor)">Detalles</button>
+          <button class="btn-accept" (click)="aceptarInstructor(instructor)">Aceptar</button>
+          <button class="btn-reject" (click)="abrirModalRechazo(instructor)">Rechazar</button>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- Sección de Solicitudes de Categorías -->
-    <div class="section">
-      <h2>Solicitudes Categorías</h2>
-      <div class="card-container">
-        <div class="card" *ngFor="let solicitud of solicitudesCategorias">
-          <p><strong>Nombre Categoría:</strong> {{ solicitud.categoria }}</p>
-          <p><strong>Instructor Solicitante:</strong> {{ solicitud.instructor.nombre }}</p>
-          <div class="actions">
-            <button class="btn-accept">Aceptar</button>
-            <button class="btn-reject">Rechazar</button>
-          </div>
+  <!-- Sección de Solicitudes de Categorías -->
+  <div class="section">
+    <h2>Solicitudes Categorías</h2>
+    <div class="card-container">
+      <div class="card" *ngFor="let solicitud of solicitudesCategorias">
+        <p><strong>Nombre Categoría:</strong> {{ solicitud.nombre_categoria }}</p>
+        <p><strong>Solicitante:</strong> {{ solicitud.nombre }} {{ solicitud.apellido_paterno }} {{ solicitud.apellido_materno }}</p>
+        <p><strong>Descripcion:</strong> {{ solicitud.descripcion }}</p>
+        <div class="actions">
+          <!-- Aceptar categoría -->
+          <button class="btn-accept" (click)="aprobarCategoria(solicitud.id_solicitud_categoria)">Aceptar</button>
+          <!-- Rechazar categoría con id dinámico -->
+          <button class="btn-reject" (click)="desaprobarCategoria(solicitud.id_solicitud_categoria)">Rechazar</button>
         </div>
       </div>
     </div>
+  </div>
 </div>
 
 <!-- Mensaje de éxito -->
@@ -42,13 +45,13 @@
 <div *ngIf="mostrarModalRechazo" class="modal-overlay">
   <div class="modal-content">
     <h3>Rechazar solicitud de instructor</h3>
-    
+
     <div class="form-group">
       <label for="motivoRechazo">Motivo del rechazo:</label>
-      <textarea id="motivoRechazo" [(ngModel)]="motivoRechazo" 
-        class="form-control" rows="3" placeholder="Explique el motivo del rechazo"></textarea>
+      <textarea id="motivoRechazo" [(ngModel)]="motivoRechazo" class="form-control" rows="3"
+        placeholder="Explique el motivo del rechazo"></textarea>
     </div>
-    
+
     <div class="modal-actions">
       <button class="btn-cancel" (click)="cancelarRechazo()">Cancelar</button>
       <button class="btn-confirm" (click)="confirmarRechazo()">Confirmar rechazo</button>
@@ -57,10 +60,7 @@
 </div>
 
 <!-- Modal de Detalles del Instructor -->
-<app-detalle-instructor-admin 
-  *ngIf="mostrarModal" 
-  [instructor]="instructorSeleccionado" 
-  (cerrar)="cerrarModal()">
+<app-detalle-instructor-admin *ngIf="mostrarModal" [instructor]="instructorSeleccionado" (cerrar)="cerrarModal()">
 </app-detalle-instructor-admin>
 
 <app-footer></app-footer>

@@ -46,6 +46,15 @@ export class AdministradorServiceService {
     return this.http.get<any[]>(`${this.apiUri}/solicitudes/todas`);
   }
 
+  aprobarCategoria(id: number): Observable<string> {
+    const url = `${this.apiUri}/solicitudes/aprobar/${id}`;
+    return this.http.put<string>(url, {});
+  }
+
+  desaprobarCategoria(id: number): Observable<string> {
+    return this.http.put<string>(`${this.apiUri}/solicitudes/desaprobar/${id}`, {});
+  }
+
   obtenerCategoriasAprobadas(): Observable<any> {
     return this.http.get<any>(`${this.apiUri}/token/ver-categoria-aprobada`);
   }

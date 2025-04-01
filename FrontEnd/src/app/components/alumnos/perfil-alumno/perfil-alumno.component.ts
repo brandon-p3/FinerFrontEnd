@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { AlumnoService } from '../../../services/alumno.service';
@@ -8,14 +8,15 @@ type PageType = 'actualizar-perfil' | 'certificados' | 'historial' | 'mis-cursos
 
 interface Usuario {
   idUsuario: number;
+  idRol: number;
   nombre: string;
   apellidoPaterno: string;
   apellidoMaterno: string;
-  email: string; // Asegúrate que coincida con 'correo' en el backend
+  email: string;
   contrasenia: string;
   nombreUsuario: string;
-  cursosCompletados: number;
-  // Agrega otros campos si son necesarios
+  cursosCompletados?: number;
+  estado: string;
 }
 
 @Component({
@@ -23,21 +24,28 @@ interface Usuario {
   templateUrl: './perfil-alumno.component.html',
   styleUrls: ['./perfil-alumno.component.css']
 })
-export class PerfilAlumnoComponent {
+export class PerfilAlumnoComponent implements OnInit {
   constructor(private router: Router, private alumnoService: AlumnoService) {}
-  mostrarCampoContrasenia: boolean = false;
-  mostrarContrasenia: boolean = false;
+  
+  mostrarContraseniaActual: boolean = false;
+  mostrarNuevaContrasenia: boolean = false;
+  nuevaContrasenia: string = '';
+  confirmarContrasenia: string = '';
+  contraseniaAnterior: string = '';
 
   usuario: Usuario = {
-    idUsuario: 1,
-    nombre: 'Nombre del Alumno',
-    apellidoPaterno: 'ApellidoPaterno',
-    apellidoMaterno: 'ApellidoMaterno',
-    email: 'ejemplo@gmail.com',
-    contrasenia: 'password123',
-    nombreUsuario: 'nombreUsuario',
-    cursosCompletados: 5
+    idUsuario: 10,
+    idRol: 3,
+    nombre: 'Diego',
+    apellidoPaterno: 'Flores',
+    apellidoMaterno: 'Moreno',
+    email: 'diego.flores@estudiante.finer.edu',
+    contrasenia: 'est202',
+    nombreUsuario: 'diego_estudiante',
+    estado: 'activo',
+    cursosCompletados: 1
   };
+
   // Estado del menú desplegable
   menuOpen = false;
 
@@ -51,46 +59,152 @@ export class PerfilAlumnoComponent {
   // Término de búsqueda
   terminoBusqueda: string = '';
 
+  ngOnInit(): void {
+    // Guardamos la contraseña original para posibles reversiones
+    this.contraseniaAnterior = this.usuario.contrasenia;
+  }
+
   // Método para alternar el menú desplegable
   toggleMenu() {
     this.menuOpen = !this.menuOpen;
   }
 
-  // Método para guardar cambios
+  // Método para guardar cambios (perfil completo)
   guardarCambios() {
+    // Validaciones
+    if (!this.usuario.nombre || !this.usuario.apellidoPaterno || 
+        !this.usuario.nombreUsuario || !this.usuario.email) {
+      Swal.fire('Error', 'Por favor completa todos los campos requeridos', 'error');
+      return;
+    }
+
+    if (!this.usuario.email.includes('@')) {
+      Swal.fire('Error', 'Por favor ingresa un correo electrónico válido', 'error');
+      return;
+    }
+
     Swal.fire({
       title: '¿Estás seguro?',
-      text: '¿Deseas guardar los cambios?',
+      text: '¿Deseas guardar los cambios en tu perfil?',
       icon: 'question',
       showCancelButton: true,
       confirmButtonText: 'Sí, guardar',
-      cancelButtonText: 'Cancelar',
-      confirmButtonColor: '#8EC3B0',
-      cancelButtonColor: '#FF6B6B',
+      cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.ejecutarGuardado();
+        const contrasenia = this.nuevaContrasenia || this.usuario.contrasenia;
+        
+        this.alumnoService.actualizarPerfil(
+          this.usuario.idUsuario,
+          this.usuario.nombre,
+          this.usuario.apellidoPaterno,
+          this.usuario.apellidoMaterno,
+          this.usuario.email,
+          contrasenia,
+          this.usuario.nombreUsuario
+        ).subscribe({
+          next: (response) => {
+            Swal.fire('Éxito', 'Perfil actualizado correctamente', 'success');
+            
+            // Actualiza la contraseña en el frontend si se cambió
+            if (this.nuevaContrasenia) {
+              this.usuario.contrasenia = this.nuevaContrasenia;
+              this.contraseniaAnterior = this.nuevaContrasenia;
+              this.nuevaContrasenia = '';
+              this.confirmarContrasenia = '';
+            }
+            
+            // Forza la actualización de la vista
+            this.refrescarVistaContrasenia();
+          },
+          error: (error) => {
+            // Revierte los cambios en caso de error
+            this.usuario.contrasenia = this.contraseniaAnterior;
+            Swal.fire('Error', error.error || 'Error al actualizar el perfil', 'error');
+          }
+        });
       }
     });
   }
 
-  // Método que contiene la lógica para guardar cambios
-  ejecutarGuardado() {
+  // Método para actualizar solo la contraseña
+  actualizarContrasenia() {
+    if (this.nuevaContrasenia !== this.confirmarContrasenia) {
+      Swal.fire('Error', 'Las contraseñas no coinciden', 'error');
+      return;
+    }
+
+    if (this.nuevaContrasenia.length < 8) {
+      Swal.fire('Error', 'La contraseña debe tener al menos 8 caracteres', 'error');
+      return;
+    }
+
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: '¿Deseas actualizar tu contraseña?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, actualizar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Guardamos la contraseña anterior por si hay error
+        const contraseniaAnterior = this.usuario.contrasenia;
+        
+        // Actualizamos primero en el frontend para respuesta inmediata
+        this.usuario.contrasenia = this.nuevaContrasenia;
+        
+        this.alumnoService.actualizarContrasenia(
+          this.usuario.email,
+          this.nuevaContrasenia
+        ).subscribe({
+          next: () => {
+            Swal.fire('Éxito', 'Contraseña actualizada correctamente', 'success');
+            this.contraseniaAnterior = this.nuevaContrasenia;
+            this.nuevaContrasenia = '';
+            this.confirmarContrasenia = '';
+            this.refrescarVistaContrasenia();
+          },
+          error: (error) => {
+            // Revierte el cambio si hay error
+            this.usuario.contrasenia = contraseniaAnterior;
+            Swal.fire('Error', error.error || 'Error al actualizar la contraseña', 'error');
+          }
+        });
+      }
+    });
+  }
+
+  // Método auxiliar para refrescar la vista de la contraseña
+  private refrescarVistaContrasenia() {
+    this.mostrarContraseniaActual = false;
+    setTimeout(() => {
+      this.mostrarContraseniaActual = true;
+    }, 100);
+  }
+
+  // Resto de tus métodos existentes (sin cambios)
+  ejecutarActualizacion() {
+    const contrasenia = this.mostrarContraseniaActual && this.usuario.contrasenia 
+      ? this.usuario.contrasenia 
+      : '';
+
     this.alumnoService.actualizarPerfil(
       this.usuario.idUsuario,
       this.usuario.nombre,
       this.usuario.apellidoPaterno,
       this.usuario.apellidoMaterno,
-      this.usuario.email, // Nota: En el backend es 'correo'
-      this.usuario.contrasenia,
+      this.usuario.email,
+      contrasenia,
       this.usuario.nombreUsuario
     ).subscribe({
       next: (response) => {
         Swal.fire('Éxito', 'Los cambios se guardaron correctamente', 'success');
-        // Opcional: Actualizar datos locales si el backend devuelve info actualizada
         if (response.data) {
           this.usuario = { ...this.usuario, ...response.data };
+          this.contraseniaAnterior = this.usuario.contrasenia;
         }
+        this.refrescarVistaContrasenia();
       },
       error: (error) => {
         console.error('Error al actualizar:', error);
@@ -99,30 +213,21 @@ export class PerfilAlumnoComponent {
     });
   }
 
-  // Método para visualizar el certificado
-visualizarCertificado(idInscripcion: number) {
-  this.alumnoService.generarCertificado(idInscripcion).subscribe({
-    next: (data) => {
-      // Crear un Blob con el contenido del PDF
-      const blob = new Blob([data], { type: 'application/pdf' });
+  visualizarCertificado(idInscripcion: number) {
+    this.alumnoService.generarCertificado(idInscripcion).subscribe({
+      next: (data) => {
+        const blob = new Blob([data], { type: 'application/pdf' });
+        const url = window.URL.createObjectURL(blob);
+        window.open(url, '_blank');
+        window.URL.revokeObjectURL(url);
+      },
+      error: (error) => {
+        console.error('Error al visualizar el certificado:', error);
+        Swal.fire('Error', 'No se pudo visualizar el certificado', 'error');
+      }
+    });
+  }
 
-      // Crear una URL para el Blob
-      const url = window.URL.createObjectURL(blob);
-
-      // Abrir el PDF en una nueva pestaña
-      window.open(url, '_blank');
-
-      // Liberar el objeto URL después de abrir el PDF
-      window.URL.revokeObjectURL(url);
-    },
-    error: (error) => {
-      console.error('Error al visualizar el certificado:', error);
-      Swal.fire('Error', 'No se pudo visualizar el certificado', 'error');
-    }
-  });
-}
-
-  // Método para descargar el certificado
   descargarCertificado(idCertificado: number) {
     Swal.fire({
       title: '¿Estás seguro?',
@@ -153,7 +258,6 @@ visualizarCertificado(idInscripcion: number) {
     });
   }
 
-  // Método para buscar cursos por nombre
   buscarCursos() {
     if (this.terminoBusqueda.trim() === '') {
       Swal.fire('Advertencia', 'Por favor, ingresa un término de búsqueda', 'warning');
@@ -162,8 +266,8 @@ visualizarCertificado(idInscripcion: number) {
 
     this.alumnoService.buscarCursoPorNombre(this.terminoBusqueda).subscribe({
       next: (cursos) => {
-        this.cursos = cursos; // Actualizar la lista de cursos con los resultados de la búsqueda
-        this.obtenerProgresoDeCursos(); // Obtener el progreso de los cursos encontrados
+        this.cursos = cursos;
+        this.obtenerProgresoDeCursos();
       },
       error: (error) => {
         console.error('Error al buscar cursos:', error);
@@ -172,18 +276,15 @@ visualizarCertificado(idInscripcion: number) {
     });
   }
 
-  // Método para obtener el progreso de los cursos en la lista
   obtenerProgresoDeCursos() {
     this.cursos.forEach(curso => {
       this.obtenerProgresoCurso(this.usuario.idUsuario, curso.idCurso);
     });
   }
 
-  // Método para obtener el progreso de un curso específico
   obtenerProgresoCurso(idEstudiante: number, idCurso: number) {
     this.alumnoService.verProgresoAlumno(idEstudiante, idCurso).subscribe({
       next: (progreso) => {
-        // Buscar el curso en la lista y actualizar su progreso y última actividad
         const curso = this.cursos.find(c => c.idCurso === idCurso);
         if (curso) {
           curso.progreso = progreso.vPorcentaje;
@@ -196,11 +297,9 @@ visualizarCertificado(idInscripcion: number) {
     });
   }
 
-  // Método para navegar a las diferentes páginas y secciones
   navigateTo(page: PageType) {
     this.currentPage = page;
 
-    // Cambiar la sección activa del mini menú
     if (page === 'actualizar-perfil') {
       this.currentSection = 'perfil';
     } else if (page === 'certificados') {
@@ -211,11 +310,9 @@ visualizarCertificado(idInscripcion: number) {
       this.currentSection = 'mis-cursos';
     }
 
-    // Cerrar el menú después de seleccionar una opción
     this.menuOpen = false;
   }
 
-  // Método para cerrar sesión
   logout() {
     console.log('Cerrando sesión...');
     this.router.navigate(['/login']);

@@ -8,7 +8,7 @@
 /* ====== Secciones generales ====== */
 .section {
   padding: 20px;
-  background: #EAF9F0;  /* Verde claro */
+  background: #F5F5F5;  /* Verde claro */
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
@@ -21,7 +21,6 @@ h2 {
 }
 
 /* ====== "Cursos por Aprobar" ====== */
-/* ====== "Cursos por Aprobar" ====== */
 /* Contenedor del carrusel */
 .pending-courses {
   display: flex;
@@ -30,11 +29,27 @@ h2 {
   overflow-x: auto; 
   scroll-snap-type: x mandatory; 
   gap: 20px;
-  padding: 10px;
+  padding: 10px 5px 20px 5px;
   scrollbar-width: thin;  
   scrollbar-color: #8EC3B0 #f1f1f1;
 }
 
+/* Ocultar la barra de desplazamiento pero mantener la funcionalidad */
+.pending-courses::-webkit-scrollbar {
+  height: 8px;
+}
+
+.pending-courses::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.pending-courses::-webkit-scrollbar-thumb {
+  background: #8EC3B0;
+  border-radius: 10px;
+}
+
+/* ========= SECCION CURSOS POR APROBAR ======================= */
 /* Tarjetas dentro de la sección "Cursos por Aprobar" */
 .pending-card {
   display: flex;
@@ -48,6 +63,7 @@ h2 {
   min-width: 370px;
   scroll-snap-align: start;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
 }
 
 .pending-card:hover {
@@ -55,56 +71,92 @@ h2 {
   box-shadow: 4px 6px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* Contenido de la tarjeta */
+/* Contenido de la tarjeta - cambiado a flex-direction: row */
 .card-content {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 10px;
+  flex-direction: row;
+  align-items: flex-start;
+  text-align: left;
+  gap: 15px;
+  width: 100%;
 }
 
-/* Texto y botones */
+/* Estilo para el contenedor de la imagen - ahora más pequeño y a la izquierda */
+.curso-imagen-pendiente {
+  width: 100px;
+  height: 100px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.curso-imagen-pendiente img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border: 2px solid #8EC3B0;
+  border-radius: 8px;
+  transition: transform 0.5s ease;
+}
+
+.pending-card:hover .curso-imagen-pendiente img {
+  transform: scale(1.05);
+}
+
+/* Texto y botones - ahora el texto tiene flex-grow para empujar los botones abajo */
 .text {
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: 100%;
+  width: calc(100% - 115px);
+}
+
+/* Para asegurar que el contenido de texto ocupe suficiente espacio vertical */
+.text p:last-of-type {
+  margin-bottom: auto; /* Empuja los botones hacia abajo */
 }
 
 h3 {
   color: #055052; /* Verde oscuro */
-  font-size: 25px;
-  margin-bottom: 5px;
+  font-size: 22px;
+  margin-bottom: 8px;
+  font-weight: 700;
+  line-height: 1.2;
 }
 
 p {
   color: #333;
   font-size: 14px;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
+  line-height: 1.5;
 }
 
 /* Botones */
 .buttons {
   display: flex;
-  gap: 5px;
-  justify-content: center;
+  gap: 1px;
+  justify-content: center; /* Alineados a la izquierda ahora */
+  margin-top: 7px;
 }
 
 .btn {
-  padding: 10px 14px;
+  padding: 8px 14px;
   border: none;
   cursor: pointer;
-  border-radius: 9px;
-  font-size: 12px;
+  border-radius: 8px;
+  font-size: 11px;
   font-weight: bold;
   transition: all 0.3s ease-in-out;
   min-width: 75px;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .btn:hover {
   transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
 }
 
 .approve {
@@ -125,6 +177,26 @@ p {
   background: #c62828;
 }
 
+/* Media query para pantallas más pequeñas */
+@media (max-width: 480px) {
+  .card-content {
+    flex-direction: column;
+  }
+  
+  .curso-imagen-pendiente {
+    width: 100%;
+    height: 120px;
+    margin-bottom: 10px;
+  }
+  
+  .text {
+    width: 100%;
+  }
+  
+  .buttons {
+    justify-content: center;
+  }
+}
 /* ======= "Todos los Cursos" ======= */
 /* Tarjetas */
 .pending-card {
@@ -144,6 +216,7 @@ p {
   transform: scale(1.03);
   box-shadow: 4px 6px 15px rgba(0, 0, 0, 0.2);
 }
+
 .all-courses {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -166,12 +239,22 @@ p {
   transform: scale(1.03);
 }
 
-.all-card .card-image {
-  width: 160px;
-  height: 160px;
+/* Estilos para el contenedor de la imagen */
+.curso-imagen {
+  width: 100%;
+  height: 180px;
+  margin-bottom: 15px;
   border-radius: 8px;
-  object-fit: cover;
+  overflow: hidden; /* Evita que la imagen se salga del contenedor */
+}
+
+/* Estilos para la imagen */
+.curso-imagen img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Mantiene la proporción y cubre el contenedor */
   border: 2px solid #8EC3B0;
+  border-radius: 8px;
 }
 
 .all-card .details {
