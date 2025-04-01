@@ -68,20 +68,17 @@ export const routes: Routes = [
       { path: '**', redirectTo: 'cursos' }
     ]
   },
+    // Rutas para instructor
+ {
+   path: 'instructor',
+   children: [
+      { path: 'cursos', component: CursosInstructorComponent },
+      { path: 'crear-curso', component: CrearCursoComponent },
+      { path: '', redirectTo: 'cursos', pathMatch: 'full' }
+      ]
+    },
   { path: '', redirectTo: 'alumnos/cursos', pathMatch: 'full' },
   { path: '**', redirectTo: 'alumnos/cursos' },
-
-
-  // Rutas para los alumnos
-  { path: 'cursos-alumnos', component: CursosAlumnosComponent },
-  { path: 'contenido-curso', component: ContenidoCursoComponent },
-  { path: 'descripcion-curso-alumno', component: DescripcionCursoAlumnoComponent },
-  { path: 'perfil-alumno', component: PerfilAlumnoComponent },
-
-    //Rutas para el instructor
-    {path: 'cursos-instructor', component: CursosInstructorComponent},
-    {path: 'crear-curso', component:CrearCursoComponent},
-
 
   // Redirección por defecto (en caso de ruta no encontrada)
   { path: '**', redirectTo: 'home/inicio' },
