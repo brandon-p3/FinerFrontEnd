@@ -185,7 +185,7 @@ export class SolicitudesAdminComponent implements OnInit {
   obtenerSolicitudesCategorias() {
     this.adminService.obtenerTodasLasSolicitudes().subscribe(
       (data) => {
-        console.log('Datos de solicitudes de instructores:', data);
+        console.log('Datos de solicitudes de categorias:', data);
         this.solicitudesCategorias = data;
       },
       (error) => {
@@ -193,4 +193,34 @@ export class SolicitudesAdminComponent implements OnInit {
       }
     );
   }
+
+  aprobarCategoria(id: number) {
+    console.log('Aprobando categoría con id:', id);  // Verificar que el id es correcto
+    this.adminService.aprobarCategoria(id).subscribe({
+      next: (response) => {
+        console.log('Categoría aprobada:', response);
+        alert('Categoría aprobada con éxito');
+      },
+      error: (error) => {
+        console.error('Error al aprobar categoría:', error);
+        alert('Hubo un error al aprobar la categoría');
+      }
+    });
+  }
+  
+  desaprobarCategoria(id: number) {
+    console.log('Desaprobando categoría con id:', id);  // Verificar que el id es correcto
+    this.adminService.desaprobarCategoria(id).subscribe({
+      next: (response) => {
+        console.log('Categoría desaprobada:', response);
+        alert('Categoría desaprobada con éxito');
+      },
+      error: (error) => {
+        console.error('Error al desaprobar categoría:', error);
+        alert('Hubo un problema al desaprobar la categoría.');
+      }
+    });
+  }
+  
+  
 }
