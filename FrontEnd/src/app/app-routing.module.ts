@@ -80,9 +80,6 @@ export const routes: Routes = [
   { path: '', redirectTo: 'alumnos/cursos', pathMatch: 'full' },
   { path: '**', redirectTo: 'alumnos/cursos' },
 
-  // Redirección por defecto (en caso de ruta no encontrada)
-  { path: '**', redirectTo: 'home/inicio' },
-
 ];
 
 @NgModule({
