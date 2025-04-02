@@ -1,33 +1,77 @@
 <app-navbar-alumno></app-navbar-alumno>
-<!-- Filtros -->
-<div class="filters-container">
-  <div class="filter">
-    <input type="text" placeholder="Buscar por nombre" [(ngModel)]="nombreCurso"
-      (input)="onNombreCursoChange($event)">
-  </div>
 
-  <div class="filter">
-    <select [(ngModel)]="categoriaSeleccionada" (change)="onCategoriaChange($event)">
-      <option value="">Filtrar por categoría</option>
-      <option value="programacion">Programación</option>
-      <option value="diseño">Diseño</option>
-      <option value="marketing">Marketing</option>
-    </select>
-  </div>
-
-  <main class="courses-container">
-<main class="courses-container">
-  <div *ngIf="cursosFiltrados.length === 0" class="no-courses">
-    <p>No se encontraron cursos con esos filtros.</p>
-  </div>
-
-  <div *ngFor="let curso of cursosFiltrados" class="course-card">
-    <h3>{{ curso.tituloCurso }}</h3>
-    <p>{{ curso.descripcion }}</p>
-    <p class="category">{{ curso.nombreCategoria }}</p>
-    <div class="buttons-container">
-      <button (click)="accederCurso(curso)">Acceder</button>
-      <button (click)="verDetallesCurso(curso.tituloCurso)">Ver detalles</button>
+<div class="courses-page">
+  <div class="container">
+    <!-- Banner superior -->
+    <div class="courses-header">
+      <h1>Explora nuestros cursos</h1>
+      <p>Encuentra el curso perfecto para ampliar tus conocimientos</p>
     </div>
+
+    <!-- Sección de filtros -->
+    <div class="filters-section">
+      <div class="search-bar">
+        <i class="fa-solid fa-search search-icon"></i>
+        <input
+          type="text"
+          placeholder="Buscar por nombre de curso"
+          [(ngModel)]="nombreCurso"
+          (input)="onNombreCursoChange($event)"
+        >
+      </div>
+
+      <div class="filter-options">
+        <div class="filter-dropdown">
+          <select [(ngModel)]="categoriaSeleccionada" (change)="onCategoriaChange($event)">
+            <option value="">Todas las categorías</option>
+            <option value="programacion">Programación</option>
+            <option value="diseño">Diseño</option>
+            <option value="marketing">Marketing</option>
+          </select>
+          <i class="fa-solid fa-chevron-down dropdown-icon"></i>
+        </div>
+
+        <!-- Puedes agregar más filtros aquí si es necesario -->
+      </div>
+    </div>
+
+    <!-- Resultados de cursos -->
+    <main class="courses-results">
+      <!-- Mensaje cuando no hay resultados -->
+      <div *ngIf="cursosFiltrados.length === 0" class="no-results">
+        <i class="fa-solid fa-search-minus"></i>
+        <h2>No se encontraron cursos</h2>
+        <p>Intenta con otros términos de búsqueda o filtros</p>
+      </div>
+
+      <!-- Grid de cursos -->
+      <div class="courses-grid">
+        <div *ngFor="let curso of cursosFiltrados" class="course-card">
+          <div class="course-image">
+            <!-- Si tienes imágenes para los cursos -->
+            <div class="image-placeholder">
+              <i class="fa-solid fa-graduation-cap"></i>
+            </div>
+            <span class="category-tag">{{ curso.nombreCategoria }}</span>
+          </div>
+
+          <div class="course-info">
+            <h3 class="course-title">{{ curso.tituloCurso }}</h3>
+            <p class="course-description">{{ curso.descripcion }}</p>
+
+            <div class="course-actions">
+              <button class="btn-primary" (click)="accederCurso(curso)">
+                <i class="fa-solid fa-arrow-right"></i>
+                <span>Acceder</span>
+              </button>
+              <button class="btn-secondary" (click)="verDetallesCurso(curso.tituloCurso)">
+                <i class="fa-solid fa-info-circle"></i>
+                <span>Detalles</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
   </div>
-</main>
+</div>
