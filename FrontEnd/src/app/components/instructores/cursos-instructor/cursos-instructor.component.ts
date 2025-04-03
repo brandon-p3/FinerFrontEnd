@@ -124,7 +124,12 @@ export class CursosInstructorComponent implements OnInit {
   navigateTo(page: string) {
     this.currentPage = page;
     this.menuOpen = false;
-  }
+    
+    // Agrega esta condición para redirigir correctamente
+    if (page === 'mis-cursos') {
+        this.router.navigate(['/instructor/cursos']);
+    }
+}
 
   applyFilters() {
     let filtered = [...this.cursos];
@@ -225,6 +230,7 @@ export class CursosInstructorComponent implements OnInit {
         idInstructor: this.editFormData.idInstructor,
         titulo: this.editFormData.titulo,
         descripcion: this.editFormData.descripcion,
+        imagen:this.editFormData.imagenUrl,
         idCategoria: this.editFormData.idCategoria
     };
 
