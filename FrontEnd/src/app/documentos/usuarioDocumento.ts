@@ -5,8 +5,8 @@ export interface AlumnoDocumento {
     correo: string;
     contraseña: String;
     nombreUsuario: string
+    actualizarContrasenia: boolean;
 }
-
 export interface InstructorDocumento {
     nombre: string;
     apellidoPaterno: String;

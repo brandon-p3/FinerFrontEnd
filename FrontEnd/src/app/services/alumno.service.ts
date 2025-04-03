@@ -49,7 +49,8 @@ export class AlumnoService {
       .set('apellidoMaterno', apellidoMaterno)
       .set('correo', correo)
       .set('contrasenia', contrasenia || '') // Envía cadena vacía si es null/undefined
-      .set('nombreUsuario', nombreUsuario);
+      .set('nombreUsuario', nombreUsuario)
+      .set('actualizar_contrasenia', contrasenia ? 'true' : 'false'); // Añade este parámetro
   
     return this.http.put(`${this.apiUrl}/editar-cuenta`, null, {
       headers: new HttpHeaders({
@@ -72,6 +73,8 @@ export class AlumnoService {
       })
     );
   }
+
+  
   /**
    * Actualiza solo la contraseña del alumno
    * @param email Correo electrónico del alumno

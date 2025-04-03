@@ -44,11 +44,15 @@ editarCurso(cursoData: CursoEditarDTO): Observable<any> {
       .set('idCategoria', idCategoria.toString())
       .set('tituloCurso', tituloCurso)
       .set('descripcion', descripcion);
-
-    return this.http.post(`${this.instructorApiUrl}/crear-curso`, params.toString(), {
-      headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded'),
-      responseType: 'text'
-    });
+  
+    return this.http.post(
+      `${this.instructorApiUrl}/crear-curso`, 
+      params.toString(), 
+      {
+        headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded'),
+        responseType: 'text'
+      }
+    );
   }
 
   // Método para obtener categorías (si no lo tienes ya)

@@ -23,6 +23,7 @@ export interface CursoEditarDTO {
   idInstructor: number;
   titulo: string;
   descripcion: string;
+  imagen:string;
   idCategoria: number;
 }
 

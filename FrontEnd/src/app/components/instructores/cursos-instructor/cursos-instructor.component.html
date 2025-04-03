@@ -175,20 +175,22 @@
         </div>
 
         <div class="form-group">
-            <label>Imagen actual:</label>
+            <label for="course-image-url">URL de la Imagen</label>
+            <input type="url" id="course-image-url" class="form-input" 
+                   placeholder="Ingrese la URL de la imagen del curso"
+                   [(ngModel)]="editFormData.imagenUrl" name="imagenUrl">
+            <small class="text-muted">Ingrese una URL válida para la imagen (ej: https://ejemplo.com/imagen.jpg)</small>
+            
+            <!-- Vista previa de la imagen -->
             <div *ngIf="editFormData.imagenUrl" class="current-image-preview">
-                <img [src]="editFormData.imagenUrl" alt="Imagen actual" class="img-preview">
+                <label>Vista previa:</label>
+                <img [src]="editFormData.imagenUrl" alt="Imagen del curso" class="img-preview" 
+                     onerror="this.src='assets/imagen-no-disponible.jpg'">
             </div>
             <div *ngIf="!editFormData.imagenUrl" class="no-image-message">
-                <p>Este curso no tiene imagen</p>
+                <p>No hay imagen disponible</p>
             </div>
-      
-          <small class="text-muted">Para cambiar la imagen, por favor contacte al administrador.</small>
-        </div>
-        
-        <div *ngIf="errorMessage" class="error-message">
-          {{ errorMessage }}
-        </div>
+          </div>
         
         <div class="modal-actions">
           <button type="button" class="action-btn cancel-btn" 

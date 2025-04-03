@@ -16,6 +16,7 @@ interface Usuario {
   nombreUsuario: string;
   cursosCompletados?: number;
   estado: string;
+  actualizarContrasenia: boolean;
 }
 
 interface Curso {
@@ -54,7 +55,8 @@ export class PerfilAlumnoComponent implements OnInit {
     contrasenia: 'est202',
     nombreUsuario: 'diego_estudiante',
     estado: 'activo',
-    cursosCompletados: 1
+    cursosCompletados: 1,
+    actualizarContrasenia: false,
   };
 
   menuOpen = false;
