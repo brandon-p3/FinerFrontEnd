@@ -17,10 +17,10 @@ export class DescripcionCursoAlumnoComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const titulo = this.route.snapshot.paramMap.get('id');
+    const tituloCurso = this.route.snapshot.paramMap.get('id');
 
-    if (titulo) {
-      this.cursosService.obtenerDetalles(titulo).subscribe(
+    if (tituloCurso) {
+      this.cursosService.obtenerDetalles(tituloCurso).subscribe(
         (data) => {
           this.cursos = data;
           console.log(this.cursos)

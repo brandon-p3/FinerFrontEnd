@@ -1,6 +1,6 @@
 export interface Curso {
-titulo: any;
-id: any|string;
+id: any;
+    titulo: string;
     tituloCurso: string;
     descripcion: string;
     nombreInstructor: string;

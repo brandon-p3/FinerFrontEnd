@@ -47,12 +47,9 @@
       <!-- Grid de cursos -->
       <div class="courses-grid">
         <div *ngFor="let curso of cursosFiltrados" class="course-card">
-          <div class="course-image">
-            <!-- Si tienes imágenes para los cursos -->
-            <div class="image-placeholder">
-              <i class="fa-solid fa-graduation-cap"></i>
-            </div>
-            <span class="category-tag">{{ curso.nombreCategoria }}</span>
+          <div class="curso-imagen">
+            <img [src]="curso.imagen" alt="Imagen de {{ curso.tituloCurso }}"
+              onerror="this.src='assets/images/default-curso.jpg'">
           </div>
 
           <div class="course-info">
