@@ -30,8 +30,12 @@ export class CursosServiceService {
     return this.http.get<Curso[]>(`${this.apiUri}/cursos/alumno/detalles/${titulo}`);
   }
 
+ // obtenerTemas(idCurso: number): Observable<TemaDocumento[]> {
+ //   return this.http.get<TemaDocumento[]>(`${this.apiUri}/cursos/alumno/temasCurso/${idCurso}`);
+//}
 
+//      /api/cursos/alumno/temasCurso/{idCurso}
   ///api/cursos/alumno/inscripcionCurso/{idCurso}/{idAlumno}
 
-  
+
 }
