@@ -25,11 +25,12 @@ export class CursoServiceService {
   );
 }
 
-  editarCurso(cursoData: CursoEditarDTO): Observable<any> {
-    return this.http.put(`${this.apiUrl}/editar`, cursoData, {
-      responseType: 'text' // Acepta respuesta como texto plano
-    });
-  }
+editarCurso(cursoData: CursoEditarDTO): Observable<any> {
+  return this.http.put(`${this.apiUrl}/editar`, cursoData, {
+      headers: new HttpHeaders({'Content-Type': 'application/json'}),
+      responseType: 'text'
+  });
+}
 
   // Nuevos métodos para creación de cursos
   crearCurso(

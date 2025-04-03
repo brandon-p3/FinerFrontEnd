@@ -10,6 +10,7 @@ import Swal from 'sweetalert2';
 })
 export class AlumnoService {
   private apiUrl='http://localhost:8080/api/alumno';
+  private apiCursosUrl = 'http://localhost:8080/api/cursos/alumno'; // Endpoint para cursos
 
   constructor(private http: HttpClient) { }
 
@@ -103,22 +104,59 @@ export class AlumnoService {
    * @returns Observable con el blob del PDF
    */
   generarCertificado(idInscripcion: number): Observable<Blob> {
-    return this.http.get(`${this.apiUrl}/generar-certificado/${idInscripcion}`, {
+    return this.http.get(`${this.apiCursosUrl}/certificado/${idInscripcion}`, {
       responseType: 'blob',
       headers: this.getHeaders()
-    });
+    }).pipe(
+      catchError(error => {
+        console.error('Error generando certificado:', error);
+        throw error;
+      })
+    );
   }
+
 
   /**
    * Busca cursos por nombre
    * @param terminoBusqueda Término de búsqueda
    * @returns Observable con la lista de cursos encontrados
    */
-  buscarCursoPorNombre(terminoBusqueda: string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/buscar-cursos`, {
-      headers: this.getHeaders(),
-      params: { nombre: terminoBusqueda }
-    });
+  buscarCursosPorNombre(nombre: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiCursosUrl}/buscar`, {
+      params: { nombre },
+      headers: this.getHeaders()
+    }).pipe(
+      catchError(error => {
+        console.error('Error buscando cursos:', error);
+        throw error;
+      })
+    );
+  }
+
+  obtenerMisCursos(idAlumno: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiCursosUrl}/mis-cursos/${idAlumno}`, {
+      headers: this.getHeaders()
+    }).pipe(
+      catchError(error => {
+        console.error('Error obteniendo cursos:', error);
+        throw error;
+      })
+    );
+  }
+
+  
+  /**
+   * Inscribirse a un curso
+   */
+  inscribirseCurso(idAlumno: number, idCurso: number): Observable<boolean> {
+    return this.http.get<boolean>(`${this.apiCursosUrl}/inscripcionCurso/${idCurso}/${idAlumno}`, {
+      headers: this.getHeaders()
+    }).pipe(
+      catchError(error => {
+        console.error('Error inscribiéndose al curso:', error);
+        throw error;
+      })
+    );
   }
 
   /**

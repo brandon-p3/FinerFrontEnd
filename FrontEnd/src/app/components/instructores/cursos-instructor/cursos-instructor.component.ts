@@ -1,7 +1,6 @@
-
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { CursoVerDTO, VerCategoriasDTO } from '../../../documentos/cursoDocumento';
+import { CursoEditarDTO, CursoVerDTO, VerCategoriasDTO } from '../../../documentos/cursoDocumento';
 import { CursoServiceService } from '../../../services/curso-service.service';
 import { CategoriaServiceService } from '../../../services/categorias-service.service';
 
@@ -15,7 +14,7 @@ export class CursosInstructorComponent implements OnInit {
   constructor(
     private router: Router,
     private cursoService: CursoServiceService,
-    private categoriaService: CategoriaServiceService // Inyectamos el nuevo servicio
+    private categoriaService: CategoriaServiceService
   ) { } 
 
   usuario = {
@@ -48,12 +47,17 @@ export class CursosInstructorComponent implements OnInit {
   editFormData: any = {
     idCurso: null,
     idInstructor: null,
+    titulo: '',
     descripcion: '',
-    idCategoria: null
+    idCategoria: null,
+    nombreCategoriaActual: '',
+    imagen: null,
+    imagenUrl: null,
+    file: null
   };
-  categorias: VerCategoriasDTO[] = []; // Mejor tipado
+  categorias: VerCategoriasDTO[] = [];
   isEditing = false;
-  categoriaSeleccionada: VerCategoriasDTO | null = null; // Para búsqueda por nombre
+  categoriaSeleccionada: VerCategoriasDTO | null = null;
 
   ngOnInit() {
     this.loadCursos();
@@ -63,23 +67,25 @@ export class CursosInstructorComponent implements OnInit {
   loadCursos() {
     this.isLoading = true;
     this.errorMessage = '';
-  
-    this.cursoService.verCursosInstructor(this.usuario.id).subscribe({
-      next: (cursos) => {
-        this.cursos = cursos;
-        this.filteredCourses = [...this.cursos];
-        this.applyFilters();
-        this.isLoading = false;
-      },
-      error: (error) => {
-        console.error('Error al cargar los cursos', error);
-        this.errorMessage = 'No se pudieron cargar los cursos. Por favor, intente nuevamente.';
-        this.isLoading = false;
-      }
-    });
-  }
+    
+    // Limpiar el array antes de cargar nuevos datos
+    this.cursos = [];
+    this.filteredCourses = [];
 
-  // Método modificado para usar CategoriaService
+    this.cursoService.verCursosInstructor(this.usuario.id).subscribe({
+        next: (cursos) => {
+            this.cursos = [...cursos]; // Crear un nuevo array para forzar la detección de cambios
+            this.applyFilters();
+            this.isLoading = false;
+        },
+        error: (error) => {
+            console.error('Error al cargar los cursos', error);
+            this.errorMessage = 'No se pudieron cargar los cursos. Por favor, intente nuevamente.';
+            this.isLoading = false;
+        }
+    });
+}
+
   loadCategorias() {
     this.categoriaService.obtenerCategoriasAprobadas().subscribe({
       next: (categorias) => {
@@ -93,14 +99,12 @@ export class CursosInstructorComponent implements OnInit {
     });
   }
 
-  // Nuevo método para buscar categoría por nombre
   buscarCategoriaPorNombre(nombre: string) {
     if (!nombre.trim()) {
       this.categoriaSeleccionada = null;
       return;
     }
 
-    // Versión con filtrado local (sin llamar al backend)
     const encontrada = this.categorias.find(c => 
       c.nombreCategoria.toLowerCase().includes(nombre.toLowerCase())
     );
@@ -111,11 +115,8 @@ export class CursosInstructorComponent implements OnInit {
       this.errorMessage = `No se encontró la categoría "${nombre}"`;
       this.categoriaSeleccionada = null;
     }
-
- 
   }
   
-  // Resto de métodos se mantienen igual...
   toggleMenu() {
     this.menuOpen = !this.menuOpen;
   }
@@ -145,7 +146,7 @@ export class CursosInstructorComponent implements OnInit {
 
   createCourse() {
     this.currentPage = 'crear-curso';
-    this.router.navigate(['/crear-curso']);
+    this.router.navigate(['/instructor/crear-curso']);
   }
 
   openPreviewModal(curso: CursoVerDTO) {
@@ -163,58 +164,100 @@ export class CursosInstructorComponent implements OnInit {
       console.error('Intento de editar un curso nulo');
       return;
     }
-  
+
     this.editFormData = {
       idCurso: curso.idCurso,
       idInstructor: this.usuario.id,
+      titulo: curso.titulo || '',
       descripcion: curso.descripcion || '',
-      idCategoria: curso.idCategoria 
+      idCategoria: curso.idCategoria,
+      nombreCategoriaActual: this.getCategoriaName(curso.idCategoria),
+      imagen: curso.imagen || null,
+      imagenUrl: curso.imagen ? this.getImageUrl(curso.imagen) : null,
+      file: null
     };
     
     this.showEditModal = true;
     this.isEditing = true;
   }
 
+  getImageUrl(imagen: string): string {
+    if (!imagen) return '';
+    
+    if (imagen.startsWith('http') || imagen.startsWith('data:')) {
+      return imagen;
+    }
+    return 'data:image/jpeg;base64,' + imagen;
+  }
+
+  getCategoriaName(idCategoria: number): string {
+    const categoria = this.categorias.find(c => c.idCategoria === idCategoria);
+    return categoria ? categoria.nombreCategoria : 'Desconocida';
+  }
+
+  onFileSelected(event: any) {
+    const file: File = event.target.files[0];
+    if (file) {
+      this.editFormData.file = file;
+      
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.editFormData.imagen = e.target.result.split(',')[1];
+        this.editFormData.imagenUrl = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
   submitEditForm() {
-    if (!this.editFormData.descripcion || !this.editFormData.idCategoria) {
-      this.errorMessage = 'Por favor complete todos los campos requeridos';
-      return;
+    // Validar que todos los campos requeridos estén completos
+    if (!this.editFormData.titulo || !this.editFormData.descripcion || !this.editFormData.idCategoria) {
+        this.errorMessage = 'Por favor complete todos los campos requeridos';
+        return;
     }
 
     this.isLoading = true;
     this.errorMessage = '';
-        // Asegúrate de que el objeto tenga la estructura correcta
-        const cursoData = {
-          idCurso: this.editFormData.idCurso,
-          idInstructor: this.editFormData.idInstructor,
-          descripcion: this.editFormData.descripcion,
-          idCategoria: this.editFormData.idCategoria
-        };
 
-    this.cursoService.editarCurso(this.editFormData).subscribe({
-      next: (response) => {
-        console.log('Curso actualizado:', response);
-        this.loadCursos();
-        this.closeEditModal();
-      },
-      error: (error) => {
-        console.error('Error al editar el curso', error);
-        this.errorMessage = error.error?.message || 'No se pudo actualizar el curso. Por favor, intente nuevamente.';
-        this.isLoading = false;
-      },
-      complete: () => {
-        this.isLoading = false;
-      }
+    // Crear objeto de datos del curso
+    const cursoData: CursoEditarDTO = {
+        idCurso: this.editFormData.idCurso,
+        idInstructor: this.editFormData.idInstructor,
+        titulo: this.editFormData.titulo,
+        descripcion: this.editFormData.descripcion,
+        idCategoria: this.editFormData.idCategoria
+    };
+
+    // Llamar al servicio para editar el curso
+    this.cursoService.editarCurso(cursoData).subscribe({
+        next: (response) => {
+            console.log('Curso actualizado:', response);
+            this.loadCursos(); // Recargar cursos para reflejar cambios
+            this.closeEditModal(); // Cerrar el modal de edición
+        },
+        error: (error) => {
+            console.error('Error al editar el curso', error);
+            this.errorMessage = error.error?.message || 'No se pudo actualizar el curso. Por favor, intente nuevamente.';
+            this.isLoading = false;
+        },
+        complete: () => {
+            this.isLoading = false;
+        }
     });
-  }
+}
 
   closeEditModal() {
     this.showEditModal = false;
     this.editFormData = {
       idCurso: null,
       idInstructor: null,
+      titulo: '',
       descripcion: '',
-      idCategoria: null
+      idCategoria: null,
+      nombreCategoriaActual: '',
+      imagen: null,
+      imagenUrl: null,
+      file: null
     };
     this.errorMessage = '';
     this.isEditing = false;
