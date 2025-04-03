@@ -80,9 +80,11 @@
                             {{ curso.estatus }}
                         </div>
                         <div class="course-content">
+                            <div class="course-image" *ngIf="curso.imagen">
+                                <img [src]="getImageUrl(curso.imagen)" alt="Imagen del curso" class="course-img-preview">
+                            </div>
                             <h3>{{ curso.titulo }}</h3>
                             <p class="course-description">{{ curso.descripcion }}</p>
-                            <p *ngIf="curso.origen" class="course-origin"><strong>Origen:</strong> {{ curso.origen }}</p>
                             <div class="course-actions">
                                 <button class="action-btn preview-btn" (click)="openPreviewModal(curso)">Vista Previa</button>
                                 <button *ngIf="curso.estatus !== 'Aprobado'" class="action-btn edit-btn" (click)="editCourse(curso)">Editar</button>
@@ -101,6 +103,12 @@
     <div class="modal-content">
         <button class="close-modal-btn" (click)="closePreviewModal()">&times;</button>
         <h3 class="modal-course-title">{{ selectedCourse.titulo }}</h3>
+        
+        <!-- Mostrar imagen del curso -->
+        <div class="modal-course-image" *ngIf="selectedCourse.imagen">
+            <img [src]="getImageUrl(selectedCourse.imagen)" alt="Imagen del curso" class="course-img-preview">
+        </div>
+        
         <div class="modal-status" [ngClass]="{
             'approved': (selectedCourse.estatus || '').toLowerCase().trim() === 'aprobado',
             'pending': (selectedCourse.estatus || '').toLowerCase().trim() === 'en revision',
@@ -108,15 +116,31 @@
         }">
             {{ selectedCourse.estatus }}
         </div>
-        <p class="modal-course-detail"><strong>Descripción:</strong> {{ selectedCourse.descripcion }}</p>
-        <p *ngIf="selectedCourse.origen" class="modal-course-detail"><strong>Origen:</strong> {{ selectedCourse.origen }}</p>
+        
+        <!-- Mostrar categoría del curso -->
+        <p class="modal-course-detail">
+            <strong>Categoría:</strong> {{ getCategoriaName(selectedCourse.idCategoria) }}
+        </p>
+        
+        <p class="modal-course-detail">
+            <strong>Descripción:</strong> {{ selectedCourse.descripcion }}
+        </p>
+        
+        <p *ngIf="selectedCourse.origen" class="modal-course-detail">
+            <strong>Origen:</strong> {{ selectedCourse.origen }}
+        </p>
         
         <div class="modal-actions">
-            <button *ngIf="selectedCourse.estatus !== 'Aprobado'" class="action-btn edit-btn" (click)="editCourse(selectedCourse)">Editar</button>
+            <button *ngIf="selectedCourse.estatus !== 'Aprobado'" 
+                    class="action-btn edit-btn" 
+                    (click)="editCourse(selectedCourse)">
+                Editar
+            </button>
             <button class="action-btn close-btn" (click)="closePreviewModal()">Cerrar</button>
         </div>
     </div>
 </div>
+
 <!-- Modal de Edición -->
 <div *ngIf="showEditModal" class="modal-overlay">
     <div class="modal-content">
@@ -124,6 +148,14 @@
       <h3>Editar Curso</h3>
       
       <form (ngSubmit)="submitEditForm()">
+        <div class="form-group">
+            <label>Título:</label>
+            <input type="text" [(ngModel)]="editFormData.titulo" 
+                   name="titulo" 
+                   required
+                   class="form-control">
+        </div>
+        
         <div class="form-group">
           <label>Descripción:</label>
           <textarea [(ngModel)]="editFormData.descripcion" 
@@ -133,13 +165,25 @@
         </div>
         
         <div class="form-group">
-          <label>Categoría:</label>
+          <label>Categoría actual: {{editFormData.nombreCategoriaActual}}</label>
           <select [(ngModel)]="editFormData.idCategoria" name="idCategoria" required class="form-control">
-            <option value="" disabled selected>Seleccione categoría</option>
+            <option [value]="editFormData.idCategoria" selected>{{editFormData.nombreCategoriaActual}}</option>
             <option *ngFor="let cat of categorias" [value]="cat.idCategoria">
               {{ cat.nombreCategoria }}
             </option>
           </select>
+        </div>
+
+        <div class="form-group">
+            <label>Imagen actual:</label>
+            <div *ngIf="editFormData.imagenUrl" class="current-image-preview">
+                <img [src]="editFormData.imagenUrl" alt="Imagen actual" class="img-preview">
+            </div>
+            <div *ngIf="!editFormData.imagenUrl" class="no-image-message">
+                <p>Este curso no tiene imagen</p>
+            </div>
+      
+          <small class="text-muted">Para cambiar la imagen, por favor contacte al administrador.</small>
         </div>
         
         <div *ngIf="errorMessage" class="error-message">
@@ -158,7 +202,8 @@
         </div>
       </form>
     </div>
-  </div>
+</div>
+
 <!-- Modal de confirmación para eliminar -->
 <div *ngIf="showDeleteModal" class="modal-overlay">
     <div class="modal-content">

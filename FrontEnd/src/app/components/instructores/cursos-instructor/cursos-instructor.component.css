@@ -143,7 +143,7 @@ body {
     flex-wrap: wrap;
 }
 
-/* Buscador (conserva tus estilos originales pero con ajustes) */
+/* Buscador */
 .search-wrapper {
     position: relative;
     flex: 1;
@@ -176,7 +176,7 @@ body {
     cursor: pointer;
 }
 
-/* Filtro de orden (versión mejorada) */
+/* Filtro de orden */
 .order-wrapper {
     flex-shrink: 0;
 }
@@ -197,7 +197,7 @@ body {
     outline: none;
 }
 
-/* Nuevo estilo para el botón */
+/* Botones principales */
 .create-course-btn {
     background-color: #8EC3B0;
     color: white;
@@ -216,26 +216,6 @@ body {
     background-color: #7BB29D;
 }
 
-/* Responsive: Apila elementos en móviles */
-@media (max-width: 768px) {
-    .search-filter-create-container {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 10px;
-    }
-    
-    .search-wrapper {
-        min-width: 100%;
-    }
-    
-    .order-wrapper, .create-course-btn {
-        align-self: flex-end;
-    }
-    
-    .order-wrapper select, .create-course-btn {
-        width: auto;
-    }
-}
 /* Grid de cursos */
 .courses-grid {
     display: grid;
@@ -306,48 +286,50 @@ body {
     gap: 10px;
 }
 
-/* Botones */
+/* Estilos estándar para botones */
 .action-btn {
     border: none;
-    padding: 8px 12px;
-    border-radius: 4px;
+    padding: 8px 16px;
+    border-radius: 25px;
     cursor: pointer;
     font-size: 14px;
+    font-weight: 600;
     transition: all 0.3s;
     display: flex;
     align-items: center;
     gap: 5px;
 }
 
+/* Botones específicos */
 .preview-btn {
-    background-color: #2196F3;
+    background-color: #8EC3B0; /* Cambiado a verde claro */
     color: white;
 }
 
 .preview-btn:hover {
-    background-color: #0b7dda;
+    background-color: #7BB29D; /* Cambiado a un tono más oscuro de verde */
 }
 
 .edit-btn {
-    background-color: #FFC107;
-    color: #333;
+    background-color: #8EC3B0; /* Cambiado a verde claro */
+    color: white;
 }
 
 .edit-btn:hover {
-    background-color: #e0a800;
+    background-color: #7BB29D; /* Cambiado a un tono más oscuro de verde */
 }
 
 .delete-btn {
-    background-color: #f44336;
+    background-color: #F44336; /* Mantener rojo, pero puedes cambiarlo si deseas */
     color: white;
 }
 
 .delete-btn:hover {
-    background-color: #d32f2f;
+    background-color: #D32F2F; /* Mantener rojo oscuro, pero puedes cambiarlo si deseas */
 }
 
 .cancel-btn {
-    background-color: #9E9E9E;
+    background-color: #9E9E9E; /* Mantener gris, pero puedes cambiarlo si deseas */
     color: white;
 }
 
@@ -376,40 +358,111 @@ body {
 .modal-content {
     background: white;
     border-radius: 8px;
-    padding: 20px;
+    padding: 25px;
     width: 90%;
     max-width: 600px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
     position: relative;
 }
 
-.preview-status {
-    padding: 5px 10px;
-    border-radius: 4px;
-    display: inline-block;
-    margin-bottom: 15px;
-    font-weight: bold;
+.close-modal-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+    color: #777;
+    transition: color 0.2s;
 }
 
-.preview-status.approved {
-    background-color: #4CAF50;
-    color: white;
-}
-
-.preview-status.pending {
-    background-color: #FFC107;
+.close-modal-btn:hover {
     color: #333;
 }
 
-.preview-status.rejected {
-    background-color: #f44336;
-    color: white;
+/* Estilos para el estado */
+.modal-status {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
+.modal-status.approved {
+    background-color: #E8F5E9;
+    color: #2E7D32;
+    border: 1px solid #A5D6A7;
+}
+
+.modal-status.pending {
+    background-color: #FFF8E1;
+    color: #FF8F00;
+    border: 1px solid #FFE082;
+}
+
+.modal-status.rejected {
+    background-color: #FFEBEE;
+    color: #C62828;
+    border: 1px solid #EF9A9A;
+}
+
+/* Contenido del modal */
+.modal-course-title {
+    font-size: 22px;
+    margin: 0 0 15px 0;
+    color: #2C3E50;
+    font-weight: 600;
+}
+
+.modal-course-detail {
+    margin-bottom: 12px;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.modal-course-detail strong {
+    color: #2C3E50;
+    font-weight: 600;
+}
+
+.modal-course-image {
+    margin: 15px 0;
+    text-align: center;
+}
+
+.course-img-preview {
+    max-width: 100%;
+    max-height: 200px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    padding: 5px;
+}
+
+.current-image-preview {
+    margin-top: 10px;
+}
+
+.img-preview {
+    max-width: 100%;
+    max-height: 200px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 5px;
+}
+
+/* Acciones del modal */
 .modal-actions {
     display: flex;
     justify-content: flex-end;
-    gap: 10px;
-    margin-top: 20px;
+    gap: 12px;
+    margin-top: 25px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
 }
 
 /* Mensajes */
@@ -433,22 +486,6 @@ body {
 
 .no-courses-message {
     background-color: rgba(0, 0, 0, 0.05);
-}
-
-.create-course-btn {
-    background-color: #8EC3B0;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    margin-top: 10px;
-    transition: background-color 0.3s;
-}
-
-.create-course-btn:hover {
-    background-color: #7bb29d;
 }
 
 /* Pie de página */
@@ -500,105 +537,22 @@ body {
         width: 100%;
         justify-content: center;
     }
-}
-
-
-/*css para el status*/
-/* Estilos para el modal de vista previa */
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0,0,0,0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
-
-.modal-content {
-    background: white;
-    border-radius: 8px;
-    padding: 25px;
-    width: 90%;
-    max-width: 600px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-    position: relative;
-}
-
-/* Estilos para el estado en el modal */
-.modal-status {
-    display: inline-block;
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 14px;
-    font-weight: 600;
-    margin-bottom: 15px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.modal-status.approved {
-    background-color: #E8F5E9;
-    color: #2E7D32;
-    border: 1px solid #A5D6A7;
-}
-
-.modal-status.pending {
-    background-color: #FFF8E1;
-    color: #FF8F00;
-    border: 1px solid #FFE082;
-}
-
-.modal-status.rejected {
-    background-color: #FFEBEE;
-    color: #C62828;
-    border: 1px solid #EF9A9A;
-}
-/* Estilos para los detalles del curso en el modal */
-.modal-course-title {
-    font-size: 22px;
-    margin: 0 0 15px 0;
-    color: #2C3E50;
-    font-weight: 600;
-}
-
-.modal-course-detail {
-    margin-bottom: 12px;
-    font-size: 15px;
-    line-height: 1.5;
-}
-
-.modal-course-detail strong {
-    color: #2C3E50;
-    font-weight: 600;
-}
-
-/* Botones del modal */
-.modal-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 12px;
-    margin-top: 25px;
-    padding-top: 15px;
-    border-top: 1px solid #eee;
-}
-
-/* Estilos para el botón de cerrar */
-.close-modal-btn {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    background: none;
-    border: none;
-    font-size: 22px;
-    cursor: pointer;
-    color: #777;
-    transition: color 0.2s;
-}
-
-.close-modal-btn:hover {
-    color: #333;
+    
+    .search-filter-create-container {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+    
+    .search-wrapper {
+        min-width: 100%;
+    }
+    
+    .order-wrapper, .create-course-btn {
+        align-self: flex-end;
+    }
+    
+    .order-wrapper select, .create-course-btn {
+        width: auto;
+    }
 }

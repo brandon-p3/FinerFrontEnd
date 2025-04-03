@@ -137,11 +137,9 @@
          <button class="save-btn" (click)="guardarCambios()" [disabled]="!usuario.nombre || !usuario.nombreUsuario || !usuario.apellidoPaterno || !usuario.email">Guardar Cambios</button>
         </div>
     </div>
+</div>
 
-
-
-
-</div><!-- Pantalla de Certificados -->
+<!-- Pantalla de Certificados -->
 <div class="content-container" *ngIf="currentPage === 'certificados'">
     <h2>Certificados</h2>
     <p>Aquí puedes ver y descargar tus certificados obtenidos.</p>
@@ -155,15 +153,14 @@
     </nav>
 
     <div class="certificados-list">
-        <div class="certificado-item">
-            <h3>Curso de Angular</h3>
-            <p>Fecha de finalización: 01/10/2023</p>
-            <button class="download-btn" (click)="descargarCertificado(1)">Descargar Certificado</button>
+        <div class="certificado-item" *ngFor="let curso of cursosCertificados">
+            <h3>{{ curso.titulo }}</h3>
+            <p>Fecha de finalización: {{ curso.fechaInscripcion | date:'mediumDate' }}</p>
+            <button class="ver-certificado-btn" (click)="visualizarCertificado(curso.idInscripcion)">Ver Certificado</button>
+            <button class="download-btn" (click)="descargarCertificado(curso.idInscripcion)">Descargar Certificado</button>
         </div>
-        <div class="certificado-item">
-            <h3>Curso de TypeScript</h3>
-            <p>Fecha de finalización: 15/09/2023</p>
-            <button class="download-btn" (click)="descargarCertificado(2)">Descargar Certificado</button>
+        <div *ngIf="cursosCertificados.length === 0" class="no-certificados">
+            <p>No tienes certificados disponibles todavía.</p>
         </div>
     </div>
 </div>
@@ -182,15 +179,13 @@
     </nav>
 
     <div class="historial-list">
-        <div class="historial-item">
-            <h3>Curso de Angular</h3>
-            <p>Progreso: 80%</p>
-            <p>Última actividad: 25/09/2023</p>
+        <div class="historial-item" *ngFor="let curso of cursos">
+            <h3>{{ curso.titulo}}</h3>
+            <p>Estado: {{ curso.estado === 'finalizado' ? 'Finalizado' : 'En progreso' }}</p>
+            <p>Progreso: {{ curso.progreso || 0 }}%</p>
         </div>
-        <div class="historial-item">
-            <h3>Curso de TypeScript</h3>
-            <p>Progreso: 100%</p>
-            <p>Última actividad: 15/09/2023</p>
+        <div *ngIf="cursos.length === 0" class="no-cursos">
+            <p>No tienes cursos registrados en tu historial.</p>
         </div>
     </div>
 </div>
@@ -209,17 +204,29 @@
     </nav>
 
     <div class="cursos-list">
-        <div class="curso-item">
-            <h3>Curso de Angular</h3>
-            <p>Progreso: 60%</p>
-            <button class="continuar-btn">Continuar Curso</button>
+        <div class="curso-item" *ngFor="let curso of cursos">
+            <h3>{{ curso.titulo }}</h3>
+            <p>Estado: {{ curso.estado === 'finalizado' ? 'Finalizado' : 'En progreso' }}</p>
+            <p>Progreso: {{ curso.progreso || 0 }}%</p>
+            <p *ngIf="curso.ultimaActividad">Última actividad: {{ curso.ultimaActividad | date:'mediumDate' }}</p>
+            
+            <button *ngIf="curso.estado === 'finalizado'" 
+                    class="ver-certificado-btn" 
+                    (click)="visualizarCertificado(curso.idInscripcion)">
+                Ver Certificado
+            </button>
+            
+            <button *ngIf="curso.estado !== 'finalizado'" 
+                    class="continuar-btn" 
+                    (click)="continuarCurso(curso.idCurso)">
+                Continuar Curso
+            </button>
         </div>
-        <div class="curso-item">
-            <h3>Curso de TypeScript</h3>
-            <p>Progreso: 100%</p>
-            <button class="ver-certificado-btn" (click)="visualizarCertificado(2)">Ver Certificado</button>
+        <div *ngIf="cursos.length === 0" class="no-cursos">
+            <p>No estás inscrito en ningún curso actualmente.</p>
         </div>
     </div>
+</div>
 
 <!-- Pie de página -->
 <footer class="footer">
