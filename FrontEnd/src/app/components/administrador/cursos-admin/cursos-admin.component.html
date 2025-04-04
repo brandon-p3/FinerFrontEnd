@@ -7,8 +7,8 @@
       <div *ngFor="let solicitud of solicitudesPendientes" class="pending-card">
         <div class="card-content">
           <div class="curso-imagen-pendiente">
-            <img [src]="solicitud.imagen" alt="Imagen de {{ solicitud.tituloCursoSolicitado }}" 
-                 onerror="this.src='assets/images/default-curso.jpg'">
+            <img [src]="solicitud.imagen" alt="Imagen de {{ solicitud.tituloCursoSolicitado }}"
+              onerror="this.src='assets/default-curso.jpg'">
           </div>
           <div class="text">
             <!-- Accedemos directamente a las propiedades de 'solicitud' -->
@@ -16,7 +16,6 @@
             <p>{{ solicitud.descripcion }}</p>
             <p>{{ solicitud.correo }}</p>
             <div class="buttons">
-              <button class="btn">Contenido</button>
               <button class="btn approve" (click)="aprobarCurso(solicitud.idSolicitudCurso)">Aprobar</button>
               <button class="btn reject" (click)="abrirModalRechazo(solicitud)">Rechazar</button>
             </div>
@@ -27,7 +26,7 @@
   </section>
 
   <!-- Modal de Rechazo -->
-  <div *ngIf="modalVisible" class="modal-overlay">
+  <div *ngIf="modalVisible" class="modal-overlay-rechazo">
     <div class="modal-content">
       <h3>Motivo de Rechazo</h3>
       <textarea [(ngModel)]="motivoRechazo" placeholder="Ingrese el motivo de rechazo"></textarea>
@@ -36,6 +35,7 @@
       <button class="btn cancel" (click)="cerrarModal()">Cancelar</button>
     </div>
   </div>
+
 
 
 
@@ -62,18 +62,32 @@
       <div *ngFor="let curso of cursosFiltrados" class="all-card">
         <div class="curso-imagen">
           <img [src]="curso.imagen" alt="Imagen de {{ curso.tituloCurso }}"
-            onerror="this.src='assets/images/default-curso.jpg'">
+            onerror="this.src='assets/default-curso.jpg'">
         </div>
         <h3>{{ curso.tituloCurso }}</h3>
-        <p>{{ curso.descripcion }}</p>
-        <p><strong>Instructor:</strong> {{ curso.nombreInstructor }} {{ curso.apellidoPaterno }} {{
-          curso.apellidoMaterno }}</p>
         <p><strong>Categoría:</strong> {{ curso.nombreCategoria }}</p>
-        <button class="btn details">Detalles</button>
+        <button class="btn details" (click)="mostrarDetallesCurso(curso)">Detalles</button>
       </div>
     </div>
   </section>
 
-
+  <!-- HTML para el modal -->
+  <div class="modal-overlay-detalles" id="cursoModal">
+    <div class="modal-content">
+      <span class="close-button">&times;</span>
+      <div class="modal-header">
+        <h2 id="modal-titulo"></h2>
+      </div>
+      <div class="modal-body">
+        <div class="modal-imagen">
+          <img id="modal-imagen" alt="Imagen del curso" onerror="this.src='assets/images/default-curso.jpg'">
+        </div>
+        <div class="modal-info">
+          <p><strong>Descripción: </strong> <span id="modal-descripcion"></span></p>
+          <p><strong>Instructor: </strong> <span id="modal-instructor"></span></p>
+          <p><strong>Categoría: </strong> <span id="modal-categoria"></span></p>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-<app-footer></app-footer>

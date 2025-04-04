@@ -18,6 +18,7 @@ import { CrearCursoComponent } from './components/instructores/crear-curso/crear
 import { SolicitudesAdminComponent } from './components/administrador/solicitudes-admin/solicitudes-admin.component';
 import { QuienesSomosComponent } from './components/inicio/quienes-somos/quienes-somos.component';
 import { ContactoComponent } from './components/inicio/contacto/contacto.component';
+import { PerfilInstructorComponent } from './components/instructores/perfil-instructor/perfil-instructor.component';
 
 
 export const routes: Routes = [
@@ -74,6 +75,7 @@ export const routes: Routes = [
    children: [
       { path: 'cursos', component: CursosInstructorComponent },
       { path: 'crear-curso', component: CrearCursoComponent },
+      { path: 'perfil', component: PerfilInstructorComponent},
       { path: '', redirectTo: 'cursos', pathMatch: 'full' }
       ]
     },

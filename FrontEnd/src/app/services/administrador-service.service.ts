@@ -66,7 +66,7 @@ export class AdministradorServiceService {
 
   // Aprobar curso
   aprobarCurso(requestBody: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUri}/administrador/aprobarCurso`, requestBody);
+    return this.http.post<any>(`${this.apiUri}/administrador/aprobar-curso`, requestBody);
   }
 
   // Rechazar curso

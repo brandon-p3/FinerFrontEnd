@@ -26,6 +26,8 @@ import { CategoriaServiceService } from './services/categorias-service.service';
 import { NavbarAlumnoComponent } from './components/alumnos/navbar-alumno/navbar-alumno.component';
 import { CursosAlumnosComponent } from './components/alumnos/cursos-alumnos/cursos-alumnos.component';
 import { DescripcionCursoAlumnoComponent } from './components/alumnos/descripcion-curso-alumno/descripcion-curso-alumno.component';
+import { NavbarInstructorComponent } from './components/instructores/navbar-instructor/navbar-instructor.component';
+import { PerfilInstructorComponent } from './components/instructores/perfil-instructor/perfil-instructor.component';
 
 @NgModule({
   declarations: [
@@ -49,9 +51,9 @@ import { DescripcionCursoAlumnoComponent } from './components/alumnos/descripcio
     NavbarAdminComponent,
     NavbarAlumnoComponent,
     CursosAlumnosComponent,
-    DescripcionCursoAlumnoComponent
-
-
+    DescripcionCursoAlumnoComponent,
+    NavbarInstructorComponent,
+    PerfilInstructorComponent
   ],
   imports: [
     BrowserModule,

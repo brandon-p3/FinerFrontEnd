@@ -1,47 +1,162 @@
+/* Estilos mejorados para la navbar */
 .custom-navbar {
-    background: #FFFF; 
+  background: #FFFFFF; 
+  padding: 12px 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.custom-navbar.scrolled {
+  padding: 8px 20px;
+}
+
+.navbar-brand {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2C3E50 !important;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+}
+
+.navbar-brand:hover {
+  transform: translateY(-2px);
+}
+
+.navbar-brand img {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+  transition: all 0.3s ease;
+}
+
+.navbar-brand:hover img {
+  transform: rotate(5deg);
+}
+
+.navbar-nav {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-nav .nav-item {
+  position: relative;
+  margin: 0 5px;
+}
+
+.navbar-nav .nav-link {
+  color: #2C3E50 !important;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.navbar-nav .nav-link:hover {
+  color: #FFFFFF !important;
+  background-color: #8EC3B0;
+  transform: translateY(-2px);
+}
+
+.navbar-nav .nav-link.active {
+  position: relative;
+  font-weight: 700;
+}
+
+.navbar-nav .nav-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 30px;
+  height: 3px;
+  background-color: #8EC3B0;
+  border-radius: 2px;
+}
+
+/* Estilo mejorado del botón de hamburguesa */
+.custom-toggler {
+  border: none;
+  background: transparent;
+  padding: 5px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.custom-toggler:focus {
+  box-shadow: none;
+  outline: none;
+}
+
+.custom-toggler .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(142, 195, 176, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+  transition: all 0.3s ease;
+}
+
+.custom-toggler:hover .navbar-toggler-icon {
+  transform: scale(1.1);
+}
+
+/* Ajuste para que el menú colapsado tenga mejor diseño */
+@media (max-width: 992px) {
+  .navbar-collapse {
+    background: white;
     padding: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    margin-top: 10px;
+    border-top: 3px solid #8EC3B0;
   }
-  
-  .navbar-brand {
-    font-size: 1.4rem;
-    font-weight: bold;
-    color: #8EC3B0  !important;
-  }
-  
+
   .navbar-nav .nav-link {
-    color: #8EC3B0    !important;
-    font-size: 1.1rem;
-    font-weight: 500;
-    margin: 0 10px;
-    transition: all 0.3s ease-in-out;
+    color: #8EC3B0 !important;
+    padding: 12px 15px;
+    margin: 5px 0;
+    text-align: center;
   }
   
   .navbar-nav .nav-link:hover {
-    color: #DEF5E5 !important; /* Amarillo */
-    transform: scale(1.1);
+    background-color: #f0f9f6;
+    color: #8EC3B0 !important;
+    transform: none;
   }
   
-  /* Estilo del botón de hamburguesa */
-  .custom-toggler {
-    border: none;
-    background: transparent;
+  .navbar-nav .nav-link.active::after {
+    width: 50px;
   }
-  
-  .custom-toggler .navbar-toggler-icon {
-    filter: invert(100%);
+}
+
+/* Añadir animación al abrir el menú */
+.navbar-collapse.collapsing,
+.navbar-collapse.show {
+  animation: slideDown 0.3s ease forwards;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
   }
-  
-  /* Ajuste para que el menú colapsado tenga fondo */
-  @media (max-width: 992px) {
-    .navbar-collapse {
-      background: rgba(0, 0, 0, 0.8);
-      padding: 15px;
-      border-radius: 8px;
-    }
-  
-    .navbar-nav .nav-link {
-      color: white !important;
-    }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
+}
+
+/* Clase para modo oscuro si lo necesitas en el futuro */
+.dark-mode .custom-navbar {
+  background: #1a1a1a;
+}
+
+.dark-mode .navbar-brand,
+.dark-mode .navbar-nav .nav-link {
+  color: #8EC3B0 !important;
+}
+
+.dark-mode .navbar-collapse {
+  background: #1a1a1a;
+}
