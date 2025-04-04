@@ -28,6 +28,7 @@ import { CursosAlumnosComponent } from './components/alumnos/cursos-alumnos/curs
 import { DescripcionCursoAlumnoComponent } from './components/alumnos/descripcion-curso-alumno/descripcion-curso-alumno.component';
 import { NavbarInstructorComponent } from './components/instructores/navbar-instructor/navbar-instructor.component';
 import { PerfilInstructorComponent } from './components/instructores/perfil-instructor/perfil-instructor.component';
+import { LoginComponent } from './components/login/login/login.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import { PerfilInstructorComponent } from './components/instructores/perfil-inst
     CursosAlumnosComponent,
     DescripcionCursoAlumnoComponent,
     NavbarInstructorComponent,
-    PerfilInstructorComponent
+    PerfilInstructorComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
