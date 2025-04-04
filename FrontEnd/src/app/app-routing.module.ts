@@ -62,11 +62,11 @@ export const routes: Routes = [
     path: 'alumnos',
     children: [
       { path: 'cursos', component: CursosAlumnosComponent },
-      { path: 'contenido', component: ContenidoCursoComponent },
+      { path: 'contenido/:id', component: ContenidoCursoComponent },
       { path: 'descripcion/:id', component: DescripcionCursoAlumnoComponent },
       { path: 'perfil', component: PerfilAlumnoComponent },
       { path: '', redirectTo: 'cursos', pathMatch: 'full' },
-      { path: '**', redirectTo: 'cursos' }
+      { path: '**', redirectTo: '/alumnos/contenido' }
     ]
   },
     // Rutas para instructor

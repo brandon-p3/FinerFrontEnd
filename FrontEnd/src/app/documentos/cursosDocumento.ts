@@ -1,5 +1,5 @@
 export interface Curso {
-id: any;
+    idCurso: number;
     titulo: string;
     tituloCurso: string;
     descripcion: string;
@@ -11,6 +11,13 @@ id: any;
     instructor: string;
     categoria: string;
     cantidadTemas: string;
+
+}
+
+export interface contenidoCurso{
+    idTema: number;
+    nombreTema: string;
+    contenido: string;
 
 }
 
