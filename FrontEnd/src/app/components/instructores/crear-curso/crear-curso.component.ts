@@ -1,119 +1,286 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild, OnInit, Inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormsModule } from '@angular/forms';  // Importa FormsModule
-import { CommonModule } from '@angular/common';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import Swal from 'sweetalert2'; // Importa SweetAlert2
+import Swal from 'sweetalert2';
+import { CursoServiceService } from '../../../services/curso-service.service';
+import { VerCategoriasDTO } from '../../../documentos/cursoDocumento';
+import { UsuariosService } from '../../../services/usuarios-service.service';
+import { CategoriaServiceService } from '../../../services/categorias-service.service';
+import { HttpParams } from '@angular/common/http';
 
 @Component({
   selector: 'app-crear-curso',
   templateUrl: './crear-curso.component.html',
   styleUrls: ['./crear-curso.component.css']
 })
-export class CrearCursoComponent {
+export class CrearCursoComponent implements OnInit {
   isModalOpen: boolean = false;
   isCategoriaModalOpen: boolean = false;
-  @ViewChild('vistaPreviaModal') vistaPreviaModal!: ElementRef; // Referencia al modal
+  menuOpen: boolean = false;
+  currentPage: string = 'crear-curso';
+  
+  @ViewChild('vistaPreviaModal') vistaPreviaModal!: ElementRef;
  
-  courseName: string = '';  // Nombre del curso
-  selectedCategory: string = '';  // Categoría seleccionada
-  categories: string[] = ['Desarrollo Web', 'Marketing', 'Negocios', 'Diseño Gráfico']; // Lista de categorías disponibles
+  courseName: string = '';
+  courseDescription: string = '';
+  selectedCategory: string = '';
+  categories: VerCategoriasDTO[] = [];
+  imageUrl: string = '';
+  selectedImage: File | null = null;
+  imagePreview: string | ArrayBuffer | null = null;
 
   sections: { title: string, subsections: { title: string, content: string }[] }[] = [
-    { title: '', subsections: [{ title: '', content: '' }] }  // Sección y subsección por defecto
+    { title: '', subsections: [{ title: '', content: '' }] }
   ];
 
-  usuario = {
-    nombre: 'Juan',
-    apellidos: 'Pérez',
-    email: 'juan.perez@finer.com',
+  constructor(
+    private router: Router, 
+    private modalService: NgbModal,
+    private cursoService: CursoServiceService,
+    public usuariosService: UsuariosService,
+    @Inject(CategoriaServiceService) private categoriaService: CategoriaServiceService
+  ) {}
+  
+  // Usuario autenticado
+  usuario: any = {
+    id: 0,          
+    nombre: '',     
+    apellidoPaterno: '',
+    apellidoMaterno: '',
+    email: '',
+    username: '',
+    idUsuario: 0,    
+    idRol: 0         
   };
-  menuOpen = false;
-  currentPage = 'crear-curso';
 
-  constructor(private router: Router, private modalService: NgbModal) {}
 
-  // Método para navegar a una ruta específica
-  navigateTo(route: string) {
-    this.router.navigate([route]); // Usa el Router para redirigir
+  ngOnInit(): void {
+    this.loadApprovedCategories();
   }
 
-  // Método para agregar una nueva sección
-  addSection() {
-    this.sections.push({ title: '', subsections: [{ title: '', content: '' }] });
-  }
-
-  // Método para agregar una subsección a la sección actual
-  addSubsection(sectionIndex: number) {
-    this.sections[sectionIndex].subsections.push({ title: '', content: '' });
-  }
-
-  // Método para eliminar una sección
-  removeSection(sectionIndex: number) {
-    this.sections.splice(sectionIndex, 1);
-  }
-
-  // Método para eliminar una subsección
-  removeSubsection(sectionIndex: number, subsectionIndex: number) {
-    this.sections[sectionIndex].subsections.splice(subsectionIndex, 1);
-  }
-
-  // Método para enviar el curso a revisión
-  submitForReview() {
-    Swal.fire({
-      title: '¿Estás seguro?',
-      text: '¿Deseas enviar el curso a revisión?',
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonText: 'Sí, enviar',
-      cancelButtonText: 'Cancelar',
-      confirmButtonColor: '#8EC3B0',
-      cancelButtonColor: '#FF6B6B',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        console.log('Enviando curso a revisión...');
-        console.log('Nombre del curso:', this.courseName);
-        console.log('Categoría:', this.selectedCategory);
-        console.log('Secciones:', this.sections);
-
-        this.router.navigate(['/crear-curso']);
+  private loadApprovedCategories(): void {
+    this.categoriaService.obtenerCategoriasAprobadas().subscribe({
+      next: (categorias: VerCategoriasDTO[]) => {
+        this.categories = categorias;
+        if (categorias.length > 0) {
+          this.selectedCategory = categorias[0].nombreCategoria;
+        }
+      },
+      error: (error: any) => {
+        console.error('Error al cargar categorías aprobadas:', error);
+        Swal.fire('Error', 'No se pudieron cargar las categorías aprobadas', 'error');
       }
     });
   }
 
-  solicitarNuevaCategoria() {
-    this.isCategoriaModalOpen  = true; 
+  updateImageUrl(event: any): void {
+    const url = event.target.value.trim();
+    if (this.validateImageUrl(url)) {
+      this.imageUrl = url;
+      this.imagePreview = url;
+    } else {
+      Swal.fire('Error', 'Por favor ingrese una URL válida para la imagen (debe comenzar con http:// o https://)', 'error');
+      this.imageUrl = '';
+      this.imagePreview = null;
+    }
   }
 
-  cerrarModal() {
-    this.isCategoriaModalOpen  = false;
+  private validateImageUrl(url: string): boolean {
+    try {
+      new URL(url);
+      return url.startsWith('http://') || url.startsWith('https://');
+    } catch (_) {
+      return false;
+    }
+  }
+
+  removeImage(): void {
+    this.imageUrl = '';
+    this.imagePreview = null;
+    this.selectedImage = null;
+  }
+
+  onImageSelected(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedImage = file;
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imagePreview = reader.result;
+        this.imageUrl = reader.result as string;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  isFormValid(): boolean {
+    if (!this.courseName || !this.selectedCategory || !this.courseDescription) {
+      return false;
+    }
+
+    return this.sections.every(section => 
+      section.title && 
+      section.subsections.length > 0 &&
+      section.subsections.every(sub => sub.title && sub.content)
+    );
+  }
+
+  navigateTo(route: string) {
+    this.router.navigate([route]);
   }
 
   toggleMenu() {
     this.menuOpen = !this.menuOpen;
   }
 
-  // Método para abrir el modal
+  addSection() {
+    this.sections.push({ title: '', subsections: [{ title: '', content: '' }] });
+  }
+
+  addSubsection(sectionIndex: number) {
+    this.sections[sectionIndex].subsections.push({ title: '', content: '' });
+  }
+
+  removeSection(sectionIndex: number) {
+    if (this.sections.length > 1) {
+      this.sections.splice(sectionIndex, 1);
+    } else {
+      Swal.fire('Información', 'Debe haber al menos una sección', 'info');
+    }
+  }
+
+  removeSubsection(sectionIndex: number, subsectionIndex: number) {
+    if (this.sections[sectionIndex].subsections.length > 1) {
+      this.sections[sectionIndex].subsections.splice(subsectionIndex, 1);
+    } else {
+      Swal.fire('Información', 'Debe haber al menos un tema por sección', 'info');
+    }
+  }
+
+  private generateStructuredDescription(): string {
+    let description = `Descripción: ${this.courseDescription}\n\nContenido del curso:\n\n`;
+    
+    this.sections.forEach((section, sectionIndex) => {
+      description += `## Sección ${sectionIndex + 1}: ${section.title}\n`;
+      
+      section.subsections.forEach((subsection, subIndex) => {
+        description += `### Tema ${subIndex + 1}: ${subsection.title}\n`;
+        description += `${subsection.content}\n\n`;
+      });
+    });
+
+    return description;
+  }
+
+  submitForReview() {
+    if (!this.isFormValid()) {
+      Swal.fire('Error', 'Por favor complete todos los campos obligatorios', 'error');
+      return;
+    }
+
+    const currentUser = this.usuariosService.currentUserValue;
+    if (!currentUser || !currentUser.idUsuario) {
+      Swal.fire('Error', 'No se pudo identificar al usuario', 'error');
+      return;
+    }
+
+    const selectedCategoryObj = this.categories.find(c => c.nombreCategoria === this.selectedCategory);
+    if (!selectedCategoryObj) {
+      Swal.fire('Error', 'Seleccione una categoría válida', 'error');
+      return;
+    }
+
+    Swal.fire({
+      title: '¿Confirmar envío?',
+      text: '¿Estás seguro de enviar el curso a revisión?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#8EC3B0',
+      cancelButtonColor: '#FF6B6B',
+      confirmButtonText: 'Sí, enviar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.sendCourseToBackend(currentUser.idUsuario, selectedCategoryObj.idCategoria);
+      }
+    });
+  }
+
+  private sendCourseToBackend(userId: number, categoryId: number) {
+    // Preparar los parámetros como x-www-form-urlencoded
+    const params = new HttpParams()
+      .set('idUsuarioInstructor', userId.toString())
+      .set('idCategoria', categoryId.toString())
+      .set('tituloCurso', this.courseName)
+      .set('descripcion', this.generateStructuredDescription())
+      .set('imagen', this.imageUrl || 'default.jpg');
+  
+    this.cursoService.crearCurso(params).subscribe({
+      next: (response) => {
+        Swal.fire('Éxito', 'Curso creado correctamente', 'success');
+        this.resetForm();
+        this.router.navigate(['/instructor/cursos']);
+      },
+      error: (error) => {
+        console.error('Error al crear curso:', error);
+        let errorMsg = 'No se pudo crear el curso';
+        if (error.error && typeof error.error === 'string') {
+          errorMsg += ': ' + error.error;
+        }
+        Swal.fire('Error', errorMsg, 'error');
+      }
+    });
+  }
+  private resetForm() {
+    this.courseName = '';
+    this.courseDescription = '';
+    this.selectedCategory = this.categories.length > 0 ? this.categories[0].nombreCategoria : '';
+    this.sections = [{ title: '', subsections: [{ title: '', content: '' }] }];
+    this.imageUrl = '';
+    this.selectedImage = null;
+    this.imagePreview = null;
+  }
+
   vistaPrevia() {
-    console.log('Mostrando vista previa del curso...');
+    if (!this.isFormValid()) {
+      Swal.fire('Información', 'Complete los campos obligatorios para ver la vista previa', 'info');
+      return;
+    }
     this.isModalOpen = true;
   }
 
-  // Método para cerrar el modal
   closeModal() {
     this.isModalOpen = false;
   }
 
+  solicitarNuevaCategoria() {
+    this.isCategoriaModalOpen = true; 
+  }
+
+  cerrarModal() {
+    this.isCategoriaModalOpen = false;
+  }
+
   eliminarCurso() {
-    console.log('Eliminando curso...');
-    this.courseName = ''; 
-    this.selectedCategory = '';
-    this.sections = [{ title: '', subsections: [{ title: '', content: '' }] }];
+    Swal.fire({
+      title: '¿Borrar curso?',
+      text: '¿Estás seguro de eliminar todo el contenido?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#FF6B6B',
+      cancelButtonColor: '#8EC3B0',
+      confirmButtonText: 'Sí, borrar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.resetForm();
+        Swal.fire('Información', 'El curso ha sido borrado', 'info');
+      }
+    });
   }
 
   logout() {
-    console.log('Cerrando sesión...');
-    this.router.navigate(['/usuarios-admin/login/login']);
+    this.usuariosService.logout();
   }
 
   misCursos() {
