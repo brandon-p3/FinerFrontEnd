@@ -62,13 +62,17 @@
                 <div *ngIf="errorMessage" class="error-message">
                     <p>{{ errorMessage }}</p>
                 </div>
-                
-                <!-- Mensaje cuando no hay cursos -->
-                <div *ngIf="!isLoading && filteredCourses.length === 0 && !errorMessage" class="no-courses-message">
-                    <p>No se encontraron coincidencias o no tienes cursos creados aún. Haz clic en el botón para crear uno.</p>
-                    <button class="create-course-btn" (click)="createCourse()">+ Crear Nuevo Curso</button>
-                </div>
 
+                <div *ngIf="noHayCursos && !isLoading" class="no-courses-message">
+                    <div class="message-container">
+                      <h3>Aún no tienes cursos creados</h3>
+                      <p>¡Comienza creando tu primer curso para compartir tu conocimiento!</p>
+                      <button class="create-course-btn primary" (click)="createCourse()">
+                        + Crear mi primer curso
+                      </button>
+                    </div>
+                  </div>
+                
                 <!-- Lista de cursos -->
                 <div *ngIf="!isLoading && filteredCourses.length > 0" class="courses-grid">
                     <div *ngFor="let curso of filteredCourses" class="course-card">
