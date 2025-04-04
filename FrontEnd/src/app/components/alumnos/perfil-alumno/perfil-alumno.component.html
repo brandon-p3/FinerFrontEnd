@@ -180,15 +180,36 @@
 
     <div class="historial-list">
         <div class="historial-item" *ngFor="let curso of cursos">
-            <h3>{{ curso.titulo}}</h3>
-            <p>Estado: {{ curso.estado === 'finalizado' ? 'Finalizado' : 'En progreso' }}</p>
-            <p>Progreso: {{ curso.progreso || 0 }}%</p>
+          <div class="curso-header">
+            <h3>{{ curso.titulo }}</h3>
+            <span class="curso-status" [class.completed]="curso.estado === 'finalizado'">
+              {{ curso.estado === 'finalizado' ? 'Completado' : 'En progreso' }}
+            </span>
+          </div>
+          
+          <div class="progress-container">
+            <div class="progress-bar" [style.width.%]="curso.progreso || 0">
+              <span>{{ curso.progreso || 0 }}%</span>
+            </div>
+          </div>
+          
+          <div class="curso-details">
+            <div>
+              <strong>Última actividad:</strong> 
+              {{ curso.ultimaActividad ? (curso.ultimaActividad | date:'mediumDate') : 'Ninguna' }}
+            </div>
+            <div *ngIf="curso.estado === 'finalizado'">
+            </div>
+          </div>
+          
+          <button *ngIf="curso.estado !== 'finalizado'" 
+                  class="continuar-btn"
+                  (click)="continuarCurso(curso.idCurso)">
+            Continuar
+          </button>
         </div>
-        <div *ngIf="cursos.length === 0" class="no-cursos">
-            <p>No tienes cursos registrados en tu historial.</p>
-        </div>
-    </div>
-</div>
+      </div>
+      </div>
 
 <!-- Pantalla de Mis Cursos -->
 <div class="content-container" *ngIf="currentPage === 'mis-cursos'">

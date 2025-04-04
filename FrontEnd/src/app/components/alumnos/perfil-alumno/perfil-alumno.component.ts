@@ -207,16 +207,32 @@ export class PerfilAlumnoComponent implements OnInit {
   }
 
   visualizarCertificado(idInscripcion: number) {
+    Swal.fire({
+      title: 'Generando certificado',
+      html: 'Por favor espera...',
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      }
+    });
+  
     this.alumnoService.generarCertificado(idInscripcion).subscribe({
       next: (data) => {
+        Swal.close();
         const blob = new Blob([data], { type: 'application/pdf' });
         const url = window.URL.createObjectURL(blob);
+        
+        // Open in new tab
         window.open(url, '_blank');
-        window.URL.revokeObjectURL(url);
+        
+        // Clean up
+        setTimeout(() => {
+          window.URL.revokeObjectURL(url);
+        }, 100);
       },
       error: (error) => {
+        Swal.fire('Error', 'No se pudo generar el certificado', 'error');
         console.error('Error al visualizar el certificado:', error);
-        Swal.fire('Error', 'No se pudo visualizar el certificado', 'error');
       }
     });
   }
@@ -290,10 +306,47 @@ export class PerfilAlumnoComponent implements OnInit {
     });
   }
 
-  continuarCurso(idCurso: number) {
-    // Redirige al componente del curso con el ID del curso
-    this.router.navigate(['/curso', idCurso]);
-  }
+continuarCurso(idCurso: number) {
+  // Show loading
+  Swal.fire({
+    title: 'Cargando curso',
+    html: 'Preparando tu lugar de aprendizaje...',
+    allowOutsideClick: false,
+    didOpen: () => {
+      Swal.showLoading();
+    }
+  });
+
+  // First get the course progress
+  this.alumnoService.verProgresoAlumno(this.usuario.idUsuario, idCurso).subscribe({
+    next: (progreso) => {
+      Swal.close();
+      
+      // Check if course is completed
+      if (progreso.vPorcentaje >= 100) {
+        Swal.fire({
+          title: 'Curso completado',
+          text: 'Ya has completado este curso. ¿Deseas repasar el contenido?',
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonText: 'Sí, repasar',
+          cancelButtonText: 'Cancelar'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.router.navigate(['/curso', idCurso, 'repaso']);
+          }
+        });
+      } else {
+        // Redirect to continue course
+        this.router.navigate(['/curso', idCurso, 'continuar']);
+      }
+    },
+    error: (error) => {
+      Swal.fire('Error', 'No se pudo cargar el progreso del curso', 'error');
+      console.error('Error al obtener progreso:', error);
+    }
+  });
+}
 
   navigateTo(page: PageType) {
     this.currentPage = page;
