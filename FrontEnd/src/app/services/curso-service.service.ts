@@ -33,24 +33,16 @@ editarCurso(cursoData: CursoEditarDTO): Observable<any> {
 }
 
   // Nuevos métodos para creación de cursos
-  crearCurso(
-    idUsuarioInstructor: number,
-    idCategoria: number,
-    tituloCurso: string,
-    descripcion: string
-  ): Observable<any> {
-    const params = new HttpParams()
-      .set('idUsuarioInstructor', idUsuarioInstructor.toString())
-      .set('idCategoria', idCategoria.toString())
-      .set('tituloCurso', tituloCurso)
-      .set('descripcion', descripcion);
-
-    return this.http.post(`${this.instructorApiUrl}/crear-curso`, params.toString(), {
-      headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded'),
-      responseType: 'text'
-    });
+  crearCurso(params: HttpParams): Observable<any> {
+    return this.http.post(
+      `${this.instructorApiUrl}/crear-curso`,
+      params.toString(),
+      {
+        headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded'),
+        responseType: 'text'
+      }
+    );
   }
-
   // Método para obtener categorías (si no lo tienes ya)
   obtenerCategorias(): Observable<VerCategoriasDTO[]> {
     return this.http.get<VerCategoriasDTO[]>(`${this.apiUrl}/categorias`);

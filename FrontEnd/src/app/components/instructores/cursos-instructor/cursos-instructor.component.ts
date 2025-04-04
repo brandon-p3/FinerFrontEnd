@@ -1,12 +1,32 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 import { CursoEditarDTO, CursoVerDTO, VerCategoriasDTO } from '../../../documentos/cursoDocumento';
 import { CursoServiceService } from '../../../services/curso-service.service';
 import { CategoriaServiceService } from '../../../services/categorias-service.service';
+import { UsuariosService } from '../../../services/usuarios-service.service';
+
+
+// Configuración personalizada de SweetAlert2
+const customSwal = Swal.mixin({
+  customClass: {
+    confirmButton: 'btn btn-primary mx-2',
+    cancelButton: 'btn btn-secondary mx-2'
+  },
+  buttonsStyling: false,
+  backdrop: `
+    rgba(0,0,0,0.4)
+    url("/assets/images/pattern.png")
+    left top
+    repeat
+  `,
+  background: '#ffffff',
+  color: '#333333',
+  iconColor: '#4a6cf7' // Color principal de tu aplicación
+});
 
 @Component({
   selector: 'app-cursos-instructor',
-  standalone: false,
   templateUrl: './cursos-instructor.component.html',
   styleUrls: ['./cursos-instructor.component.css']
 })
@@ -14,16 +34,20 @@ export class CursosInstructorComponent implements OnInit {
   constructor(
     private router: Router,
     private cursoService: CursoServiceService,
-    private categoriaService: CategoriaServiceService
+    private categoriaService: CategoriaServiceService,
+    private usuariosService: UsuariosService
   ) { } 
 
-  usuario = {
-    id: 3,
-    nombre: 'Ana',
-    apellidoPaterno: 'Ramírez',
-    apellidoMaterno: 'Díaz',
-    email: 'ana.ramirez@finer.edu',
-    username: 'ana_instructor'
+  // Usuario autenticado
+  usuario: any = {
+    id: 0,          
+    nombre: '',     
+    apellidoPaterno: '',
+    apellidoMaterno: '',
+    email: '',
+    username: '',
+    idUsuario: 0,    
+    idRol: 0         
   };
 
   menuOpen = false;
@@ -37,6 +61,9 @@ export class CursosInstructorComponent implements OnInit {
   errorMessage = '';
   courseToDelete: number | null = null;
   showDeleteModal = false;
+  
+  // Nueva propiedad para controlar cuando no hay cursos
+  noHayCursos: boolean = false;
   
   // Variables para vista previa
   showPreviewModal = false;
@@ -60,31 +87,83 @@ export class CursosInstructorComponent implements OnInit {
   categoriaSeleccionada: VerCategoriasDTO | null = null;
 
   ngOnInit() {
+    this.cargarUsuarioAutenticado();
     this.loadCursos();
     this.loadCategorias();
   }
 
+  cargarUsuarioAutenticado() {
+    const usuarioAutenticado = this.usuariosService.currentUserValue;
+    if (usuarioAutenticado) {
+      // Actualizamos los datos del usuario con la información real
+      this.usuario = {
+        ...this.usuario,  // Mantenemos la estructura original
+        id: usuarioAutenticado.idUsuario,
+        idUsuario: usuarioAutenticado.idUsuario,
+        idRol: usuarioAutenticado.idRol,
+        nombre: usuarioAutenticado.nombre || 'Instructor',
+        apellidoPaterno: usuarioAutenticado.apellidoPaterno || '',
+        apellidoMaterno: usuarioAutenticado.apellidoMaterno || '',
+        email: usuarioAutenticado.email || '',
+        username: usuarioAutenticado.username || ''
+      };
+
+      // Si necesitamos más datos, los cargamos del backend
+      if (!usuarioAutenticado.nombre) {
+        this.usuariosService.obtenerUsuarioPorId(usuarioAutenticado.idUsuario).subscribe({
+          next: (usuarioCompleto) => {
+            this.usuario = {
+              ...this.usuario,
+              nombre: usuarioCompleto.nombre || this.usuario.nombre,
+              apellidoPaterno: usuarioCompleto.apellidoPaterno || this.usuario.apellidoPaterno,
+              apellidoMaterno: usuarioCompleto.apellidoMaterno || this.usuario.apellidoMaterno,
+              email: usuarioCompleto.email || this.usuario.email
+            };
+          },
+          error: (error) => {
+            console.error('Error al cargar datos adicionales del usuario:', error);
+          }
+        });
+      }
+    } else {
+      // Si no hay usuario autenticado, redirigir al login
+      this.router.navigate(['/login']);
+    }
+  }
+
   loadCursos() {
+    if (!this.usuario.idUsuario) return;
+    
     this.isLoading = true;
     this.errorMessage = '';
+    this.noHayCursos = false;
     
-    // Limpiar el array antes de cargar nuevos datos
     this.cursos = [];
     this.filteredCourses = [];
-
-    this.cursoService.verCursosInstructor(this.usuario.id).subscribe({
-        next: (cursos) => {
-            this.cursos = [...cursos]; // Crear un nuevo array para forzar la detección de cambios
-            this.applyFilters();
-            this.isLoading = false;
-        },
-        error: (error) => {
-            console.error('Error al cargar los cursos', error);
-            this.errorMessage = 'No se pudieron cargar los cursos. Por favor, intente nuevamente.';
-            this.isLoading = false;
+  
+    this.cursoService.verCursosInstructor(this.usuario.idUsuario).subscribe({
+      next: (cursos) => {
+        if (cursos && cursos.length > 0) {
+          this.cursos = [...cursos];
+          this.applyFilters();
+        } else {
+          this.noHayCursos = true;
         }
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Error al cargar los cursos', error);
+        // Mostramos como "no hay cursos" cuando es 404
+        if (error.status === 404) {
+          this.noHayCursos = true;
+          this.errorMessage = '';
+        } else {
+          this.errorMessage = 'No se pudieron cargar los cursos. Por favor, intente nuevamente.';
+        }
+        this.isLoading = false;
+      }
     });
-}
+  }
 
   loadCategorias() {
     this.categoriaService.obtenerCategoriasAprobadas().subscribe({
@@ -124,6 +203,11 @@ export class CursosInstructorComponent implements OnInit {
   navigateTo(page: string) {
     this.currentPage = page;
     this.menuOpen = false;
+    
+    // Agrega esta condición para redirigir correctamente
+    if (page === 'mis-cursos') {
+        this.router.navigate(['/instructor/cursos']);
+    }
   }
 
   applyFilters() {
@@ -167,13 +251,12 @@ export class CursosInstructorComponent implements OnInit {
 
     this.editFormData = {
       idCurso: curso.idCurso,
-      idInstructor: this.usuario.id,
+      idInstructor: this.usuario.idUsuario, // Usamos el ID real del instructor
       titulo: curso.titulo || '',
       descripcion: curso.descripcion || '',
-      idCategoria: curso.idCategoria,
-      nombreCategoriaActual: this.getCategoriaName(curso.idCategoria),
+      categoria: curso.categoria || '',
       imagen: curso.imagen || null,
-      imagenUrl: curso.imagen ? this.getImageUrl(curso.imagen) : null,
+      imagenUrl: curso.imagen || null,
       file: null
     };
     
@@ -190,9 +273,8 @@ export class CursosInstructorComponent implements OnInit {
     return 'data:image/jpeg;base64,' + imagen;
   }
 
-  getCategoriaName(idCategoria: number): string {
-    const categoria = this.categorias.find(c => c.idCategoria === idCategoria);
-    return categoria ? categoria.nombreCategoria : 'Desconocida';
+  getCategoriaName(categoriaNombre: string): string {
+    return categoriaNombre || 'Sin categoría';
   }
 
   onFileSelected(event: any) {
@@ -211,13 +293,34 @@ export class CursosInstructorComponent implements OnInit {
 
   submitEditForm() {
     // Validar que todos los campos requeridos estén completos
-    if (!this.editFormData.titulo || !this.editFormData.descripcion || !this.editFormData.idCategoria) {
+    if (!this.editFormData.titulo || !this.editFormData.descripcion || !this.editFormData.categoria) {
         this.errorMessage = 'Por favor complete todos los campos requeridos';
         return;
     }
 
+    Swal.fire({
+      title: '¿Guardar cambios?',
+      text: '¿Estás seguro de que deseas guardar los cambios en este curso?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, guardar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.proceedWithEdit();
+      }
+    });
+  }
+
+  private proceedWithEdit() {
     this.isLoading = true;
     this.errorMessage = '';
+
+    // Encontrar el ID de la categoría seleccionada
+    const categoriaSeleccionada = this.categorias.find(c => c.nombreCategoria === this.editFormData.categoria);
+    const idCategoria = categoriaSeleccionada ? categoriaSeleccionada.idCategoria : 0;
 
     // Crear objeto de datos del curso
     const cursoData: CursoEditarDTO = {
@@ -225,26 +328,37 @@ export class CursosInstructorComponent implements OnInit {
         idInstructor: this.editFormData.idInstructor,
         titulo: this.editFormData.titulo,
         descripcion: this.editFormData.descripcion,
-        idCategoria: this.editFormData.idCategoria
+        imagen: this.editFormData.imagenUrl,
+        idCategoria: idCategoria
     };
 
     // Llamar al servicio para editar el curso
     this.cursoService.editarCurso(cursoData).subscribe({
         next: (response) => {
-            console.log('Curso actualizado:', response);
-            this.loadCursos(); // Recargar cursos para reflejar cambios
-            this.closeEditModal(); // Cerrar el modal de edición
+          Swal.fire(
+            '¡Guardado!',
+            'Los cambios se han guardado correctamente.',
+            'success'
+          );
+          console.log('Curso actualizado:', response);
+          this.loadCursos();
+          this.closeEditModal();
         },
         error: (error) => {
             console.error('Error al editar el curso', error);
-            this.errorMessage = error.error?.message || 'No se pudo actualizar el curso. Por favor, intente nuevamente.';
+            Swal.fire(
+              'Error',
+              error.error?.message || 'No se pudo actualizar el curso.',
+              'error'
+            );
+            this.errorMessage = error.error?.message || 'No se pudo actualizar el curso.';
             this.isLoading = false;
         },
         complete: () => {
             this.isLoading = false;
         }
     });
-}
+  }
 
   closeEditModal() {
     this.showEditModal = false;
@@ -274,9 +388,9 @@ export class CursosInstructorComponent implements OnInit {
   }
 
   deleteCourse() {
-    if (this.courseToDelete && this.usuario.id) {
+    if (this.courseToDelete && this.usuario.idUsuario) {
       this.isLoading = true;
-      this.cursoService.eliminarCurso(this.usuario.id, this.courseToDelete).subscribe({
+      this.cursoService.eliminarCurso(this.usuario.idUsuario, this.courseToDelete).subscribe({
         next: () => {
           this.loadCursos();
           this.showDeleteModal = false;
@@ -294,7 +408,20 @@ export class CursosInstructorComponent implements OnInit {
   }
 
   logout() {
-    console.log('Cerrando sesión...');
-    this.router.navigate(['/login']);
+    Swal.fire({
+      title: '¿Cerrar sesión?',
+      text: '¿Estás seguro de que deseas salir de tu cuenta?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, cerrar sesión',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.usuariosService.logout();
+        this.router.navigate(['home/inicio']);
+      }
+    });
   }
 }

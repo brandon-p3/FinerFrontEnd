@@ -8,14 +8,13 @@ apellidoMaterno: string;
 nombreCategoria: string;
 }
 export interface CursoVerDTO {
-    idCategoria: number;
-    idCurso: number;
-    titulo: string;
-    descripcion: string;
-    estatus: string;
-    origen: string;
-    imagen: string; // Añade este campo
-    nombreCategoria: string; // Añade este campo para mostrar el nombre
+  idCurso: number;
+  titulo: string;
+  descripcion: string;
+  estatus: string;
+  origen: string;
+  imagen: string;
+  categoria: string; 
 }
 
 export interface CursoEditarDTO {
@@ -23,7 +22,9 @@ export interface CursoEditarDTO {
   idInstructor: number;
   titulo: string;
   descripcion: string;
+  imagen:string;
   idCategoria: number;
+  
 }
 
  export interface VerCategoriasDTO {

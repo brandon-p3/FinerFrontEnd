@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AdministradorServiceService } from '../../../services/administrador-service.service';
 import { CursosServiceService } from '../../../services/cursos-service';
 import { Curso } from '../../../documentos/cursosDocumento';
+import { ChangeDetectorRef } from '@angular/core';
+
 
 @Component({
   selector: 'app-cursos-admin',
@@ -14,9 +16,12 @@ export class CursosAdminComponent implements OnInit {
   categoriasAprobadas: any[] = [];
   cursosFiltrados: Curso[] = []; 
 
+  //para rechazar un curso
   modalVisible: boolean = false;
   motivoRechazo: string = '';
-  cursoSeleccionado: any = null; //para rechazar curso
+  cursoSeleccionado: any = null;
+
+  cursoDetalleSeleccionado: any = null;
 
   // Variables para los filtros
   nombreCurso: string = '';
@@ -24,7 +29,8 @@ export class CursosAdminComponent implements OnInit {
 
   constructor(
     private administradorService: AdministradorServiceService,
-    private cursoService: CursosServiceService
+    private cursoService: CursosServiceService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -33,8 +39,15 @@ export class CursosAdminComponent implements OnInit {
     this.obtenerCategoriasAprobadas();
   }
 
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.inicializarBotonesDetalles();
+    });
+  }
+
   obtenerSolicitudesCursos() {
     this.administradorService.obtenerSolicitudesCursos().subscribe((data) => {
+      console.log('Solicitudes cargadas', data)
       this.solicitudesPendientes = data || [];
     });
   }
@@ -42,6 +55,7 @@ export class CursosAdminComponent implements OnInit {
   obtenerCursosAprobados() {
     this.cursoService.getCursos().subscribe(
       (data) => {
+        console.log('Cursos cargados0', data)
         this.cursos = data;
         this.cursosFiltrados = data; // Iniciamos con todos los cursos
       },
@@ -159,5 +173,65 @@ export class CursosAdminComponent implements OnInit {
   cerrarModal() {
     this.modalVisible = false;
     this.motivoRechazo = '';
+  }
+
+  // ======= MODAL DE DETALLES ========================
+
+  inicializarBotonesDetalles() {
+    if (typeof document === 'undefined') {
+      return; // Evita ejecutar este código en el servidor
+    }
+
+    const botonesDetalles = document.querySelectorAll('.btn.details');
+    const modal = document.getElementById('cursoModal');
+    const closeButton = document.querySelector('.close-button');
+
+    // Agregar evento a cada botón de detalles
+    botonesDetalles.forEach((boton, index) => {
+      boton.addEventListener('click', () => {
+        this.mostrarDetallesCurso(this.cursosFiltrados[index]);
+      });
+    });
+
+    // Cerrar modal con el botón X
+    if (closeButton) {
+      closeButton.addEventListener('click', () => {
+        if (modal) {
+          modal.style.display = 'none';
+        }
+      });
+    }
+
+    // Cerrar modal al hacer clic fuera
+    window.addEventListener('click', (event) => {
+      if (modal && event.target === modal) {
+        modal.style.display = 'none';
+      }
+    });
+  }
+
+  mostrarDetallesCurso(curso: any) {
+    this.cursoDetalleSeleccionado = curso;
+    
+    // Actualizar el contenido del modal con los datos del curso
+    const modal = document.getElementById('cursoModal');
+    const titulo = document.getElementById('modal-titulo');
+    const imagen = document.getElementById('modal-imagen') as HTMLImageElement;
+    const descripcion = document.getElementById('modal-descripcion');
+    const instructor = document.getElementById('modal-instructor');
+    const categoria = document.getElementById('modal-categoria');
+    
+    if (titulo) titulo.textContent = curso.tituloCurso;
+    if (imagen) imagen.src = curso.imagen;
+    if (descripcion) descripcion.textContent = curso.descripcion;
+    if (instructor) {
+      instructor.textContent = `${curso.nombreInstructor} ${curso.apellidoPaterno} ${curso.apellidoMaterno}`;
+    }
+    if (categoria) categoria.textContent = curso.nombreCategoria;
+    
+    // Mostrar el modal
+    if (modal) {
+      modal.style.display = 'flex';
+    }
   }
 }

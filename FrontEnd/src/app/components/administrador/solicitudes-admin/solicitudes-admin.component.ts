@@ -52,14 +52,10 @@ export class SolicitudesAdminComponent implements OnInit {
   obtenerSolicitudesInstructores() {
     this.adminService.verSolicitudesInstructor().subscribe(
       (data) => {
-        console.log('Datos de solicitudes de instructores:', data);
-        // Verificar si data es un array
         if (Array.isArray(data)) {
+          console.log('Solicitudes de instructor', data)
           this.instructores = data;
         } else if (data && typeof data === 'object') {
-          // Si data es un objeto, pero tiene una propiedad que contiene el array
-          // Por ejemplo, si la respuesta es { items: [...] }
-          // Busca alguna propiedad que sea un array
           for (const prop in data) {
             if (Array.isArray(data[prop])) {
               this.instructores = data[prop];
@@ -67,10 +63,9 @@ export class SolicitudesAdminComponent implements OnInit {
             }
           }
           
-          // Si no encontramos ningún array, convierte el objeto en array si es posible
           if (!Array.isArray(this.instructores)) {
             console.warn('La respuesta no contiene un array, intentando convertir');
-            this.instructores = [data]; // Convertir un único objeto en array
+            this.instructores = [data];
           }
         } else {
           console.error('La respuesta no es un array ni un objeto:', data);
@@ -85,10 +80,8 @@ export class SolicitudesAdminComponent implements OnInit {
   }
 
   aceptarInstructor(instructor: any) {
-    // Imprimir todo el objeto instructor para ver su estructura completa
     console.log('Objeto instructor completo:', instructor);
   
-    // Verificación de seguridad más detallada
     if (!instructor) {
       console.error('El objeto instructor es undefined o null');
       return;
@@ -185,7 +178,6 @@ export class SolicitudesAdminComponent implements OnInit {
   obtenerSolicitudesCategorias() {
     this.adminService.obtenerTodasLasSolicitudes().subscribe(
       (data) => {
-        console.log('Datos de solicitudes de categorias:', data);
         this.solicitudesCategorias = data;
       },
       (error) => {
