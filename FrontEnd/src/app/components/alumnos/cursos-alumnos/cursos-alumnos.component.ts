@@ -18,8 +18,6 @@ export class CursosAlumnosComponent implements OnInit {
     contrasenia: 'password123',
     nombreUsuario: 'nombreUsuario',
     cursosCompletados: 5,
-
-
   };
 
   cursos: Curso[] = [];
@@ -35,6 +33,7 @@ export class CursosAlumnosComponent implements OnInit {
 
   ngOnInit(): void {
     this.obtenerCursos();
+
   }
 
   toggleMenu() {
@@ -101,14 +100,17 @@ export class CursosAlumnosComponent implements OnInit {
 
   accederCurso(curso: any) {
     console.log('Accediendo al curso:', curso);
-  }
 
+    if (curso.idCurso) {
+      this.router.navigate([`/alumnos/contenido`, curso.idCurso]);
+    } else {
+      console.error("ID del curso inválido");
+    }
+  }
   logout() {
     console.log('Cerrando sesión...');
     this.router.navigate(['/login']);
   }
-
-
   verDetallesCurso(tituloCurso: string) {
     console.log("Título recibido:", tituloCurso);
 
