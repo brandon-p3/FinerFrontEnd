@@ -174,16 +174,15 @@ export class CursosInstructorComponent implements OnInit {
       idInstructor: this.usuario.id,
       titulo: curso.titulo || '',
       descripcion: curso.descripcion || '',
-      idCategoria: curso.idCategoria,
-      nombreCategoriaActual: this.getCategoriaName(curso.idCategoria),
+      categoria: curso.categoria || '',
       imagen: curso.imagen || null,
-      imagenUrl: curso.imagen ? this.getImageUrl(curso.imagen) : null,
+      imagenUrl: curso.imagen || null,
       file: null
     };
     
     this.showEditModal = true;
     this.isEditing = true;
-  }
+}
 
   getImageUrl(imagen: string): string {
     if (!imagen) return '';
@@ -194,10 +193,9 @@ export class CursosInstructorComponent implements OnInit {
     return 'data:image/jpeg;base64,' + imagen;
   }
 
-  getCategoriaName(idCategoria: number): string {
-    const categoria = this.categorias.find(c => c.idCategoria === idCategoria);
-    return categoria ? categoria.nombreCategoria : 'Desconocida';
-  }
+  getCategoriaName(categoriaNombre: string): string {
+    return categoriaNombre || 'Sin categoría';
+}
 
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
@@ -215,7 +213,7 @@ export class CursosInstructorComponent implements OnInit {
 
   submitEditForm() {
     // Validar que todos los campos requeridos estén completos
-    if (!this.editFormData.titulo || !this.editFormData.descripcion || !this.editFormData.idCategoria) {
+    if (!this.editFormData.titulo || !this.editFormData.descripcion || !this.editFormData.categoria) {
         this.errorMessage = 'Por favor complete todos los campos requeridos';
         return;
     }
@@ -223,26 +221,30 @@ export class CursosInstructorComponent implements OnInit {
     this.isLoading = true;
     this.errorMessage = '';
 
+    // Encontrar el ID de la categoría seleccionada
+    const categoriaSeleccionada = this.categorias.find(c => c.nombreCategoria === this.editFormData.categoria);
+    const idCategoria = categoriaSeleccionada ? categoriaSeleccionada.idCategoria : 0;
+
     // Crear objeto de datos del curso
     const cursoData: CursoEditarDTO = {
         idCurso: this.editFormData.idCurso,
         idInstructor: this.editFormData.idInstructor,
         titulo: this.editFormData.titulo,
         descripcion: this.editFormData.descripcion,
-        imagen:this.editFormData.imagenUrl,
-        idCategoria: this.editFormData.idCategoria
+        imagen: this.editFormData.imagenUrl,
+        idCategoria: idCategoria // Enviar el ID al backend
     };
 
     // Llamar al servicio para editar el curso
     this.cursoService.editarCurso(cursoData).subscribe({
         next: (response) => {
             console.log('Curso actualizado:', response);
-            this.loadCursos(); // Recargar cursos para reflejar cambios
-            this.closeEditModal(); // Cerrar el modal de edición
+            this.loadCursos();
+            this.closeEditModal();
         },
         error: (error) => {
             console.error('Error al editar el curso', error);
-            this.errorMessage = error.error?.message || 'No se pudo actualizar el curso. Por favor, intente nuevamente.';
+            this.errorMessage = error.error?.message || 'No se pudo actualizar el curso.';
             this.isLoading = false;
         },
         complete: () => {
@@ -250,7 +252,6 @@ export class CursosInstructorComponent implements OnInit {
         }
     });
 }
-
   closeEditModal() {
     this.showEditModal = false;
     this.editFormData = {

@@ -119,16 +119,14 @@
         
         <!-- Mostrar categoría del curso -->
         <p class="modal-course-detail">
-            <strong>Categoría:</strong> {{ getCategoriaName(selectedCourse.idCategoria) }}
+            <strong>Categoría:</strong> {{ selectedCourse?.categoria || 'Sin categoría' }}
         </p>
         
         <p class="modal-course-detail">
             <strong>Descripción:</strong> {{ selectedCourse.descripcion }}
         </p>
         
-        <p *ngIf="selectedCourse.origen" class="modal-course-detail">
-            <strong>Origen:</strong> {{ selectedCourse.origen }}
-        </p>
+
         
         <div class="modal-actions">
             <button *ngIf="selectedCourse.estatus !== 'Aprobado'" 
@@ -153,7 +151,7 @@
             <input type="text" [(ngModel)]="editFormData.titulo" 
                    name="titulo" 
                    required
-                   class="form-control">
+                   class="form-control" readonly>
         </div>
         
         <div class="form-group">
@@ -165,13 +163,18 @@
         </div>
         
         <div class="form-group">
-          <label>Categoría actual: {{editFormData.nombreCategoriaActual}}</label>
-          <select [(ngModel)]="editFormData.idCategoria" name="idCategoria" required class="form-control">
-            <option [value]="editFormData.idCategoria" selected>{{editFormData.nombreCategoriaActual}}</option>
-            <option *ngFor="let cat of categorias" [value]="cat.idCategoria">
-              {{ cat.nombreCategoria }}
-            </option>
-          </select>
+            <label>Categoría actual:</label>
+            <div class="current-category-display">
+                {{ editFormData.categoria || 'Sin categoría' }}
+            </div>
+            
+            <label>Cambiar categoría:</label>
+            <select [(ngModel)]="editFormData.categoria" name="categoria" required class="form-control">
+                <option value="">-- Seleccione una categoría --</option>
+                <option *ngFor="let cat of categorias" [value]="cat.nombreCategoria">
+                    {{ cat.nombreCategoria }}
+                </option>
+            </select>
         </div>
 
         <div class="form-group">
