@@ -55,7 +55,7 @@ import { LoginComponent } from './components/login/login/login.component';
     NavbarAlumnoComponent,
     CursosAlumnosComponent,
     DescripcionCursoAlumnoComponent,
-    ContenidoCursoComponent
+    ContenidoCursoComponent,
     NavbarInstructorComponent,
     PerfilInstructorComponent,
     LoginComponent
