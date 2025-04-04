@@ -72,19 +72,22 @@
                 <!-- Lista de cursos -->
                 <div *ngIf="!isLoading && filteredCourses.length > 0" class="courses-grid">
                     <div *ngFor="let curso of filteredCourses" class="course-card">
-                        <div class="course-status" [ngClass]="{
-                            'approved': curso.estatus === 'Aprobado',
-                            'pending': curso.estatus === 'Pendiente',
-                            'rejected': curso.estatus === 'Rechazado'
-                        }">
-                            {{ curso.estatus }}
+                        <div class="course-image-container" *ngIf="curso.imagen">
+                            <img [src]="getImageUrl(curso.imagen)" alt="Imagen del curso" class="course-img-preview">
+                            <div class="course-status" [ngClass]="{
+                                'approved': curso.estatus === 'Aprobado',
+                                'pending': curso.estatus === 'Pendiente',
+                                'rejected': curso.estatus === 'Rechazado'
+                            }">
+                                {{ curso.estatus }}
+                            </div>
                         </div>
                         <div class="course-content">
-                            <div class="course-image" *ngIf="curso.imagen">
-                                <img [src]="getImageUrl(curso.imagen)" alt="Imagen del curso" class="course-img-preview">
-                            </div>
                             <h3>{{ curso.titulo }}</h3>
                             <p class="course-description">{{ curso.descripcion }}</p>
+                            <div class="course-meta">
+                                <span class="course-category">{{ curso.categoria || 'Sin categoría' }}</span>
+                            </div>
                             <div class="course-actions">
                                 <button class="action-btn preview-btn" (click)="openPreviewModal(curso)">Vista Previa</button>
                                 <button *ngIf="curso.estatus !== 'Aprobado'" class="action-btn edit-btn" (click)="editCourse(curso)">Editar</button>
@@ -102,31 +105,37 @@
 <div *ngIf="showPreviewModal && selectedCourse" class="modal-overlay">
     <div class="modal-content">
         <button class="close-modal-btn" (click)="closePreviewModal()">&times;</button>
-        <h3 class="modal-course-title">{{ selectedCourse.titulo }}</h3>
-        
-        <!-- Mostrar imagen del curso -->
-        <div class="modal-course-image" *ngIf="selectedCourse.imagen">
-            <img [src]="getImageUrl(selectedCourse.imagen)" alt="Imagen del curso" class="course-img-preview">
+        <div class="modal-header">
+            <h3 class="modal-course-title">{{ selectedCourse.titulo }}</h3>
+            <div class="modal-status" [ngClass]="{
+                'approved': (selectedCourse.estatus || '').toLowerCase().trim() === 'aprobado',
+                'pending': (selectedCourse.estatus || '').toLowerCase().trim() === 'en revision',
+                'rejected': (selectedCourse.estatus || '').toLowerCase().trim() === 'rechazada'
+            }">
+                {{ selectedCourse.estatus }}
+            </div>
         </div>
         
-        <div class="modal-status" [ngClass]="{
-            'approved': (selectedCourse.estatus || '').toLowerCase().trim() === 'aprobado',
-            'pending': (selectedCourse.estatus || '').toLowerCase().trim() === 'en revision',
-            'rejected': (selectedCourse.estatus || '').toLowerCase().trim() === 'rechazada'
-        }">
-            {{ selectedCourse.estatus }}
+        <div class="modal-body">
+            <!-- Mostrar imagen del curso -->
+            <div class="modal-course-image" *ngIf="selectedCourse.imagen">
+                <img [src]="getImageUrl(selectedCourse.imagen)" alt="Imagen del curso" class="course-img-preview">
+            </div>
+            
+            <div class="modal-course-details">
+                <!-- Mostrar categoría del curso -->
+                <div class="modal-detail-row">
+                    <span class="detail-label">Categoría:</span>
+                    <span class="detail-value">{{ selectedCourse.categoria || 'Sin categoría' }}</span>
+                </div>
+                
+                
+                <div class="modal-detail-row full-width">
+                    <span class="detail-label">Descripción:</span>
+                    <p class="detail-value">{{ selectedCourse.descripcion }}</p>
+                </div>
+            </div>
         </div>
-        
-        <!-- Mostrar categoría del curso -->
-        <p class="modal-course-detail">
-            <strong>Categoría:</strong> {{ selectedCourse?.categoria || 'Sin categoría' }}
-        </p>
-        
-        <p class="modal-course-detail">
-            <strong>Descripción:</strong> {{ selectedCourse.descripcion }}
-        </p>
-        
-
         
         <div class="modal-actions">
             <button *ngIf="selectedCourse.estatus !== 'Aprobado'" 
