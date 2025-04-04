@@ -787,4 +787,55 @@ select.form-control {
         margin-left: 0;
         align-self: flex-start;
     }
+    /* Estilos para el mensaje de no hay cursos */
+.no-courses-message {
+    text-align: center;
+    padding: 40px 20px;
+    margin: 30px 0;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border: 1px dashed #dee2e6;
+  }
+  
+  .no-courses-message .message-container {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  
+  .no-courses-message .empty-state-icon {
+    width: 120px;
+    height: 120px;
+    margin-bottom: 20px;
+    opacity: 0.6;
+  }
+  
+  .no-courses-message h3 {
+    color: #343a40;
+    margin-bottom: 10px;
+    font-size: 1.5rem;
+  }
+  
+  .no-courses-message p {
+    color: #6c757d;
+    margin-bottom: 25px;
+    font-size: 1.1rem;
+  }
+  
+  .no-courses-message .create-course-btn.primary {
+    background-color: #4e73df;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .no-courses-message .create-course-btn.primary:hover {
+    background-color: #3a5ec0;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
 }
