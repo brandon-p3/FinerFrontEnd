@@ -1,0 +1,165 @@
+<app-navbar-instructor></app-navbar-instructor>
+<div class="page-container">
+  <!-- Page Header -->
+  <div class="page-header">
+    <h1>Panel de Instructor</h1>
+    <p>Gestiona tu información personal y profesional</p>
+  </div>
+
+  <div class="perfil-container">
+    <!-- Profile Header with main information -->
+    <div class="content-section">
+      <div class="profile-header">
+        <div class="profile-img-container">
+          <img src="assets/logo.png" alt="Foto de perfil" class="profile-img">
+          <div class="change-photo">
+            <i class="fas fa-camera"></i>
+          </div>
+        </div>
+
+        <div class="profile-info">
+          <h2>{{ instructor.nombre }} {{ instructor.apellidoPaterno }} {{ instructor.apellidoMaterno }}</h2>
+
+          <div class="profile-details">
+            <div class="detail-item">
+              <i class="fas fa-user"></i>
+              <span><strong>Usuario:</strong> {{ instructor.nombreUsuario }}</span>
+            </div>
+
+            <div class="detail-item">
+              <i class="fas fa-envelope"></i>
+              <span><strong>Correo:</strong> {{ instructor.correo }}</span>
+            </div>
+
+            <div class="detail-item">
+              <i class="fas fa-phone"></i>
+              <span><strong>Teléfono:</strong> {{ instructor.telefono }}</span>
+            </div>
+
+            <div class="detail-item">
+              <i class="fas fa-map-marker-alt"></i>
+              <span><strong>Dirección:</strong> {{ instructor.direccion }}</span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabs Navigation -->
+      <div class="profile-tabs">
+        <div class="tab active">Información Personal</div>
+        <div class="tab">Seguridad</div>
+        <div class="tab">Preferencias</div>
+      </div>
+
+      <!-- Tab Content - Personal Information -->
+      <div class="tab-content">
+        <h3 class="section-title">Editar Información</h3>
+
+        <div class="form-container">
+          <form (ngSubmit)="guardarCambios()">
+            <!-- Personal Information Section -->
+            <div class="form-section">
+              <h4 class="form-section-title">Datos Personales</h4>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="nombre">Nombre</label>
+                  <input type="text" id="nombre" [(ngModel)]="instructor.nombre" name="nombre" required>
+                </div>
+
+                <div class="form-group">
+                  <label for="apellidoPaterno">Apellido Paterno</label>
+                  <input type="text" id="apellidoPaterno" [(ngModel)]="instructor.apellidoPaterno"
+                    name="apellidoPaterno" required>
+                </div>
+
+                <div class="form-group">
+                  <label for="apellidoMaterno">Apellido Materno</label>
+                  <input type="text" id="apellidoMaterno" [(ngModel)]="instructor.apellidoMaterno"
+                    name="apellidoMaterno">
+                </div>
+
+                <div class="form-group">
+                  <label for="nombreUsuario">Nombre de Usuario</label>
+                  <input type="text" id="nombreUsuario" [(ngModel)]="instructor.nombreUsuario" name="nombreUsuario"
+                    required>
+                </div>
+              </div>
+            </div>
+
+            <!-- Contact Information Section -->
+            <div class="form-section">
+              <h4 class="form-section-title">Información de Contacto</h4>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="correo">Correo</label>
+                  <input type="correo" id="correo" [(ngModel)]="instructor.correo" name="correo" required>
+                </div>
+
+                <div class="form-group">
+                  <label for="telefono">Teléfono</label>
+                  <input type="text" id="telefono" [(ngModel)]="instructor.telefono" name="telefono">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="direccion">Dirección</label>
+                <input type="text" id="direccion" [(ngModel)]="instructor.direccion" name="direccion">
+              </div>
+            </div>
+
+
+            <!-- Password Section -->
+            <div class="form-section">
+              <h4 class="form-section-title">Cambiar Contraseña</h4>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="nuevaContrasenia">Nueva Contraseña</label>
+                  <div class="password-toggle">
+                    <input type="password" id="nuevaContrasenia" [(ngModel)]="nuevaContrasenia" name="nuevaContrasenia">
+                    <span class="toggle-icon">
+                      <i class="fas fa-eye"></i>
+                    </span>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="confirmarContrasenia">Confirmar Contraseña</label>
+                  <div class="password-toggle">
+                    <input type="password" id="confirmarContrasenia" [(ngModel)]="confirmarContrasenia"
+                      name="confirmarContrasenia">
+                    <span class="toggle-icon">
+                      <i class="fas fa-eye"></i>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Success/Error Message -->
+            <div *ngIf="mensajeRespuesta" class="message" [ngClass]="mensajeExito ? 'success' : 'error'">
+              <i [class]="mensajeExito ? 'fas fa-check-circle' : 'fas fa-exclamation-circle'"></i>
+              {{ mensajeRespuesta }}
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="button-container">
+              <button type="button" class="btn btn-secondary">
+                <i class="fas fa-times"></i> Cancelar
+              </button>
+
+              <button type="submit" class="btn btn-primary"
+                [disabled]="!instructor.nombre || !instructor.nombreUsuario || !instructor.apellidoMaterno || !instructor.apellidoPaterno || !instructor.correo">
+                <i class="fas fa-save"></i> Guardar Cambios
+              </button>
+
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

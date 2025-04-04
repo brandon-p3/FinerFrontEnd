@@ -1,135 +1,180 @@
+/* Estilos base mejorados que mantienen la esencia original */
+:root {
+  --primary: #8EC3B0;      /* Verde principal */
+  --secondary: #9ED5C5;    /* Verde secundario */
+  --light: #DEF5E5;        /* Verde claro */
+  --dark: #055052;         /* Verde oscuro para textos */
+  --text: #333333;         /* Color texto principal */
+  --background: #f8f9fa;   /* Fondo general */
+  --card-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  --border-radius: 12px;
+}
+
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background-color: var(--background);
+  color: var(--text);
+  margin: 0;
+  padding: 0;
+}
+
+/* Contenedor principal */
 .container {
-    display: flex;
-    gap: 20px;
+  display: flex;
+  gap: 10px;
+  padding: 5px;
+  max-width: 1400px;
+  margin-top: 1px;
+}
+
+/* Filtros - Versión minimalista */
+.filters {
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px;
+  margin: 15px 100px;
+}
+
+.filters input {
+  padding: 12px 20px;
+  width: 280px;
+  border: 2px solid #7FB3B0;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  background-color: white;
+  color: #333;
+  transition: all 0.3s ease;
+}
+
+.filters input::placeholder {
+  color: #8EA5A3;
+}
+
+.filters input:focus {
+  outline: none;
+  border-color: #8EC3B0;
+  box-shadow: 0 0 0 4px rgba(142, 195, 176, 0.2);
+}
+
+.filters input:hover {
+  border-color: #8EC3B0;
+}
+
+
+/* Secciones */
+.section {
+  flex: 1;
+  background-color: white;
+  border-radius: var(--border-radius);
+  padding: 1px;
+  box-shadow: var(--card-shadow);
+}
+
+.section h2 {
+  color: var(--dark);
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--light);
+}
+
+/* Contenedor de tarjetas */
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+/* Tarjetas - manteniendo el estilo original pero mejorado */
+.card {
+  padding: 15px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #FFFFFF, var(--light));
+  box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  border-left: 5px solid var(--primary);
+}
+
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 6px 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.card p {
+  font-size: 16px;
+  margin: 6px 0;
+  color: var(--text);
+  line-height: 1.4;
+}
+
+.card strong {
+  color: var(--dark);
+}
+
+.details {
+  display: none;
+  transition: opacity 0.3s ease-in-out;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed var(--secondary);
+}
+
+.card:hover .details {
+  display: block;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
   }
-  
-  .section {
-    flex: 1;
-    padding: 20px;
-  }
-  
-  h2 {
-    text-align: left;
-    margin-bottom: 15px;
-    font-size: 20px;
-    font-weight: bold;
-    color: #333;
-  }
-  
+
   .card-container {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); /* Solo dos columnas */
-    gap: 15px;
-  }  
-  
-  .card {
-    flex: 1;
-    max-width: 280px; 
-    padding: 15px;
-    border-radius: 12px;
-    margin: 8px;
-    background: linear-gradient(135deg, #FFFF, #DEF5E5);
-    box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-    border-left: 5px solid #8EC3B0;
+    grid-template-columns: 1fr;
   }
-  
-  /* Efecto hover */
-  .card:hover {
-    transform: scale(1.05);
-    box-shadow: 6px 6px 16px rgba(0, 0, 0, 0.15);
-  }
-  
-  /* Estilos de texto dentro de la tarjeta */
-  .card p {
-    font-size: 16px;
-    margin: 6px 0;
-    color: #333;
-    line-height: 1.4;
-  }
-  
-  .card strong {
-    color: #055052;
-  }
-
-  .details {
-    display: none;
-    transition: opacity 0.3s ease-in-out;
-  }
-  
-  .card:hover .details {
-    display: block;
-  }  
-  
-  /* Responsive: para pantallas pequeñas */
-  @media (max-width: 768px) {
-    .container {
-      flex-direction: column;
-    }
-  
-    .card-container {
-      flex-direction: column;
-      align-items: center;
-      
-    }
-  
-    .card {
-      width: 90%;
-      max-width: 320px;
-    }
-  }
-  
-
-  /*  ===== FILTROS ===== */
 
   .filters {
-    display: flex;
-    justify-content: flex-end; /* Mueve los filtros a la derecha */
-    gap: 10px; /* Espaciado entre elementos */
-    padding: 10px;
+    flex-direction: column;
+    align-items: flex-end;
   }
-  
-  .filters input,
-  .filters select {
-    padding: 8px 12px;
-    border: 2px solid #8EC3B0;
-    border-radius: 8px;
-    font-size: 1rem;
-    background-color: #FFFF;
-    color: #333;
-    transition: all 0.3s ease-in-out;
-  }
-  
-  .filters input::placeholder {
-    color: #555;
-  }
-  
-  .filters select {
-    cursor: pointer;
-  }
-  
-  /* Efecto hover */
-  .filters input:hover,
-  .filters select:hover {
-    background-color: #9ED5C5;
-    border-color: #9ED5C5;
-    transform: scale(1.05);
-  }
-  
-  /* Responsive: Para móviles, que se apilen */
-  @media (max-width: 768px) {
-    .filters {
-      flex-direction: column;
-      align-items: flex-end;
-    }
-  
-    .filters input,
-    .filters select {
-      width: 100%;
-    }
-  }
-  
 
+  .filters input {
+    width: 100%;
+  }
+}
 
+/* Pequeñas mejoras adicionales */
+.section:nth-child(1) .card {
+  border-left-color: #8EC3B0;
+}
 
-  
+.section:nth-child(2) .card {
+  border-left-color: #7FB3B0;
+}
+
+.card p:first-child {
+  font-weight: 500;
+  border-bottom: 1px solid rgba(142, 195, 176, 0.3);
+  padding-bottom: 8px;
+  margin-bottom: 10px;
+}
+
+/* Scrollbar personalizada sutil */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--secondary);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}

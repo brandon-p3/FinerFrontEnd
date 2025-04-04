@@ -6,7 +6,6 @@ import { CategoriaServiceService } from '../../../services/categorias-service.se
 
 @Component({
   selector: 'app-cursos-instructor',
-  standalone: false,
   templateUrl: './cursos-instructor.component.html',
   styleUrls: ['./cursos-instructor.component.css']
 })

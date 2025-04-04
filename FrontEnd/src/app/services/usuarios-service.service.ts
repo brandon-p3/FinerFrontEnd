@@ -11,7 +11,8 @@ import { Curso } from '../documentos/cursosDocumento';
 export class UsuariosService {
 
   private apiUri = CONFIG.apiUrl + '/administrador';
-  private apiUri2 = CONFIG.apiUrl;
+  private apiUri2 = CONFIG.apiUrl + '/token';
+  private apiUri3 = CONFIG.apiUrl + '/alumnos-instructor/usuarios';
 
   constructor(private http: HttpClient) { }
 
@@ -23,7 +24,15 @@ export class UsuariosService {
     return this.http.get<InstructorDocumento[]>(`${this.apiUri}/getUsuarios/instructores`)
   }
 
+  iniciarSesion(nombreUsuario: string, contrasenia: string): Observable<string> {
+    const url = `${this.apiUri2}/iniciar-sesion`
+    return this.http.get<string>(url, {
+      params: { nombreUsuario, contrasenia }
+    });
+  }
 
-
+  obtenerUsuarioPorId(idUsuario: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUri3}/${idUsuario}`);
+  }
 
 }
