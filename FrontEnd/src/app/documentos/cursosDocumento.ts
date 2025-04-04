@@ -12,13 +12,19 @@ export interface Curso {
     categoria: string;
     cantidadTemas: string;
 
+
 }
 
 export interface contenidoCurso{
     idTema: number;
     nombreTema: string;
     contenido: string;
+    tipo?: string;
 
+}
+
+export interface evaluacionC{
+    idEvaluacion: number;
 }
 
 export interface CategoriaCursos {
