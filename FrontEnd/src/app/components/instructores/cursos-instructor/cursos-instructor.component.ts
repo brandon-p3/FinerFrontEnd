@@ -205,7 +205,7 @@ export class CursosInstructorComponent implements OnInit {
     this.menuOpen = false;
     
     // Agrega esta condición para redirigir correctamente
-    if (page === 'mis-cursos') {
+    if (page === 'cursos') {
         this.router.navigate(['/instructor/cursos']);
     }
   }
@@ -231,6 +231,11 @@ export class CursosInstructorComponent implements OnInit {
   createCourse() {
     this.currentPage = 'crear-curso';
     this.router.navigate(['/instructor/crear-curso']);
+  }
+
+  perfil(){
+    this.currentPage = 'perfil';
+    this.router.navigate(['/instructor/perfil']);
   }
 
   openPreviewModal(curso: CursoVerDTO) {

@@ -10,7 +10,7 @@ import { InstructorDocumento } from '../../../documentos/usuarioDocumento';
 })
 export class PerfilInstructorComponent implements OnInit {
   instructor: any = {
-    idUsuario: 12,
+    idUsuario: null,
     nombre: '',
     apellidoPaterno: '',
     apellidoMaterno: '',
@@ -31,7 +31,15 @@ export class PerfilInstructorComponent implements OnInit {
     private usuariosService: UsuariosService) { }
 
   ngOnInit(): void {
-    this.cargarPerfilInstructor();
+    const idUsuario = localStorage.getItem('idUsuario');
+
+    if (idUsuario) {
+      this.instructor.idUsuario = Number(idUsuario); // Convertir a número
+      this.cargarPerfilInstructor();
+    } else {
+      this.mensajeRespuesta = 'No se encontró el ID del usuario en localStorage.';
+      this.mensajeExito = false;
+    }
   }
 
   cargarPerfilInstructor(): void {
@@ -48,7 +56,6 @@ export class PerfilInstructorComponent implements OnInit {
           correo: datos.correo, // Ajusta el nombre de la propiedad
           telefono: datos.telefono,
           direccion: datos.direccion,
-          especialidad: this.instructor.especialidad // Si la API lo devuelve, usa `datos.especialidad`
         };
       },
       error: (error) => {

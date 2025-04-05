@@ -17,10 +17,9 @@
     <div class="dropdown-menu" [class.show]="menuOpen">
         <ul>
             <li class="menu-section">Cursos</li>
-            <li class="menu-item" [class.active]="currentPage === 'mis-cursos'" (click)="navigateTo('mis-cursos')">Mis Cursos</li>
-            <li class="menu-item" [class.active]="currentPage === 'crear-curso'" (click)="createCourse()">
-                Crear Curso
-            </li>
+            <li class="menu-item" [class.active]="currentPage === 'cursos'" (click)="navigateTo('cursos')">Mis Cursos</li>
+            <li class="menu-item" [class.active]="currentPage === 'crear-curso'" (click)="createCourse()">Crear Curso</li>
+            <li class="menu-item" [class.active]="currentPage === 'perfil'" (click)="perfil()">Mi perfil</li>
         </ul>
     </div>
 
