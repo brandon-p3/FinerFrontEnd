@@ -16,6 +16,7 @@
             <p>{{ solicitud.descripcion }}</p>
             <p>{{ solicitud.correo }}</p>
             <div class="buttons">
+              <button class="btn info" (click)="abrirModalTemasSolicitados(solicitud)">Contenido</button>
               <button class="btn approve" (click)="aprobarCurso(solicitud.idSolicitudCurso)">Aprobar</button>
               <button class="btn reject" (click)="abrirModalRechazo(solicitud)">Rechazar</button>
             </div>
@@ -36,9 +37,29 @@
     </div>
   </div>
 
+  <!-- Modal de Temas Solicitados Mejorado -->
+  <div id="modalTemasSolicitados" class="modal" [ngStyle]="{ display: modalTemasVisible ? 'flex' : 'none' }">
+    <div class="modal-content">
+      <span class="close-button" (click)="cerrarModalTemasSolicitados()">&times;</span>
+      <h2>Temas solicitados para: {{ cursoTemasActual?.tituloCursoSolicitado }}</h2>
 
+      <div *ngIf="mensajeTemas" class="alert alert-warning">
+        {{ mensajeTemas }}
+      </div>
 
-
+      <div class="temas-lista" *ngIf="temasSolicitados.length > 0">
+        <div class="tema-item" *ngFor="let tema of temasSolicitados; let i = index">
+          <div class="tema-header" (click)="toggleTemaContenido(i)">
+            <span class="tema-titulo">{{ tema.nombreTema || 'Sin nombre' }}</span>
+            <span class="tema-toggle">{{ temaExpandido === i ? '▼' : '►' }}</span>
+          </div>
+          <div class="tema-contenido" [ngClass]="{'expandido': temaExpandido === i}">
+            {{ tema.contenido || 'Sin contenido disponible' }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Sección 2: Todos los Cursos -->
   <section class="section">

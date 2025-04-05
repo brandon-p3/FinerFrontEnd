@@ -36,7 +36,7 @@ h2 {
 
 /* Ocultar la barra de desplazamiento pero mantener la funcionalidad */
 .pending-courses::-webkit-scrollbar {
-  height: 8px;
+  height: 10px;
 }
 
 .pending-courses::-webkit-scrollbar-track {
@@ -49,8 +49,6 @@ h2 {
   border-radius: 10px;
 }
 
-/* ========= SECCION CURSOS POR APROBAR ======================= */
-/* Tarjetas dentro de la sección "Cursos por Aprobar" */
 .pending-card {
   display: flex;
   position: relative;
@@ -59,8 +57,9 @@ h2 {
   padding: 20px;
   border-radius: 15px;
   box-shadow: 3px 5px 12px rgba(0, 0, 0, 0.15);
-  width: 370px;
-  min-width: 370px;
+  width: 90%; 
+  min-width: 400px; 
+  max-width: 700px;
   scroll-snap-align: start;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   overflow: hidden;
@@ -133,50 +132,95 @@ p {
   line-height: 1.5;
 }
 
-/* Botones */
+/* botones */
+
 .buttons {
   display: flex;
-  gap: 1px;
-  justify-content: center; /* Alineados a la izquierda ahora */
-  margin-top: 7px;
+  gap: 1px; /* Más espacio entre botones */
+  justify-content: center;
+  margin-top: 10px;
 }
 
 .btn {
-  padding: 8px 14px;
+  padding: 10px 10px;
   border: none;
   cursor: pointer;
   border-radius: 8px;
-  font-size: 11px;
-  font-weight: bold;
-  transition: all 0.3s ease-in-out;
-  min-width: 75px;
+  font-size: 10px;
+  font-weight: 620;
+  transition: all 0.2s ease;
+  min-width: 70px;
   letter-spacing: 0.5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
 }
 
 .btn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.15);
+}
+
+/* Clase para el primer botón */
+.info {
+  background: linear-gradient(135deg, #5B9BD5, #4A89C4);
+  color: white;
+}
+
+.info:hover {
+  background: #3A7AB8;
 }
 
 .approve {
-  background: #4CAF50;
+  background: linear-gradient(135deg, #8EC3B0, #7AB8A3);
   color: white;
+}
+
+.approve:hover {
+  background: #5AA68E;
 }
 
 .reject {
-  background: #E63946;
+  background: linear-gradient(135deg, #D65B5B, #C44A4A);
   color: white;
 }
 
-.btn:hover.approve {
-  background: #3e8e41;
+.reject:hover {
+  background: #B63C3C;
 }
 
-.btn:hover.reject {
-  background: #c62828;
+/* Efecto de onda al hacer clic (opcional) */
+.btn::after {
+  content: '';
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.3) 10%, transparent 10.01%);
+  background-repeat: no-repeat;
+  background-position: 50%;
+  transform: scale(10, 10);
+  opacity: 0;
+  transition: transform 0.4s, opacity 0.5s;
 }
 
+.btn:active::after {
+  transform: scale(0, 0);
+  opacity: 0.3;
+  transition: 0s;
+}
 /* Media query para pantallas más pequeñas */
 @media (max-width: 480px) {
   .card-content {
@@ -349,25 +393,92 @@ button {
 }
 
 
-/* ======= Responsive ======= */
-@media (max-width: 768px) {
-  .filters {
-      flex-direction: column;
-      align-items: flex-end;
-  }
+/* ========= ESTILOS PARA MODAL DE TEMAS ======= */
 
-  .filters input,
-  .filters select {
-      width: 100%;
-  }
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
 
-  .pending-card {
-      width: 100%;
-  }
+.modal-content {
+  background-color: white;
+  padding: 25px;
+  border-radius: 15px;
+  width: 80%;
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
 
-  .all-courses {
-      grid-template-columns: 1fr;
-  }
+.close-button {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 24px;
+  cursor: pointer;
+  color: #555;
+  transition: color 0.3s;
+}
+
+.close-button:hover {
+  color: #000;
+}
+
+.temas-lista {
+  margin-top: 20px;
+}
+
+.tema-item {
+  margin-bottom: 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.tema-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 15px;
+  background-color: #f5f5f5;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.tema-header:hover {
+  background-color: #ebebeb;
+}
+
+.tema-titulo {
+  font-weight: 500;
+}
+
+.tema-toggle {
+  color: #666;
+}
+
+.tema-contenido {
+  padding: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  background-color: #fff;
+}
+
+.tema-contenido.expandido {
+  padding: 15px;
+  max-height: 300px;
+  border-top: 1px solid #e0e0e0;
 }
 
 /* ======== MODAL DE DETALLES DEL CURSO =========== */

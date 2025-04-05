@@ -12,9 +12,9 @@ import { ChangeDetectorRef } from '@angular/core';
 })
 export class CursosAdminComponent implements OnInit {
   solicitudesPendientes: any[] = [];
-  cursos: Curso[] = []; 
+  cursos: Curso[] = [];
   categoriasAprobadas: any[] = [];
-  cursosFiltrados: Curso[] = []; 
+  cursosFiltrados: Curso[] = [];
 
   //para rechazar un curso
   modalVisible: boolean = false;
@@ -27,11 +27,21 @@ export class CursosAdminComponent implements OnInit {
   nombreCurso: string = '';
   categoriaSeleccionada: string = '';
 
+  //Variables para cargar los temas solicitados
+  modalTemasVisible: boolean = false;
+  temasSolicitados: any[] = [];
+  mensajeTemas: string = '';
+  cursoTemasActual: any = null;
+
+  // Nueva variable para controlar qué tema está expandido
+  temaExpandido: number | null = null;
+
+
   constructor(
     private administradorService: AdministradorServiceService,
     private cursoService: CursosServiceService,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.obtenerSolicitudesCursos();
@@ -50,6 +60,52 @@ export class CursosAdminComponent implements OnInit {
       console.log('Solicitudes cargadas', data)
       this.solicitudesPendientes = data || [];
     });
+  }
+
+  obtenerTemasSolicitados(idSolicitudCurso: number): void {
+    this.administradorService.verTemasSolicitadosPorCurso(idSolicitudCurso).subscribe({
+      next: (temas) => {
+        this.temasSolicitados = temas;
+        this.mensajeTemas = '';
+      },
+      error: (err) => {
+        this.temasSolicitados = [];
+        this.mensajeTemas = err.error?.mensaje || 'Error al obtener los temas solicitados';
+      }
+    });
+  }
+
+  abrirModalTemasSolicitados(curso: any): void {
+    console.log('Objeto curso completo:', curso);
+    this.cursoTemasActual = curso;
+    this.modalTemasVisible = true;
+
+    this.administradorService.verTemasSolicitadosPorCurso(curso.idSolicitudCurso).subscribe({
+      next: (temas) => {
+        console.log('Temas solicitados', temas)
+        this.temasSolicitados = temas;
+        this.mensajeTemas = '';
+      },
+      error: (err) => {
+        this.temasSolicitados = [];
+        this.mensajeTemas = err.error?.mensaje || 'Error al obtener los temas solicitados';
+      }
+    });
+  }
+
+  // Nuevo método para alternar la visibilidad del contenido del tema
+  toggleTemaContenido(index: number) {
+    if (this.temaExpandido === index) {
+      this.temaExpandido = null;
+    } else {
+      this.temaExpandido = index;
+    }
+  }
+
+  cerrarModalTemasSolicitados(): void {
+    this.modalTemasVisible = false;
+    this.temasSolicitados = [];
+    this.mensajeTemas = '';
   }
 
   obtenerCursosAprobados() {
@@ -109,7 +165,7 @@ export class CursosAdminComponent implements OnInit {
 
   onCategoriaChange(event: any): void {
     this.categoriaSeleccionada = event.target.value;
-  
+
     if (this.categoriaSeleccionada) {
       this.cursoService.filtrarCursoPorCategoria(this.categoriaSeleccionada).subscribe(
         (data) => {
@@ -117,13 +173,13 @@ export class CursosAdminComponent implements OnInit {
         },
         (error) => {
           console.error('Error al filtrar cursos por categoría', error);
-          this.cursosFiltrados = []; 
+          this.cursosFiltrados = [];
         }
       );
     } else {
       this.cursosFiltrados = this.cursos; // Si no hay categoría, mostrar todos los cursos
     }
-  }  
+  }
 
   aprobarCurso(idSolicitudCurso: number) {
     const requestBody = { idSolicitudCurso: idSolicitudCurso };
@@ -212,7 +268,7 @@ export class CursosAdminComponent implements OnInit {
 
   mostrarDetallesCurso(curso: any) {
     this.cursoDetalleSeleccionado = curso;
-    
+
     // Actualizar el contenido del modal con los datos del curso
     const modal = document.getElementById('cursoModal');
     const titulo = document.getElementById('modal-titulo');
@@ -220,7 +276,7 @@ export class CursosAdminComponent implements OnInit {
     const descripcion = document.getElementById('modal-descripcion');
     const instructor = document.getElementById('modal-instructor');
     const categoria = document.getElementById('modal-categoria');
-    
+
     if (titulo) titulo.textContent = curso.tituloCurso;
     if (imagen) imagen.src = curso.imagen;
     if (descripcion) descripcion.textContent = curso.descripcion;
@@ -228,7 +284,7 @@ export class CursosAdminComponent implements OnInit {
       instructor.textContent = `${curso.nombreInstructor} ${curso.apellidoPaterno} ${curso.apellidoMaterno}`;
     }
     if (categoria) categoria.textContent = curso.nombreCategoria;
-    
+
     // Mostrar el modal
     if (modal) {
       modal.style.display = 'flex';

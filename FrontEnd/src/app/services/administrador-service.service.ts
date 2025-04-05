@@ -64,6 +64,15 @@ export class AdministradorServiceService {
     return this.http.get<any>(`${this.apiUri}/solicitudes-curso/pendientes`);
   }
 
+  verTemasSolicitadosPorCurso(idSolicitudCurso: number): Observable<any> {
+    const url = `${this.apiUri}/cursos/ver-solicitudes/tema`;
+    return this.http.get<any>(url, {
+      params: {
+        idSolicitudCurso: idSolicitudCurso.toString()
+      }
+    });
+  }
+
   // Aprobar curso
   aprobarCurso(requestBody: any): Observable<any> {
     return this.http.post<any>(`${this.apiUri}/administrador/aprobar-curso`, requestBody);
