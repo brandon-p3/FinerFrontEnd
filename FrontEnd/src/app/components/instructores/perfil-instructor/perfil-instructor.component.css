@@ -2,8 +2,6 @@
 :root {
   --primary: #3498db;
   --primary-dark: #2980b9;
-  --secondary: #2ecc71;
-  --secondary-dark: #27ae60;
   --accent: #9b59b6;
   --light-bg: #f8f9fa;
   --lighter-bg: #f1f3f5;
@@ -12,14 +10,12 @@
   --text-light: #f8f9fa;
   --text-muted: #6c757d;
   --border-color: #dee2e6;
-  --danger: #e74c3c;
-  --success: #2ecc71;
   --border-radius: 12px;
   --border-radius-sm: 8px;
   --box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
   --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   --transition: all 0.3s ease;
-  --input-border: #3498db; /* Color para los bordes de los inputs */
+  --input-border: #1DCD9F; /* Color para los bordes de los inputs */
 }
 
 body {
@@ -27,14 +23,12 @@ body {
   font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
   color: var(--text-dark);
   line-height: 1.6;
-  margin: 0; /* Eliminar margen predeterminado */
-  padding: 0; /* Eliminar padding predeterminado */
 }
 
 /* Main container with background - ajustado para subir contenido */
 .page-container {
   padding: 0;
-  margin-top: -20px; /* Margen negativo para subir el contenido */
+  margin-top: -90px; /* Margen negativo para subir el contenido */
   background-color: var(--light-bg);
 }
 
@@ -327,22 +321,12 @@ body {
 }
 
 .btn-primary {
-  background-color: var(--primary);
+  background-color: #8EC3B0;
   color: black;
 }
 
 .btn-primary:hover:not(:disabled) {
-  background-color: var(--primary-dark);
-  transform: translateY(-2px);
-}
-
-.btn-secondary {
-  background-color: var(--text-muted);
-  color: black;
-}
-
-.btn-secondary:hover:not(:disabled) {
-  background-color: #D65B5B;
+  background-color: #8EC3B0;
   transform: translateY(-2px);
 }
 
@@ -354,13 +338,27 @@ body {
 
 /* Message feedback */
 .message {
-  padding: 15px;
-  margin: 20px 0;
+  padding: 15px 25px;
   border-radius: var(--border-radius-sm);
-  position: relative;
   display: flex;
   align-items: center;
-  animation: fadeIn 0.3s ease;
+  
+  /* Posicionamiento en el centro de la pantalla */
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  
+  /* Sombra para resaltar el mensaje */
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+  
+  /* Animación de aparición y desaparición */
+  animation: messageAppear 3s ease forwards;
+  
+  /* Ancho máximo para evitar mensajes muy largos */
+  max-width: 80%;
+  min-width: 300px;
 }
 
 .message i {
@@ -369,15 +367,35 @@ body {
 }
 
 .message.success {
-  background-color: rgba(46, 204, 113, 0.15);
-  color: var(--success);
-  border-left: 4px solid var(--success);
+  background-color: rgba(46, 204, 113, 0.95);
+  color: white;
+  border-left: 4px solid #27ae60;
 }
 
 .message.error {
-  background-color: rgba(231, 76, 60, 0.15);
-  color: var(--danger);
-  border-left: 4px solid var(--danger);
+  background-color: rgba(231, 76, 60, 0.95);
+  color: white;
+  border-left: 4px solid #c0392b;
+}
+
+/* Animación para la aparición y desaparición del mensaje */
+@keyframes messageAppear {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+  10% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  90% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
 }
 
 /* Responsive adjustments */

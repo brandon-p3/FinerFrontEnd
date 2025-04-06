@@ -40,18 +40,17 @@ export class PerfilInstructorComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    const idUsuario = localStorage.getItem('idUsuario');
-
-    if (idUsuario) {
-      this.instructor.idUsuario = Number(idUsuario); // Convertir a número
-      this.cargarPerfilInstructor();
-    } else {
-      this.mensajeRespuesta = 'No se encontró el ID del usuario en localStorage.';
-      this.mensajeExito = false;
-    }
+    // Obtener los datos del usuario desde el servicio
+    this.usuariosService.currentUser.subscribe(user => {
+      if (user) {
+        this.instructor.idUsuario = user.idUsuario;
+        this.cargarPerfilInstructor();
+      } else {
+        this.mensajeRespuesta = 'No se encontró el usuario logueado.';
+        this.mensajeExito = false;
+      }
+    });
   }
-
-
 
   cargarPerfilInstructor(): void {
     this.usuariosService.obtenerUsuarioPorId(this.instructor.idUsuario).subscribe({
@@ -75,7 +74,6 @@ export class PerfilInstructorComponent implements OnInit {
     });
   }
   
-
   guardarCambios() {
     if (!this.instructor || !this.instructor.idUsuario) {
       console.error("El instructor o su ID no están definidos.");
@@ -108,5 +106,29 @@ export class PerfilInstructorComponent implements OnInit {
       }
     });
   }
-  
+
+  showTemporaryMessage(message: string, type: 'success' | 'error'): void {
+    // Crear el elemento de mensaje
+    const messageElement = document.createElement('div');
+    messageElement.className = `message ${type}`;
+    
+    // Añadir icono según el tipo
+    const icon = document.createElement('i');
+    icon.className = type === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-circle';
+    messageElement.appendChild(icon);
+    
+    // Añadir el texto del mensaje
+    const textNode = document.createTextNode(message);
+    messageElement.appendChild(textNode);
+    
+    // Añadir el mensaje al DOM
+    document.body.appendChild(messageElement);
+    
+    // Eliminar el mensaje después de que termine la animación (3 segundos)
+    setTimeout(() => {
+      if (messageElement.parentNode) {
+        document.body.removeChild(messageElement);
+      }
+    }, 3000);
+  }
 }
