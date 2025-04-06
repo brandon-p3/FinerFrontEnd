@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { InstructorService } from '../../../services/instructor.service';
 import { UsuariosService } from '../../../services/usuarios-service.service';
 import { InstructorDocumento } from '../../../documentos/usuarioDocumento';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-perfil-instructor',
@@ -26,9 +27,17 @@ export class PerfilInstructorComponent implements OnInit {
   mensajeRespuesta: string = '';
   mensajeExito: boolean = true;
 
+  //Para el menu
+  menuOpen = false;
+  currentPage = 'mis-cursos';
+  searchQuery = ''; 
+  sortOption = 'asc'; 
+
   constructor(
     private instructorService: InstructorService,
-    private usuariosService: UsuariosService) { }
+    private usuariosService: UsuariosService,
+    private router: Router,
+  ) { }
 
   ngOnInit(): void {
     const idUsuario = localStorage.getItem('idUsuario');
@@ -41,6 +50,8 @@ export class PerfilInstructorComponent implements OnInit {
       this.mensajeExito = false;
     }
   }
+
+
 
   cargarPerfilInstructor(): void {
     this.usuariosService.obtenerUsuarioPorId(this.instructor.idUsuario).subscribe({

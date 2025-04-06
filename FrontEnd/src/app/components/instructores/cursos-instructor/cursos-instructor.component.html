@@ -1,27 +1,8 @@
 <!-- Contenedor principal -->
 <div class="main-container">
     <!-- Cabecera -->
-    <header class="header">
-        <div class="logo">
-            <img src="assets/logo.png" alt="Logotipo"> FINER
-        </div>
-        <div class="user-info" (click)="toggleMenu()">
-            <span class="role">Instructor</span>
-            <img src="assets/useri.png" alt="Foto de perfil" class="profile-pic">
-            <span class="user-name">{{ usuario.nombre }} {{ usuario.apellidoPaterno }} {{ usuario.apellidoMaterno }}</span>
-        </div>
-        <img src="assets/salir.png" alt="Salir" class="logout-icon" (click)="logout()"> 
-    </header>
-
-    <!-- Menú Desplegable -->
-    <div class="dropdown-menu" [class.show]="menuOpen">
-        <ul>
-            <li class="menu-section">Cursos</li>
-            <li class="menu-item" [class.active]="currentPage === 'cursos'" (click)="navigateTo('cursos')">Mis Cursos</li>
-            <li class="menu-item" [class.active]="currentPage === 'crear-curso'" (click)="createCourse()">Crear Curso</li>
-            <li class="menu-item" [class.active]="currentPage === 'perfil'" (click)="perfil()">Mi perfil</li>
-        </ul>
-    </div>
+    <!-- navBar -->
+    <app-navbar-instructor></app-navbar-instructor>
 
     <!-- Contenedor para el contenido -->
     <div class="content-container">
@@ -31,10 +12,11 @@
             <div class="search-filter-create-container">
                 <!-- Buscador -->
                 <div class="search-wrapper">
-                    <input type="text" class="search-bar" placeholder="Buscar cursos..." [(ngModel)]="searchQuery" (input)="applyFilters()">
+                    <input type="text" class="search-bar" placeholder="Buscar cursos..." [(ngModel)]="searchQuery"
+                        (input)="applyFilters()">
                     <img src="assets/lupa.png" alt="Buscar" class="search-icon">
                 </div>
-                
+
                 <!-- Filtro A-Z/Z-A -->
                 <div class="order-wrapper">
                     <select id="orden" [(ngModel)]="sortOption" (change)="applyFilters()">
@@ -42,7 +24,7 @@
                         <option value="desc">Z-A</option>
                     </select>
                 </div>
-                
+
                 <!-- Botón Crear Curso -->
                 <button class="create-course-btn" (click)="createCourse()">
                     + Crear Curso
@@ -51,7 +33,7 @@
 
             <div *ngIf="currentPage === 'mis-cursos'">
                 <h2>Mis Cursos</h2>
-                
+
                 <!-- Estado de carga -->
                 <div *ngIf="isLoading" class="loading-container">
                     <p>Cargando cursos...</p>
@@ -64,14 +46,14 @@
 
                 <div *ngIf="noHayCursos && !isLoading" class="no-courses-message">
                     <div class="message-container">
-                      <h3>Aún no tienes cursos creados</h3>
-                      <p>¡Comienza creando tu primer curso para compartir tu conocimiento!</p>
-                      <button class="create-course-btn primary" (click)="createCourse()">
-                        + Crear mi primer curso
-                      </button>
+                        <h3>Aún no tienes cursos creados</h3>
+                        <p>¡Comienza creando tu primer curso para compartir tu conocimiento!</p>
+                        <button class="create-course-btn primary" (click)="createCourse()">
+                            + Crear mi primer curso
+                        </button>
                     </div>
-                  </div>
-                
+                </div>
+
                 <!-- Lista de cursos -->
                 <div *ngIf="!isLoading && filteredCourses.length > 0" class="courses-grid">
                     <div *ngFor="let curso of filteredCourses" class="course-card">
@@ -92,9 +74,12 @@
                                 <span class="course-category">{{ curso.categoria || 'Sin categoría' }}</span>
                             </div>
                             <div class="course-actions">
-                                <button class="action-btn preview-btn" (click)="openPreviewModal(curso)">Vista Previa</button>
-                                <button *ngIf="curso.estatus !== 'Aprobado'" class="action-btn edit-btn" (click)="editCourse(curso)">Editar</button>
-                                <button class="action-btn delete-btn" (click)="confirmDelete(curso.idCurso)">Eliminar</button>
+                                <button class="action-btn preview-btn" (click)="openPreviewModal(curso)">Vista
+                                    Previa</button>
+                                <button *ngIf="curso.estatus !== 'Aprobado'" class="action-btn edit-btn"
+                                    (click)="editCourse(curso)">Editar</button>
+                                <button class="action-btn delete-btn"
+                                    (click)="confirmDelete(curso.idCurso)">Eliminar</button>
                             </div>
                         </div>
                     </div>
@@ -118,32 +103,31 @@
                 {{ selectedCourse.estatus }}
             </div>
         </div>
-        
+
         <div class="modal-body">
             <!-- Mostrar imagen del curso -->
             <div class="modal-course-image" *ngIf="selectedCourse.imagen">
                 <img [src]="getImageUrl(selectedCourse.imagen)" alt="Imagen del curso" class="course-img-preview">
             </div>
-            
+
             <div class="modal-course-details">
                 <!-- Mostrar categoría del curso -->
                 <div class="modal-detail-row">
                     <span class="detail-label">Categoría:</span>
                     <span class="detail-value">{{ selectedCourse.categoria || 'Sin categoría' }}</span>
                 </div>
-                
-                
+
+
                 <div class="modal-detail-row full-width">
                     <span class="detail-label">Descripción:</span>
                     <p class="detail-value">{{ selectedCourse.descripcion }}</p>
                 </div>
             </div>
         </div>
-        
+
         <div class="modal-actions">
-            <button *ngIf="selectedCourse.estatus !== 'Aprobado'" 
-                    class="action-btn edit-btn" 
-                    (click)="editCourse(selectedCourse)">
+            <button *ngIf="selectedCourse.estatus !== 'Aprobado'" class="action-btn edit-btn"
+                (click)="editCourse(selectedCourse)">
                 Editar
             </button>
             <button class="action-btn close-btn" (click)="closePreviewModal()">Cerrar</button>
@@ -154,70 +138,65 @@
 <!-- Modal de Edición -->
 <div *ngIf="showEditModal" class="modal-overlay">
     <div class="modal-content">
-      <button class="close-modal-btn" (click)="closeEditModal()">&times;</button>
-      <h3>Editar Curso</h3>
-      
-      <form (ngSubmit)="submitEditForm()">
-        <div class="form-group">
-            <label>Título:</label>
-            <input type="text" [(ngModel)]="editFormData.titulo" 
-                   name="titulo" 
-                   required
-                   class="form-control" readonly>
-        </div>
-        
-        <div class="form-group">
-          <label>Descripción:</label>
-          <textarea [(ngModel)]="editFormData.descripcion" 
-                   name="descripcion" 
-                   required
-                   class="form-control"></textarea>
-        </div>
-        
-        <div class="form-group">
-            <label>Categoría actual:</label>
-            <div class="current-category-display">
-                {{ editFormData.categoria || 'Sin categoría' }}
-            </div>
-            
-            <label>Cambiar categoría:</label>
-            <select [(ngModel)]="editFormData.categoria" name="categoria" required class="form-control">
-                <option value="">-- Seleccione una categoría --</option>
-                <option *ngFor="let cat of categorias" [value]="cat.nombreCategoria">
-                    {{ cat.nombreCategoria }}
-                </option>
-            </select>
-        </div>
+        <button class="close-modal-btn" (click)="closeEditModal()">&times;</button>
+        <h3>Editar Curso</h3>
 
-        <div class="form-group">
-            <label for="course-image-url">URL de la Imagen</label>
-            <input type="url" id="course-image-url" class="form-input" 
-                   placeholder="Ingrese la URL de la imagen del curso"
-                   [(ngModel)]="editFormData.imagenUrl" name="imagenUrl">
-            <small class="text-muted">Ingrese una URL válida para la imagen (ej: https://ejemplo.com/imagen.jpg)</small>
-            
-            <!-- Vista previa de la imagen -->
-            <div *ngIf="editFormData.imagenUrl" class="current-image-preview">
-                <label>Vista previa:</label>
-                <img [src]="editFormData.imagenUrl" alt="Imagen del curso" class="img-preview" 
-                     onerror="this.src='assets/imagen-no-disponible.jpg'">
+        <form (ngSubmit)="submitEditForm()">
+            <div class="form-group">
+                <label>Título:</label>
+                <input type="text" [(ngModel)]="editFormData.titulo" name="titulo" required class="form-control"
+                    readonly>
             </div>
-            <div *ngIf="!editFormData.imagenUrl" class="no-image-message">
-                <p>No hay imagen disponible</p>
+
+            <div class="form-group">
+                <label>Descripción:</label>
+                <textarea [(ngModel)]="editFormData.descripcion" name="descripcion" required
+                    class="form-control"></textarea>
             </div>
-          </div>
-        
-        <div class="modal-actions">
-          <button type="button" class="action-btn cancel-btn" 
-                 (click)="closeEditModal()">
-            Cancelar
-          </button>
-          <button type="submit" class="action-btn edit-btn"
-                 [disabled]="isLoading">
-            {{ isLoading ? 'Guardando...' : 'Guardar Cambios' }}
-          </button>
-        </div>
-      </form>
+
+            <div class="form-group">
+                <label>Categoría actual:</label>
+                <div class="current-category-display">
+                    {{ editFormData.categoria || 'Sin categoría' }}
+                </div>
+
+                <label>Cambiar categoría:</label>
+                <select [(ngModel)]="editFormData.categoria" name="categoria" required class="form-control">
+                    <option value="">-- Seleccione una categoría --</option>
+                    <option *ngFor="let cat of categorias" [value]="cat.nombreCategoria">
+                        {{ cat.nombreCategoria }}
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="course-image-url">URL de la Imagen</label>
+                <input type="url" id="course-image-url" class="form-input"
+                    placeholder="Ingrese la URL de la imagen del curso" [(ngModel)]="editFormData.imagenUrl"
+                    name="imagenUrl">
+                <small class="text-muted">Ingrese una URL válida para la imagen (ej:
+                    https://ejemplo.com/imagen.jpg)</small>
+
+                <!-- Vista previa de la imagen -->
+                <div *ngIf="editFormData.imagenUrl" class="current-image-preview">
+                    <label>Vista previa:</label>
+                    <img [src]="editFormData.imagenUrl" alt="Imagen del curso" class="img-preview"
+                        onerror="this.src='assets/imagen-no-disponible.jpg'">
+                </div>
+                <div *ngIf="!editFormData.imagenUrl" class="no-image-message">
+                    <p>No hay imagen disponible</p>
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button type="button" class="action-btn cancel-btn" (click)="closeEditModal()">
+                    Cancelar
+                </button>
+                <button type="submit" class="action-btn edit-btn" [disabled]="isLoading">
+                    {{ isLoading ? 'Guardando...' : 'Guardar Cambios' }}
+                </button>
+            </div>
+        </form>
     </div>
 </div>
 
