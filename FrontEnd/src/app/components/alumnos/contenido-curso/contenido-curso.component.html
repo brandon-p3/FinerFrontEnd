@@ -1,79 +1,77 @@
-<!-- Barra de navegación -->
-<app-navbar-alumno></app-navbar-alumno>
+  <!-- Barra de navegación -->
+  <app-navbar-alumno></app-navbar-alumno>
 
-<!-- Contenedor principal con diseño mejorado -->
-<div class="dashboard-container">
+  <!-- Contenedor principal con diseño mejorado -->
+  <div class="dashboard-container">
 
-  <!-- Botón de volver a la pantalla anterior -->
-  <a [routerLink]="['/alumnos/cursos']" class="btn-volver">
-    <i class="fas fa-chevron-left"></i>
-    <span>Volver a cursos</span>
-  </a>
+    <!-- Botón de volver a la pantalla anterior -->
+    <a [routerLink]="['/alumnos/cursos']" class="btn-volver">
+      <i class="fas fa-chevron-left"></i>
+      <span>Volver a cursos</span>
+    </a>
 
-  <!-- Sidebar con lista de temas -->
-  <aside class="sidebar">
-    <div class="sidebar-header">
-      <h2>Contenido del curso</h2>
-    </div>
-    <div class="sidebar-content">
-      <ul class="tema-list">
-        <li *ngFor="let tema of temas; let i = index">
-          <button
-            [ngClass]="{'tema-activo': temaActual && temaActual.nombreTema === tema.nombreTema}"
-            (click)="mostrarTema(i)">
-            <span class="tema-numero">{{ i + 1 }}</span>
-            <span class="tema-titulo">{{ tema.nombreTema }}</span>
-          </button>
-        </li>
-      </ul>
-    </div>
-  </aside>
-
-  <!-- Contenido del tema -->
-  <main class="content-area">
-    <div *ngIf="temaActual" class="tema-container">
-      <div class="tema-header">
-        <h1 class="tema-titulo">{{ temaActual.nombreTema }}</h1>
-        <span class="tema-progress">{{ temaActualIndex + 1 }} de {{ temas.length }}</span>
+    <!-- Sidebar con lista de temas -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h2>Contenido del curso</h2>
       </div>
+      <div class="sidebar-content">
+        <ul class="tema-list">
+          <li *ngFor="let tema of temas; let i = index">
+            <button
+              [ngClass]="{'tema-activo': temaActual && temaActual.nombreTema === tema.nombreTema}"
+              (click)="mostrarTema(i)">
+              <span class="tema-numero">{{ i + 1 }}</span>
+              <span class="tema-titulo">{{ tema.nombreTema }}</span>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </aside>
 
-      <div class="tema-contenido">
-        <h3>Contenido del curso</h3>
-        <div class="contenido-texto">
-          <p>{{ temaActual.contenido }}</p>
+    <!-- Contenido del tema -->
+    <main class="content-area">
+      <div *ngIf="temaActual" class="tema-container">
+        <div class="tema-header">
+          <h1 class="tema-titulo">{{ temaActual.nombreTema }}</h1>
+          <span class="tema-progress">{{ temaActualIndex + 1 }} de {{ temas.length }}</span>
+        </div>
+
+        <div class="tema-contenido">
+          <h3>Contenido del curso</h3>
+          <div class="contenido-texto">
+            <p>{{ temaActual.contenido }}</p>
+          </div>
+        </div>
+
+        <div *ngIf="temaActual?.tipo === 'evaluacion' && evaluacion">
+          <form (ngSubmit)="enviarEvaluacion()">
+            <div *ngFor="let pregunta of evaluacion">
+              <p><strong>{{ pregunta.texto_pregunta }}</strong></p>
+              <div *ngFor="let opcion of pregunta.opciones">
+                <label>
+                  <input
+                    type="radio"
+                    name="pregunta_{{pregunta.id_pregunta}}"
+                    [value]="opcion.id_opcion"
+                    (change)="respuestas[pregunta.id_pregunta] = opcion.id_opcion"
+                  />
+                  {{ opcion.texto_opcion }}
+                </label>
+              </div>
+              <hr />
+            </div>
+            <button type="submit">Enviar evaluación</button>
+          </form>
+        </div>
+        <div class="tema-navegacion">
+          <button *ngIf="temaActualIndex > 0" class="btn-anterior" (click)="mostrarTemaAnterior()">
+            <i class="fas fa-arrow-left"></i> Anterior
+          </button>
+          <button *ngIf="siguienteTemaDisponible" class="btn-siguiente" (click)="mostrarSiguienteTema()">
+            Siguiente <i class="fas fa-arrow-right"></i>
+          </button>
         </div>
       </div>
-
-      <div *ngIf="temaActual?.tipo === 'evaluacion' && evaluacion">
-        <form (ngSubmit)="enviarEvaluacion()">
-          <div *ngFor="let pregunta of evaluacion">
-            <p><strong>{{ pregunta.texto_pregunta }}</strong></p>
-            <div *ngFor="let opcion of pregunta.opciones">
-              <label>
-                <input
-                  type="radio"
-                  name="pregunta_{{pregunta.id_pregunta}}"
-                  [value]="opcion.id_opcion"
-                  (change)="respuestas[pregunta.id_pregunta] = opcion.id_opcion"
-                />
-                {{ opcion.texto_opcion }}
-              </label>
-            </div>
-            <hr />
-          </div>
-          <button type="submit">Enviar evaluación</button>
-        </form>
-      </div>
-
-
-      <div class="tema-navegacion">
-        <button *ngIf="temaActualIndex > 0" class="btn-anterior" (click)="mostrarTemaAnterior()">
-          <i class="fas fa-arrow-left"></i> Anterior
-        </button>
-        <button *ngIf="siguienteTemaDisponible" class="btn-siguiente" (click)="mostrarSiguienteTema()">
-          Siguiente <i class="fas fa-arrow-right"></i>
-        </button>
-      </div>
-    </div>
-  </main>
-</div>
+    </main>
+  </div>

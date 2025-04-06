@@ -1,7 +1,8 @@
   import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CursosServiceService } from '../../../services/cursos-service';
-import { contenidoCurso } from '../../../documentos/cursosDocumento';
+import { contenidoCurso, RespuestaDTO } from '../../../documentos/cursosDocumento';
+import { UsuariosService } from '../../../services/usuarios-service.service';
 
 @Component({
   selector: 'app-contenido-curso',
@@ -19,7 +20,7 @@ export class ContenidoCursoComponent implements OnInit {
   idAlumno: number = 0;
 
 
-  constructor(private route: ActivatedRoute, private cursosService: CursosServiceService) {}
+  constructor(private route: ActivatedRoute, private cursosService: CursosServiceService, private usuariosService: UsuariosService) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
@@ -30,6 +31,9 @@ export class ContenidoCursoComponent implements OnInit {
         this.obtenerEvaluacion(Number(this.idCurso));  // Obtener evaluación usando el idCurso
       }
     });
+    const usuario = this.usuariosService.currentUserValue;
+    this.idAlumno = usuario?.idUsuario;
+    console.log('ID de alumno usado:', this.idAlumno);
   }
 
   obtenerTemasDeCurso(idCurso: number): void {
@@ -64,8 +68,27 @@ export class ContenidoCursoComponent implements OnInit {
       this.cargarEvaluacion();
     }
   }
-
   mostrarSiguienteTema(): void {
+    const temaActualId = this.temas[this.temaActualIndex]?.idTema;
+    const idInscripcion = `${this.idAlumno}-${this.idCurso}`;
+
+    console.log('➡️ Cambiando al siguiente tema...');
+    console.log('🧩 Tema actual ID:', temaActualId);
+    console.log('👤 ID Alumno:', this.idAlumno);
+    console.log('📘 ID Curso:', this.idCurso);
+    console.log('🆔 ID Inscripción:', idInscripcion);
+
+    if (temaActualId !== 0 && this.idAlumno && this.idCurso) {
+      this.cursosService.completarTema(idInscripcion, temaActualId.toString()).subscribe(
+        response => {
+          console.log('✅ Tema completado:', response);
+        },
+        error => {
+          console.error('❌ Error al completar tema:', error);
+        }
+      );
+    }
+
     if (this.temaActualIndex < this.temas.length - 1) {
       this.temaActualIndex++;
       this.mostrarTema(this.temaActualIndex);
@@ -105,21 +128,24 @@ export class ContenidoCursoComponent implements OnInit {
   // Función para manejar el envío de la evaluación
 
   enviarEvaluacion(): void {
+    // Crear el arreglo de idPreguntas y idOpciones
     const idPreguntas = Object.keys(this.respuestas).map(id => Number(id));
     const idOpciones = idPreguntas.map(id => this.respuestas[id]);
 
-    const payload = {
+    // Construir el objeto `RespuestaDTO` (payload)
+    const respuestaDTO: RespuestaDTO = {
       idEstudiante: this.idAlumno,
       idCurso: Number(this.idCurso),
       idPreguntas: idPreguntas,
       idOpciones: idOpciones
     };
 
-    // 👉 Aquí se imprimen las respuestas seleccionadas
+    // Mostrar el payload antes de enviarlo (opcional)
     console.log('📋 Respuestas seleccionadas:', this.respuestas);
-    console.log('📦 Payload a enviar:', payload);
+    console.log('📦 Payload a enviar:', respuestaDTO);
 
-    this.cursosService.guardarRespuestas(payload).subscribe(
+    // Llamar al servicio para guardar las respuestas
+    this.cursosService.guardarRespuestas(respuestaDTO).subscribe(
       (response) => {
         console.log('Respuestas guardadas con éxito:', response);
         alert('Evaluación enviada con éxito 🎉');
@@ -130,6 +156,7 @@ export class ContenidoCursoComponent implements OnInit {
       }
     );
   }
+
   seleccionarRespuesta(idPregunta: number, idOpcion: number): void {
     this.respuestas[idPregunta] = idOpcion;
     console.log(`Pregunta ${idPregunta}: opción seleccionada → ${idOpcion}`);
