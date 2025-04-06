@@ -1,25 +1,27 @@
 <!-- Cabecera -->
 <header class="header">
-    <div class="logo">
-      <img src="assets/logo.png" alt="Logotipo"> FINER
-    </div>
-    <div class="user-info" (click)="toggleMenu()">
-      <span class="role">Instructor</span>
-      <img src="assets/useri.png" alt="Foto de perfil" class="profile-pic">
-      <span class="user-name">{{ usuario.nombre }} {{ usuario.apellidos }}</span>
-    </div>
-    <img src="assets/salir.png" alt="Salir" class="logout-icon" (click)="logout()"> <!-- Icono de cerrar sesión -->
-  </header>
-
-  <!-- Menú Desplegable -->
-  <div class="dropdown-menu" [class.show]="menuOpen">
-    <ul>
-      <li class="menu-section">Cursos</li>
-      <li class="menu-item" [class.active]="currentPage === 'crear-curso'" (click)="navigateTo('crear-curso')">Crear
-        Curso</li>
-      <li class="menu-item" [class.active]="currentPage === 'cursos-instructor'"
-        (click)="navigateTo('cursos-instructor')">Mis Cursos</li>
-        <li class="menu-item" [class.active]="currentPage === 'perfil'"
-        (click)="navigateTo('perfil')">Perfil</li>
-    </ul>
+  <div class="logo">
+    <img src="assets/logo.png" alt="Logotipo de FINER"> FINER
   </div>
+  
+  <div class="user-info" (click)="toggleMenu()" aria-label="Usuario">
+    <span class="role">Instructor</span>
+    <img src="assets/useri.png" alt="Foto de perfil de usuario" class="profile-pic">
+    <span class="user-name">{{ usuario.nombre }} {{ usuario.apellidoPaterno }} {{ usuario.apellidoMaterno }}</span>
+  </div>
+
+  <!-- Botón de salida con Material Icon -->
+  <button class="logout-button" (click)="logout()" aria-label="Cerrar sesión">
+    <span class="material-icons">exit_to_app</span> <!-- Icono de salida -->
+  </button>
+</header>
+
+<!-- Menú Desplegable -->
+<div class="dropdown-menu" [ngClass]="{'show': menuOpen}" role="menu" aria-label="Menú de navegación">
+  <ul>
+    <li class="menu-section">Cursos</li>
+    <li class="menu-item" [ngClass]="{'active': currentPage === 'cursos'}" (click)="navigateTo('cursos')" role="menuitem">Mis Cursos</li>
+    <li class="menu-item" [ngClass]="{'active': currentPage === 'crear-curso'}" (click)="createCourse()" role="menuitem">Crear Curso</li>
+    <li class="menu-item" [ngClass]="{'active': currentPage === 'perfil'}" (click)="perfil()" role="menuitem">Mi perfil</li>
+  </ul>
+</div>

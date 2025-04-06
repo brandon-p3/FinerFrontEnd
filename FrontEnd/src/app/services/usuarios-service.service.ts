@@ -65,5 +65,6 @@ export class UsuariosService {
       return new Observable(observer => observer.error('Usuario no autenticado'));
     }
     return this.obtenerUsuarioPorId(user.idUsuario);
-  }
+  }  
 }
+

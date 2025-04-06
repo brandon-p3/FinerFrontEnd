@@ -65,8 +65,7 @@ export const routes: Routes = [
       { path: 'contenido/:id', component: ContenidoCursoComponent },
       { path: 'descripcion/:id', component: DescripcionCursoAlumnoComponent },
       { path: 'perfil', component: PerfilAlumnoComponent },
-      { path: '', redirectTo: 'cursos', pathMatch: 'full' },
-      { path: '**', redirectTo: '/alumnos/contenido' }
+      { path: '', redirectTo: 'cursos', pathMatch: 'full' }
     ]
   },
     // Rutas para instructor
@@ -80,8 +79,6 @@ export const routes: Routes = [
       ]
     },
   { path: '', redirectTo: 'alumnos/cursos', pathMatch: 'full' },
-  { path: '**', redirectTo: 'alumnos/cursos' },
-
 ];
 
 @NgModule({

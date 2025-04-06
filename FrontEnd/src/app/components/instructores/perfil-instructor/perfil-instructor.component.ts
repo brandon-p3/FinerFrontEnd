@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { InstructorService } from '../../../services/instructor.service';
 import { UsuariosService } from '../../../services/usuarios-service.service';
 import { InstructorDocumento } from '../../../documentos/usuarioDocumento';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-perfil-instructor',
@@ -10,7 +11,7 @@ import { InstructorDocumento } from '../../../documentos/usuarioDocumento';
 })
 export class PerfilInstructorComponent implements OnInit {
   instructor: any = {
-    idUsuario: 12,
+    idUsuario: null,
     nombre: '',
     apellidoPaterno: '',
     apellidoMaterno: '',
@@ -26,12 +27,29 @@ export class PerfilInstructorComponent implements OnInit {
   mensajeRespuesta: string = '';
   mensajeExito: boolean = true;
 
+  //Para el menu
+  menuOpen = false;
+  currentPage = 'mis-cursos';
+  searchQuery = ''; 
+  sortOption = 'asc'; 
+
   constructor(
     private instructorService: InstructorService,
-    private usuariosService: UsuariosService) { }
+    private usuariosService: UsuariosService,
+    private router: Router,
+  ) { }
 
   ngOnInit(): void {
-    this.cargarPerfilInstructor();
+    // Obtener los datos del usuario desde el servicio
+    this.usuariosService.currentUser.subscribe(user => {
+      if (user) {
+        this.instructor.idUsuario = user.idUsuario;
+        this.cargarPerfilInstructor();
+      } else {
+        this.mensajeRespuesta = 'No se encontró el usuario logueado.';
+        this.mensajeExito = false;
+      }
+    });
   }
 
   cargarPerfilInstructor(): void {
@@ -48,7 +66,6 @@ export class PerfilInstructorComponent implements OnInit {
           correo: datos.correo, // Ajusta el nombre de la propiedad
           telefono: datos.telefono,
           direccion: datos.direccion,
-          especialidad: this.instructor.especialidad // Si la API lo devuelve, usa `datos.especialidad`
         };
       },
       error: (error) => {
@@ -57,7 +74,6 @@ export class PerfilInstructorComponent implements OnInit {
     });
   }
   
-
   guardarCambios() {
     if (!this.instructor || !this.instructor.idUsuario) {
       console.error("El instructor o su ID no están definidos.");
@@ -90,5 +106,29 @@ export class PerfilInstructorComponent implements OnInit {
       }
     });
   }
-  
+
+  showTemporaryMessage(message: string, type: 'success' | 'error'): void {
+    // Crear el elemento de mensaje
+    const messageElement = document.createElement('div');
+    messageElement.className = `message ${type}`;
+    
+    // Añadir icono según el tipo
+    const icon = document.createElement('i');
+    icon.className = type === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-circle';
+    messageElement.appendChild(icon);
+    
+    // Añadir el texto del mensaje
+    const textNode = document.createTextNode(message);
+    messageElement.appendChild(textNode);
+    
+    // Añadir el mensaje al DOM
+    document.body.appendChild(messageElement);
+    
+    // Eliminar el mensaje después de que termine la animación (3 segundos)
+    setTimeout(() => {
+      if (messageElement.parentNode) {
+        document.body.removeChild(messageElement);
+      }
+    }, 3000);
+  }
 }
