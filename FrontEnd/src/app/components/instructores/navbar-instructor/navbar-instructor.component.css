@@ -110,3 +110,18 @@
     background-color: #8EC3B0;
     color: #FFFFFF;
 }
+
+.logout-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 24px; /* Tamaño del icono */
+    color: #333; /* Color del icono */
+  }
+  
+  .logout-button:hover {
+    color: #055052; /* Color del icono al pasar el mouse */
+  }
+  
+
+

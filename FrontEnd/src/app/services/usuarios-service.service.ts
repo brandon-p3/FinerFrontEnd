@@ -66,4 +66,5 @@ export class UsuariosService {
     }
     return this.obtenerUsuarioPorId(user.idUsuario);
   }
+  
 }

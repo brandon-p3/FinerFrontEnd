@@ -48,8 +48,6 @@
       <!-- Tabs Navigation -->
       <div class="profile-tabs">
         <div class="tab active">Información Personal</div>
-        <div class="tab">Seguridad</div>
-        <div class="tab">Preferencias</div>
       </div>
 
       <!-- Tab Content - Personal Information -->
@@ -147,15 +145,10 @@
 
             <!-- Action Buttons -->
             <div class="button-container">
-              <button type="button" class="btn btn-secondary">
-                <i class="fas fa-times"></i> Cancelar
-              </button>
-
               <button type="submit" class="btn btn-primary"
                 [disabled]="!instructor.nombre || !instructor.nombreUsuario || !instructor.apellidoMaterno || !instructor.apellidoPaterno || !instructor.correo">
                 <i class="fas fa-save"></i> Guardar Cambios
               </button>
-
             </div>
           </form>
         </div>
