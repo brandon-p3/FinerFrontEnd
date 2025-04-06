@@ -10,18 +10,25 @@ export class NavbarInstructorComponent {
 
   constructor(private router: Router) { }
 
-  usuario = {
-    nombre: 'Juan',
-    apellidos: 'Pérez',
-    email: 'juan.perez@finer.com',
+  usuario: any = {
+    id: 0,          
+    nombre: '',     
+    apellidoPaterno: '',
+    apellidoMaterno: '',
+    email: '',
+    username: '',
+    idUsuario: 0,    
+    idRol: 0         
   };
 
   menuOpen = false;
   currentPage = 'crear-curso';
 
   // Método para navegar a una ruta específica
-  navigateTo(route: string) {
-    this.router.navigate([route]); // Usa el Router para redirigir
+  navigateTo(page: string) {
+    if (page === 'cursos') {
+        this.router.navigate(['/instructor/cursos']);
+    }
   }
 
   toggleMenu() {
@@ -33,9 +40,15 @@ export class NavbarInstructorComponent {
     this.router.navigate(['/usuarios-admin/login/login']);
   }
 
-    createCourse() {
-      this.currentPage = 'crear-curso';
-      this.router.navigate(['/instructor/crear-curso']);
-    }
+
+  createCourse() {
+    this.currentPage = 'crear-curso';
+    this.router.navigate(['/instructor/crear-curso']);
+  }
+
+  perfil() {
+    this.currentPage = 'perfil';
+    this.router.navigate(['/instructor/perfil']);
+  }
 
 }

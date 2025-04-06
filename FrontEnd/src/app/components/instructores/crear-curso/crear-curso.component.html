@@ -22,27 +22,9 @@
 
 <!-- Contenedor principal -->
 <div class="main-container">
-  <!-- Cabecera -->
-  <header class="header">
-    <div class="logo">
-      <img src="assets/logo.png" alt="Logotipo"> FINER
-    </div>
-    <div class="user-info" (click)="toggleMenu()">
-      <span class="role">Instructor</span>
-      <img src="assets/useri.png" alt="Foto de perfil" class="profile-pic">
-      <span class="user-name">{{ usuariosService.currentUserValue?.nombre }} {{ usuariosService.currentUserValue?.apellidoPaterno }} {{ usuariosService.currentUserValue?.apellidoMaterno }}</span>
-    </div>
-    <img src="assets/salir.png" alt="Salir" class="logout-icon" (click)="logout()">
-  </header>
 
-  <!-- Menú Desplegable -->
-  <div class="dropdown-menu" [class.show]="menuOpen">
-    <ul>
-      <li class="menu-section">Cursos</li>
-      <li class="menu-item" [class.active]="currentPage === 'crear-curso'" (click)="navigateTo('crear-curso')">Crear Curso</li>
-      <li class="menu-item" [class.active]="currentPage === 'cursos-instructor'" (click)="navigateTo('/instructor/cursos')">Mis Cursos</li>
-    </ul>
-  </div>
+  <!-- navBar -->
+  <app-navbar-instructor></app-navbar-instructor>
 
   <!-- Crear Curso -->
   <div class="content-container">
