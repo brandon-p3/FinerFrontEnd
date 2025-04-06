@@ -15,6 +15,9 @@ export class ContenidoCursoComponent implements OnInit {
   temaIndex: number = 0;
   temaActualIndex: number = 0;
   evaluacion: any = null;
+  respuestas: { [idPregunta: number]: number } = {};
+  idAlumno: number = 0;
+
 
   constructor(private route: ActivatedRoute, private cursosService: CursosServiceService) {}
 
@@ -100,8 +103,37 @@ export class ContenidoCursoComponent implements OnInit {
   }
 
   // Función para manejar el envío de la evaluación
+
   enviarEvaluacion(): void {
-    console.log('Evaluación enviada:', this.evaluacion);
-    // Aquí puedes agregar la lógica para procesar la evaluación y enviarla al servidor
+    const idPreguntas = Object.keys(this.respuestas).map(id => Number(id));
+    const idOpciones = idPreguntas.map(id => this.respuestas[id]);
+
+    const payload = {
+      idEstudiante: this.idAlumno,
+      idCurso: Number(this.idCurso),
+      idPreguntas: idPreguntas,
+      idOpciones: idOpciones
+    };
+
+    // 👉 Aquí se imprimen las respuestas seleccionadas
+    console.log('📋 Respuestas seleccionadas:', this.respuestas);
+    console.log('📦 Payload a enviar:', payload);
+
+    this.cursosService.guardarRespuestas(payload).subscribe(
+      (response) => {
+        console.log('Respuestas guardadas con éxito:', response);
+        alert('Evaluación enviada con éxito 🎉');
+      },
+      (error) => {
+        console.error('Error al enviar la evaluación:', error);
+        alert('Hubo un error al enviar la evaluación.');
+      }
+    );
   }
+  seleccionarRespuesta(idPregunta: number, idOpcion: number): void {
+    this.respuestas[idPregunta] = idOpcion;
+    console.log(`Pregunta ${idPregunta}: opción seleccionada → ${idOpcion}`);
+    console.log('Respuestas actuales:', this.respuestas);
+  }
+
 }

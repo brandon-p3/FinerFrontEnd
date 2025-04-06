@@ -39,7 +39,7 @@ titulo: string;
 })
 export class PerfilAlumnoComponent implements OnInit {
   constructor(private router: Router, private alumnoService: AlumnoService) {}
-  
+
   mostrarContraseniaActual: boolean = false;
   mostrarNuevaContrasenia: boolean = false;
   nuevaContrasenia: string = '';
@@ -109,7 +109,7 @@ export class PerfilAlumnoComponent implements OnInit {
   }
 
   guardarCambios() {
-    if (!this.usuario.nombre || !this.usuario.apellidoPaterno || 
+    if (!this.usuario.nombre || !this.usuario.apellidoPaterno ||
         !this.usuario.nombreUsuario || !this.usuario.email) {
       Swal.fire('Error', 'Por favor completa todos los campos requeridos', 'error');
       return;
@@ -130,7 +130,7 @@ export class PerfilAlumnoComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         const contrasenia = this.mostrarContraseniaActual ? this.usuario.contrasenia : '';
-        
+
         this.alumnoService.actualizarPerfil(
           this.usuario.idUsuario,
           this.usuario.nombre,
@@ -179,8 +179,8 @@ export class PerfilAlumnoComponent implements OnInit {
   }
 
   ejecutarActualizacion() {
-    const contrasenia = this.mostrarContraseniaActual && this.usuario.contrasenia 
-      ? this.usuario.contrasenia 
+    const contrasenia = this.mostrarContraseniaActual && this.usuario.contrasenia
+      ? this.usuario.contrasenia
       : '';
 
     this.alumnoService.actualizarPerfil(
@@ -215,16 +215,16 @@ export class PerfilAlumnoComponent implements OnInit {
         Swal.showLoading();
       }
     });
-  
+
     this.alumnoService.generarCertificado(idInscripcion).subscribe({
       next: (data) => {
         Swal.close();
         const blob = new Blob([data], { type: 'application/pdf' });
         const url = window.URL.createObjectURL(blob);
-        
+
         // Open in new tab
         window.open(url, '_blank');
-        
+
         // Clean up
         setTimeout(() => {
           window.URL.revokeObjectURL(url);
@@ -321,7 +321,7 @@ continuarCurso(idCurso: number) {
   this.alumnoService.verProgresoAlumno(this.usuario.idUsuario, idCurso).subscribe({
     next: (progreso) => {
       Swal.close();
-      
+
       // Check if course is completed
       if (progreso.vPorcentaje >= 100) {
         Swal.fire({
