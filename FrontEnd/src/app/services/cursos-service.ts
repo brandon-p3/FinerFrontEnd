@@ -13,6 +13,7 @@ export class CursosServiceService {
   private apiUri2 = CONFIG.apiUrl + '/cursos';
   private apiUrl = 'http://localhost:8080/api/cursos/alumno/temasCurso';
   private apiUrlE = 'http://localhost:8080/api/evaluacion/alumno/verEvaluacion';
+  // api/evaluacion/alumno
   constructor(private http: HttpClient) { }
 
   getCursos(): Observable<Curso[]> {
@@ -39,10 +40,30 @@ export class CursosServiceService {
     return this.http.get<any>(`${this.apiUrl}/${idCurso}`);
   }
 
-
   obtenerEvaluacion(idEvaluacion: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrlE}/${idEvaluacion}`);
   }
+
+  inscribirAlumno(idAlumno: number, idCurso: number): Observable<any> {
+    const url = `http://localhost:8080/api/cursos/alumno/inscripcionCurso/${idCurso}/${idAlumno}`;
+    return this.http.get(url); 
+  }
+
+
+
+    obtenerCursoPorAlumno(idEvaluacion: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrlE}/${idEvaluacion}`);
+  }
+
+  guardarRespuestas(respuestaDTO: any): Observable<any> {
+    return this.http.post('http://localhost:8080/api/evaluacion/alumno/guardarRespuesta', respuestaDTO);
+  }
+
+  enviarEvaluacion(idEvaluacion: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrlE}/${idEvaluacion}`);
+  }
+
+
 
 
 

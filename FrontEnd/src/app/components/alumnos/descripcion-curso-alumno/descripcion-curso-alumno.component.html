@@ -1,4 +1,3 @@
-<!-- HTML Mejorado -->
 <app-navbar-alumno></app-navbar-alumno>
 
 <div class="course-page">
@@ -13,10 +12,12 @@
       </div>
       <h1 class="course-title">{{ curso.titulo }}</h1>
       <div class="header-right">
-        <button class="enroll-btn">
-          <i class="fa-solid fa-user-plus"></i>
-          <span>Inscribirme</span>
-        </button>
+        <!-- Dentro del *ngFor="let curso of cursos" -->
+<button class="enroll-btn" (click)="inscribirse(curso)">
+  <i class="fa-solid fa-user-plus"></i>
+  <span>Inscribirme</span>
+</button>
+
       </div>
     </header>
 
@@ -63,10 +64,12 @@
 
         <!-- Sección de inscripción móvil (se muestra sólo en móvil) -->
         <div class="mobile-enroll-section">
-          <button class="enroll-btn btn-full-width">
-            <i class="fa-solid fa-user-plus"></i>
-            <span>Inscribirme al curso</span>
-          </button>
+         <!-- Dentro del *ngFor="let curso of cursos" -->
+<button class="enroll-btn" (click)="inscribirse(curso)">
+  <i class="fa-solid fa-user-plus"></i>
+  <span>Inscribirme</span>
+</button>
+
         </div>
       </div>
     </main>

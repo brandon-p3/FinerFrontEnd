@@ -3,6 +3,13 @@
 
 <!-- Contenedor principal con diseño mejorado -->
 <div class="dashboard-container">
+
+  <!-- Botón de volver a la pantalla anterior -->
+  <a [routerLink]="['/alumnos/cursos']" class="btn-volver">
+    <i class="fas fa-chevron-left"></i>
+    <span>Volver a cursos</span>
+  </a>
+
   <!-- Sidebar con lista de temas -->
   <aside class="sidebar">
     <div class="sidebar-header">
@@ -14,7 +21,7 @@
           <button
             [ngClass]="{'tema-activo': temaActual && temaActual.nombreTema === tema.nombreTema}"
             (click)="mostrarTema(i)">
-            <span class="tema-numero">{{i + 1}}</span>
+            <span class="tema-numero">{{ i + 1 }}</span>
             <span class="tema-titulo">{{ tema.nombreTema }}</span>
           </button>
         </li>
@@ -30,12 +37,6 @@
         <span class="tema-progress">{{ temaActualIndex + 1 }} de {{ temas.length }}</span>
       </div>
 
-      <div class="tema-multimedia">
-        <div class="image-container">
-          <!-- Aquí se podría agregar la imagen o video relacionado al tema -->
-        </div>
-      </div>
-
       <div class="tema-contenido">
         <h3>Contenido del curso</h3>
         <div class="contenido-texto">
@@ -43,23 +44,27 @@
         </div>
       </div>
 
-      <!-- Sección de Evaluación -->
-      <div *ngIf="temaActual.tipo === 'evaluacion'" class="evaluacion-container">
-        <h2>Evaluación Final</h2>
+      <div *ngIf="temaActual?.tipo === 'evaluacion' && evaluacion">
         <form (ngSubmit)="enviarEvaluacion()">
-          <div *ngFor="let pregunta of evaluacion; let i = index" class="pregunta">
-            <p>{{ pregunta.texto_pregunta }}</p>
+          <div *ngFor="let pregunta of evaluacion">
+            <p><strong>{{ pregunta.texto_pregunta }}</strong></p>
             <div *ngFor="let opcion of pregunta.opciones">
               <label>
-                <input type="radio" name="pregunta{{i}}" [value]="opcion.id_opcion">
+                <input
+                  type="radio"
+                  name="pregunta_{{pregunta.id_pregunta}}"
+                  [value]="opcion.id_opcion"
+                  (change)="respuestas[pregunta.id_pregunta] = opcion.id_opcion"
+                />
                 {{ opcion.texto_opcion }}
               </label>
             </div>
+            <hr />
           </div>
-
-          <button type="submit" class="btn-enviar">Enviar Evaluación</button>
+          <button type="submit">Enviar evaluación</button>
         </form>
       </div>
+
 
       <div class="tema-navegacion">
         <button *ngIf="temaActualIndex > 0" class="btn-anterior" (click)="mostrarTemaAnterior()">
