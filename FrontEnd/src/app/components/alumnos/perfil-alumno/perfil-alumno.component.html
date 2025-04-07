@@ -1,256 +1,253 @@
 <!-- Cabecera -->
 <header class="header">
-    <div class="logo"> 
-        <img src="assets/logo.png" alt="Logotipo"> FINER 
-    </div>
-    <div class="search-container">
-        <input type="text" [(ngModel)]="terminoBusqueda" placeholder="Buscar cursos..." class="search-bar">
-        <img src="assets/lupa.png" alt="Buscar" class="search-icon" (click)="buscarCursos()"> <!-- Icono de lupa -->
-    </div>
-    <div class="user-info" (click)="toggleMenu()">
-        <span class="role">Estudiante</span>
-        <img src="assets/useri.png" alt="Foto de perfil" class="profile-pic">
-        <span class="user-name">{{ usuario.nombre }} {{ usuario.apellidoPaterno }}</span>
-    </div>
-    <img src="assets/salir.png" alt="Salir" class="logout-icon" (click)="logout()"> <!-- Icono de cerrar sesión -->
+  <div class="logo">
+    <img src="assets/logo.png" alt="Logotipo"> FINER
+  </div>
+  <div class="search-container">
+    <input type="text" [(ngModel)]="terminoBusqueda" placeholder="Buscar cursos..." class="search-bar">
+    <img src="assets/lupa.png" alt="Buscar" class="search-icon" (click)="buscarCursos()"> <!-- Icono de lupa -->
+  </div>
+  <div class="user-info" (click)="toggleMenu()">
+    <span class="role">Estudiante</span>
+    <img src="assets/useri.png" alt="Foto de perfil" class="profile-pic">
+    <span class="user-name">{{ usuario.nombre }} {{ usuario.apellidoPaterno }}</span>
+  </div>
+  <img src="assets/salir.png" alt="Salir" class="logout-icon" (click)="logout()"> <!-- Icono de cerrar sesión -->
 </header>
 
 
 <!-- Menú desplegable -->
 <div class="dropdown-menu" [class.show]="menuOpen">
-    <ul>
-        <li class="menu-section">Cursos</li>
-        <li class="menu-item" 
-            [class.active]="currentPage === 'mis-cursos'" 
-            (click)="navigateTo('mis-cursos')">Mis Cursos</li>
+  <ul>
+    <li class="menu-section">Cursos</li>
+    <li class="menu-item" routerLink="/alumnos/cursos" routerLinkActive="active" (click)="menuOpen = false">Home
+    </li>
+    <li class="menu-item" [class.active]="currentPage === 'mis-cursos'" (click)="navigateTo('mis-cursos')">Mis Cursos
+    </li>
 
-        <li class="menu-section">Perfil</li>
-        <li class="menu-item" 
-            [class.active]="currentPage === 'actualizar-perfil'" 
-            (click)="navigateTo('actualizar-perfil')">Actualizar Perfil</li>
-        <li class="menu-item" 
-            [class.active]="currentPage === 'certificados'" 
-            (click)="navigateTo('certificados')">Certificados</li>
+    <li class="menu-section">Perfil</li>
+    <li class="menu-item" [class.active]="currentPage === 'actualizar-perfil'"
+      (click)="navigateTo('actualizar-perfil')">Actualizar Perfil</li>
+    <li class="menu-item" [class.active]="currentPage === 'certificados'" (click)="navigateTo('certificados')">
+      Certificados</li>
 
-        <li class="menu-section">Historial</li>
-        <li class="menu-item" 
-            [class.active]="currentPage === 'historial'" 
-            (click)="navigateTo('historial')">Historial de Aprendizaje</li>
+    <li class="menu-section">Historial</li>
+    <li class="menu-item" [class.active]="currentPage === 'historial'" (click)="navigateTo('historial')">Historial de
+      Aprendizaje</li>
 
-       <li class="menu-section">Cerrar Sesión</li>
-        <li class="menu-item logout" (click)="logout()">Cerrar Sesión</li>
-    </ul>
+    <li class="menu-section">Cerrar Sesión</li>
+    <li class="menu-item logout" (click)="logout()">Cerrar Sesión</li>
+  </ul>
 </div>
 
 <!-- Pantalla de Actualizar Perfil -->
 <div class="container" *ngIf="currentPage === 'actualizar-perfil'">
-    <h2>Bienvenido, {{ usuario.nombre }} {{ usuario.apellidoPaterno }}</h2>
-    <p>Rol: Estudiante</p>
-    <p>FINER</p>
-    <p>Cursos Completados: {{ usuario.cursosCompletados }}</p>
+    <!-- Sección superior reorganizada con imagen a la izquierda -->
+    <div class="profile-header">
+      <div class="profile-img-container">
+        <img src="assets/logo.png" alt="Foto de perfil" class="profile-img">
+      </div>
+      <div class="profile-info">
+        <h2>Bienvenido, {{ usuario.nombre }} {{ usuario.apellidoPaterno }} {{usuario.apellidoMaterno}}</h2>
+        <p><strong>Correo:</strong> {{ usuario.correo }}</p>
+        <p><strong>Cursos Completados:</strong> {{ usuario.cursosCompletados }}</p>
+      </div>
+    </div>
+
+  <!-- Mini-Menú -->
+  <nav class="mini-menu">
+    <span [class.active]="currentSection === 'perfil'" (click)="navigateTo('actualizar-perfil')">Actualizar
+      Perfil</span> |
+    <span [class.active]="currentSection === 'certificados'" (click)="navigateTo('certificados')">Certificaciones</span>
+    |
+    <span [class.active]="currentSection === 'historial'" (click)="navigateTo('historial')">Historial de
+      Aprendizaje</span> |
+    <span [class.active]="currentSection === 'mis-cursos'" (click)="navigateTo('mis-cursos')">Mis Cursos</span>
+  </nav>
+
+  <!-- Formulario de Actualización de Perfil -->
+  <div class="profile-form">
+    <h3>Información Básica</h3>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" [(ngModel)]="usuario.nombre" class="form-input" required>
+        <small *ngIf="!usuario.nombre" class="text-error">El nombre es requerido</small>
+      </div>
     
-     <!-- Mini-Menú -->
-     <nav class="mini-menu">
-        <span [class.active]="currentSection === 'perfil'" (click)="navigateTo('actualizar-perfil')">Actualizar Perfil</span> |
-        <span [class.active]="currentSection === 'certificados'" (click)="navigateTo('certificados')">Certificaciones</span> |
-        <span [class.active]="currentSection === 'historial'" (click)="navigateTo('historial')">Historial de Aprendizaje</span> |
-        <span [class.active]="currentSection === 'mis-cursos'" (click)="navigateTo('mis-cursos')">Mis Cursos</span>
-    </nav>
-   
-    <!-- Formulario de Actualización de Perfil -->
-    <div class="profile-form">
-        <h3>Información Básica</h3>
+      <div class="form-group">
+        <label for="apellidoPaterno">Apellido Paterno:</label>
+        <input type="text" id="apellidoPaterno" [(ngModel)]="usuario.apellidoPaterno" class="form-input" required>
+        <small *ngIf="!usuario.apellidoPaterno" class="text-error">El apellido paterno es requerido</small>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="apellidoMaterno">Apellido Materno:</label>
+      <input type="text" id="apellidoMaterno" [(ngModel)]="usuario.apellidoMaterno" class="form-input">
+    </div>
+    <div class="form-group">
+      <label for="nombreUsuario">Nombre de Usuario:</label>
+      <input type="text" id="nombreUsuario" [(ngModel)]="usuario.nombreUsuario" class="form-input" required>
+      <small *ngIf="!usuario.nombreUsuario" class="text-error">El nombre de usuario es requerido</small>
+    </div>
+
+    <h3>Información de Contacto</h3>
+    <div class="form-group">
+      <label for="correo">Correo Electrónico:</label>
+      <input type="email" id="correo" [(ngModel)]="usuario.correo" class="form-input" required email>
+    </div>
+    <!-- Sección de Seguridad -->
+    <h3>Seguridad</h3>
+
+    <div class="form-group">
+      <button class="btn-link" (click)="mostrarNuevaContrasenia = !mostrarNuevaContrasenia">
+        {{ mostrarNuevaContrasenia ? 'Cancelar cambio' : 'Cambiar contraseña' }}
+      </button>
+
+      <div *ngIf="mostrarNuevaContrasenia" class="password-change-form">
         <div class="form-group">
-            <label for="nombre">Nombre:</label>
-            <input type="text" id="nombre" [(ngModel)]="usuario.nombre" class="form-input" required>
-            <small *ngIf="!usuario.nombre" class="text-error">El nombre es requerido</small>
+          <label for="nuevaContrasenia">Nueva Contraseña:</label>
+          <div class="password-input-container">
+            <input [type]="mostrarContraseniaActual ? 'text' : 'password'" id="nuevaContrasenia"
+              [(ngModel)]="nuevaContrasenia" class="form-input with-eye" placeholder="Ingresa nueva contraseña">
+          </div>
         </div>
 
         <div class="form-group">
-            <label for="apellidoPaterno">Apellido Paterno:</label>
-            <input type="text" id="apellidoPaterno" [(ngModel)]="usuario.apellidoPaterno" class="form-input" required>
-            <small *ngIf="!usuario.apellidoPaterno" class="text-error">El apellido paterno es requerido</small>
+          <label for="confirmarContrasenia">Confirmar Nueva Contraseña:</label>
+          <div class="password-input-container">
+            <input [type]="mostrarContraseniaActual ? 'text' : 'password'" id="confirmarContrasenia"
+              [(ngModel)]="confirmarContrasenia" class="form-input with-eye" placeholder="Repite la nueva contraseña">
+          </div>
         </div>
-        <div class="form-group">
-            <label for="apellidoMaterno">Apellido Materno:</label>
-            <input type="text" id="apellidoMaterno" [(ngModel)]="usuario.apellidoMaterno" class="form-input">
-        </div>
-        <div class="form-group">
-            <label for="nombreUsuario">Nombre de Usuario:</label>
-            <input type="text" id="nombreUsuario" [(ngModel)]="usuario.nombreUsuario" class="form-input" required>
-            <small *ngIf="!usuario.nombreUsuario" class="text-error">El nombre de usuario es requerido</small>
-        </div>
-        
-        <h3>Información de Contacto</h3>
-        <div class="form-group">
-            <label for="correo">Correo Electrónico:</label>
-            <input type="email" id="correo" [(ngModel)]="usuario.email" class="form-input" required email>
-            <small *ngIf="!usuario.email" class="text-error">El correo es requerido</small>
-            <small *ngIf="usuario.email && !usuario.email.includes('@')" class="text-error">Ingresa un correo válido</small>
-        </div>
-<!-- Sección de Seguridad -->
-<h3>Seguridad</h3>
-<div class="form-group">
-  <label>Contraseña Actual:</label>
-  <div class="password-input-container">
-    <input [type]="mostrarContraseniaActual ? 'text' : 'password'" 
-           [value]="usuario.contrasenia" 
-           class="form-input with-eye"
-           readonly>
-    <span class="toggle-password" (click)="mostrarContraseniaActual = !mostrarContraseniaActual">
-      <img *ngIf="!mostrarContraseniaActual" src="assets/eye_open.png" alt="Mostrar contraseña" class="eye-icon">
-      <img *ngIf="mostrarContraseniaActual" src="assets/eye_close.png" alt="Ocultar contraseña" class="eye-icon">
-    </span>
-  </div>
-  <small class="text-hint">Esta es tu contraseña actual almacenada en el sistema</small>
-</div>
-
-<div class="form-group">
-  <button class="btn-link" (click)="mostrarNuevaContrasenia = !mostrarNuevaContrasenia">
-    {{ mostrarNuevaContrasenia ? 'Cancelar cambio' : 'Cambiar contraseña' }}
-  </button>
-  
-  <div *ngIf="mostrarNuevaContrasenia" class="password-change-form">
-    <div class="form-group">
-      <label for="nuevaContrasenia">Nueva Contraseña:</label>
-      <div class="password-input-container">
-        <input [type]="mostrarContraseniaActual ? 'text' : 'password'" 
-               id="nuevaContrasenia" 
-               [(ngModel)]="nuevaContrasenia" 
-               class="form-input with-eye"
-               placeholder="Ingresa nueva contraseña">
       </div>
-    </div>
-    
-    <div class="form-group">
-      <label for="confirmarContrasenia">Confirmar Nueva Contraseña:</label>
-      <div class="password-input-container">
-        <input [type]="mostrarContraseniaActual ? 'text' : 'password'" 
-               id="confirmarContrasenia" 
-               [(ngModel)]="confirmarContrasenia" 
-               class="form-input with-eye"
-               placeholder="Repite la nueva contraseña">
+      <!-- Botón de Guardar Cambios -->
+      <div class="action-buttons">
+        <button class="save-btn" (click)="guardarCambios()" [disabled]="!usuario.nombre || !usuario.nombreUsuario || !usuario.apellidoPaterno || !usuario.correo">
+          Guardar Cambios
+        </button>
       </div>
     </div>
   </div>
-         <!-- Botón de Guardar Cambios -->
-         <button class="save-btn" (click)="guardarCambios()" [disabled]="!usuario.nombre || !usuario.nombreUsuario || !usuario.apellidoPaterno || !usuario.email">Guardar Cambios</button>
-        </div>
-    </div>
 </div>
 
 <!-- Pantalla de Certificados -->
 <div class="content-container" *ngIf="currentPage === 'certificados'">
-    <h2>Certificados</h2>
-    <p>Aquí puedes ver y descargar tus certificados obtenidos.</p>
-    
-    <!-- Mini-Menú -->
-    <nav class="mini-menu">
-        <span [class.active]="currentSection === 'perfil'" (click)="navigateTo('actualizar-perfil')">Actualizar Perfil</span> |
-        <span [class.active]="currentSection === 'certificados'" (click)="navigateTo('certificados')">Certificaciones</span> |
-        <span [class.active]="currentSection === 'historial'" (click)="navigateTo('historial')">Historial de Aprendizaje</span> |
-        <span [class.active]="currentSection === 'mis-cursos'" (click)="navigateTo('mis-cursos')">Mis Cursos</span>
-    </nav>
+  <h2>Certificados</h2>
+  <p>Aquí puedes ver y descargar tus certificados obtenidos.</p>
 
-    <div class="certificados-list">
-        <div class="certificado-item" *ngFor="let curso of cursosCertificados">
-            <h3>{{ curso.titulo }}</h3>
-            <p>Fecha de finalización: {{ curso.fechaInscripcion | date:'mediumDate' }}</p>
-            <button class="ver-certificado-btn" (click)="visualizarCertificado(curso.idInscripcion)">Ver Certificado</button>
-            <button class="download-btn" (click)="descargarCertificado(curso.idInscripcion)">Descargar Certificado</button>
-        </div>
-        <div *ngIf="cursosCertificados.length === 0" class="no-certificados">
-            <p>No tienes certificados disponibles todavía.</p>
-        </div>
+  <!-- Mini-Menú -->
+  <nav class="mini-menu">
+    <span [class.active]="currentSection === 'perfil'" (click)="navigateTo('actualizar-perfil')">Actualizar
+      Perfil</span> |
+    <span [class.active]="currentSection === 'certificados'" (click)="navigateTo('certificados')">Certificaciones</span>
+    |
+    <span [class.active]="currentSection === 'historial'" (click)="navigateTo('historial')">Historial de
+      Aprendizaje</span> |
+    <span [class.active]="currentSection === 'mis-cursos'" (click)="navigateTo('mis-cursos')">Mis Cursos</span>
+  </nav>
+
+  <div class="certificados-list">
+    <div class="certificado-item" *ngFor="let curso of cursosCertificados">
+      <h3>{{ curso.titulo }}</h3>
+      <p>Fecha de finalización: {{ curso.fechaInscripcion | date:'mediumDate' }}</p>
+      <button class="ver-certificado-btn" (click)="visualizarCertificado(curso.idInscripcion)">Ver Certificado</button>
+      <button class="download-btn" (click)="descargarCertificado(curso.idInscripcion)">Descargar Certificado</button>
     </div>
+    <div *ngIf="cursosCertificados.length === 0" class="no-certificados">
+      <p>No tienes certificados disponibles todavía.</p>
+    </div>
+  </div>
 </div>
 
 <!-- Pantalla de Historial de Aprendizaje -->
 <div class="content-container" *ngIf="currentPage === 'historial'">
-    <h2>Historial de Aprendizaje</h2>
-    <p>Revisa tu progreso y actividades realizadas.</p>
-    
-    <!-- Mini-Menú -->
-    <nav class="mini-menu">
-        <span [class.active]="currentSection === 'perfil'" (click)="navigateTo('actualizar-perfil')">Actualizar Perfil</span> |
-        <span [class.active]="currentSection === 'certificados'" (click)="navigateTo('certificados')">Certificaciones</span> |
-        <span [class.active]="currentSection === 'historial'" (click)="navigateTo('historial')">Historial de Aprendizaje</span> |
-        <span [class.active]="currentSection === 'mis-cursos'" (click)="navigateTo('mis-cursos')">Mis Cursos</span>
-    </nav>
+  <h2>Historial de Aprendizaje</h2>
+  <p>Revisa tu progreso y actividades realizadas.</p>
 
-    <div class="historial-list">
-        <div class="historial-item" *ngFor="let curso of cursos">
-          <div class="curso-header">
-            <h3>{{ curso.titulo }}</h3>
-            <span class="curso-status" [class.completed]="curso.estado === 'finalizado'">
-              {{ curso.estado === 'finalizado' ? 'Completado' : 'En progreso' }}
-            </span>
-          </div>
-          
-          <div class="progress-container">
-            <div class="progress-bar" [style.width.%]="curso.progreso || 0">
-              <span>{{ curso.progreso || 0 }}%</span>
-            </div>
-          </div>
-          
-          <div class="curso-details">
-            <div>
-              <strong>Última actividad:</strong> 
-              {{ curso.ultimaActividad ? (curso.ultimaActividad | date:'mediumDate') : 'Ninguna' }}
-            </div>
-            <div *ngIf="curso.estado === 'finalizado'">
-            </div>
-          </div>
-          
-          <button *ngIf="curso.estado !== 'finalizado'" 
-                  class="continuar-btn"
-                  (click)="continuarCurso(curso.idCurso)">
-            Continuar
-          </button>
+  <!-- Mini-Menú -->
+  <nav class="mini-menu">
+    <span [class.active]="currentSection === 'perfil'" (click)="navigateTo('actualizar-perfil')">Actualizar
+      Perfil</span> |
+    <span [class.active]="currentSection === 'certificados'" (click)="navigateTo('certificados')">Certificaciones</span>
+    |
+    <span [class.active]="currentSection === 'historial'" (click)="navigateTo('historial')">Historial de
+      Aprendizaje</span> |
+    <span [class.active]="currentSection === 'mis-cursos'" (click)="navigateTo('mis-cursos')">Mis Cursos</span>
+  </nav>
+
+  <div class="historial-list">
+    <div class="historial-item" *ngFor="let curso of cursos">
+      <div class="curso-header">
+        <h3>{{ curso.titulo }}</h3>
+        <span class="curso-status" [class.completed]="curso.estado === 'finalizado'">
+          {{ curso.estado === 'finalizado' ? 'Completado' : 'En progreso' }}
+        </span>
+      </div>
+
+      <div class="progress-container">
+        <div class="progress-bar" [style.width.%]="curso.progreso || 0">
+          <span>{{ curso.progreso || 0 }}%</span>
         </div>
       </div>
+
+      <div class="curso-details">
+        <div>
+          <strong>Última actividad:</strong>
+          {{ curso.ultimaActividad ? (curso.ultimaActividad | date:'mediumDate') : 'Ninguna' }}
+        </div>
+        <div *ngIf="curso.estado === 'finalizado'">
+        </div>
       </div>
+
+      <button *ngIf="curso.estado !== 'finalizado'" class="continuar-btn" (click)="continuarCurso(curso.idCurso)">
+        Continuar
+      </button>
+    </div>
+  </div>
+</div>
 
 <!-- Pantalla de Mis Cursos -->
 <div class="content-container" *ngIf="currentPage === 'mis-cursos'">
-    <h2>Mis Cursos</h2>
-    <p>Aquí puedes ver los cursos en los que estás inscrito.</p>
-    
-    <!-- Mini-Menú -->
-    <nav class="mini-menu">
-        <span [class.active]="currentSection === 'perfil'" (click)="navigateTo('actualizar-perfil')">Actualizar Perfil</span> |
-        <span [class.active]="currentSection === 'certificados'" (click)="navigateTo('certificados')">Certificaciones</span> |
-        <span [class.active]="currentSection === 'historial'" (click)="navigateTo('historial')">Historial de Aprendizaje</span> |
-        <span [class.active]="currentSection === 'mis-cursos'" (click)="navigateTo('mis-cursos')">Mis Cursos</span>
-    </nav>
+  <h2>Mis Cursos</h2>
+  <p>Aquí puedes ver los cursos en los que estás inscrito.</p>
 
-    <div class="cursos-list">
-        <div class="curso-item" *ngFor="let curso of cursos">
-            <h3>{{ curso.titulo }}</h3>
-            <p>Estado: {{ curso.estado === 'finalizado' ? 'Finalizado' : 'En progreso' }}</p>
-            <p>Progreso: {{ curso.progreso || 0 }}%</p>
-            <p *ngIf="curso.ultimaActividad">Última actividad: {{ curso.ultimaActividad | date:'mediumDate' }}</p>
-            
-            <button *ngIf="curso.estado === 'finalizado'" 
-                    class="ver-certificado-btn" 
-                    (click)="visualizarCertificado(curso.idInscripcion)">
-                Ver Certificado
-            </button>
-            
-            <button *ngIf="curso.estado !== 'finalizado'" 
-                    class="continuar-btn" 
-                    (click)="continuarCurso(curso.idCurso)">
-                Continuar Curso
-            </button>
-        </div>
-        <div *ngIf="cursos.length === 0" class="no-cursos">
-            <p>No estás inscrito en ningún curso actualmente.</p>
-        </div>
+  <!-- Mini-Menú -->
+  <nav class="mini-menu">
+    <span [class.active]="currentSection === 'perfil'" (click)="navigateTo('actualizar-perfil')">Actualizar
+      Perfil</span> |
+    <span [class.active]="currentSection === 'certificados'" (click)="navigateTo('certificados')">Certificaciones</span>
+    |
+    <span [class.active]="currentSection === 'historial'" (click)="navigateTo('historial')">Historial de
+      Aprendizaje</span> |
+    <span [class.active]="currentSection === 'mis-cursos'" (click)="navigateTo('mis-cursos')">Mis Cursos</span>
+  </nav>
+
+  <div class="cursos-list">
+    <div class="curso-item" *ngFor="let curso of cursos">
+      <h3>{{ curso.titulo }}</h3>
+      <p>Estado: {{ curso.estado === 'finalizado' ? 'Finalizado' : 'En progreso' }}</p>
+      <p>Progreso: {{ curso.progreso || 0 }}%</p>
+      <p *ngIf="curso.ultimaActividad">Última actividad: {{ curso.ultimaActividad | date:'mediumDate' }}</p>
+
+      <button *ngIf="curso.estado === 'finalizado'" class="ver-certificado-btn"
+        (click)="visualizarCertificado(curso.idInscripcion)">
+        Ver Certificado
+      </button>
+
+      <button *ngIf="curso.estado !== 'finalizado'" class="continuar-btn" (click)="continuarCurso(curso.idCurso)">
+        Continuar Curso
+      </button>
     </div>
+    <div *ngIf="cursos.length === 0" class="no-cursos">
+      <p>No estás inscrito en ningún curso actualmente.</p>
+    </div>
+  </div>
 </div>
 
 <!-- Pie de página -->
 <footer class="footer">
-    <div>FINER | <a href="#">Términos y Condiciones</a> | <a href="#">Soporte</a> | <a href="#">Sobre Nosotros</a></div>
-    <div>Redes Sociales | Contacto | Derechos Reservados</div>
+  <div>FINER | <a href="#">Términos y Condiciones</a> | <a href="#">Soporte</a> | <a href="#">Sobre Nosotros</a></div>
+  <div>Redes Sociales | Contacto | Derechos Reservados</div>
 </footer>
