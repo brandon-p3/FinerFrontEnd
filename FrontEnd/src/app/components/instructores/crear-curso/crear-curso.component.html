@@ -1,28 +1,50 @@
 <!-- Modal para vista previa -->
 <div class="modal-overlay" *ngIf="isModalOpen">
   <div class="modal-content">
-    <h2>Vista Previa del Curso</h2>
+    <div class="modal-header">
+      <h2>Vista Previa del Curso</h2>
+      <button class="btn-close" (click)="closeModal()">&times;</button>
+    </div>
     <h4>Nombre del Curso: {{ courseName }}</h4>
     <h4>Categoría: {{ selectedCategory }}</h4>
     <div class="image-preview" *ngIf="imageUrl">
       <img [src]="imageUrl" alt="Vista previa de la imagen del curso" class="img-preview">
     </div>
-    <hr>
-    <div *ngFor="let section of sections; let sectionIndex = index">
-      <h5>Sección {{ sectionIndex + 1 }}: {{ section.title }}</h5>
-      <div *ngFor="let subsection of section.subsections; let subsectionIndex = index">
-        <h6>Tema {{ subsectionIndex + 1 }}: {{ subsection.title }}</h6>
-        <p>{{ subsection.content }}</p>
-      </div>
-      <hr>
+    <p><strong>Descripción:</strong> {{ courseDescription }}</p>
+  </div>
+</div>
+
+<!-- Modal para Solicitar Nueva Categoría -->
+<div class="modal-overlay" *ngIf="isCategoriaModalOpen">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Solicitar Nueva Categoría</h2>
+      <button class="btn-close" (click)="cerrarModal()">&times;</button>
     </div>
-    <button class="btn-close" (click)="closeModal()">Cerrar</button>
+    
+    <div class="form-group">
+      <label>Nombre de la Categoría *</label>
+      <input type="text" class="form-input" 
+             placeholder="Ejemplo: Desarrollo Web"
+             [(ngModel)]="nuevaCategoriaNombre" required>
+    </div>
+    
+    <div class="form-group">
+      <label>Descripción</label>
+      <textarea class="form-input" rows="3" 
+                placeholder="Escribe una breve descripción..."
+                [(ngModel)]="nuevaCategoriaDescripcion"></textarea>
+    </div>
+    
+    <div class="modal-actions">
+      <button class="btn-cancel" (click)="cerrarModal()">Cancelar</button>
+      <button class="btn-save" (click)="enviarSolicitudCategoria()">Solicitar</button>
+    </div>
   </div>
 </div>
 
 <!-- Contenedor principal -->
 <div class="main-container">
-
   <!-- navBar -->
   <app-navbar-instructor></app-navbar-instructor>
 
@@ -32,10 +54,10 @@
 
     <!-- Botones Vista Previa y Eliminar -->
     <div class="action-buttons">
-      <button class="btn-view" (click)="vistaPrevia()" [disabled]="!isFormValid()">
+      <button class="btn-view" (click)="openPreview()" [disabled]="!isFormValid()">
         <i class="fas fa-eye"></i> Vista Previa
       </button>
-      <button class="btn-delete" (click)="eliminarCurso()">
+      <button class="btn-delete" (click)="clearForm()">
         <i class="fas fa-trash"></i> Borrar
       </button>
     </div>
@@ -43,15 +65,17 @@
     <!-- Nombre del Curso -->
     <div class="form-group">
       <label for="course-name">Nombre del Curso *</label>
-      <input type="text" id="course-name" class="form-input" placeholder="Ingrese el nombre del curso"
-        [(ngModel)]="courseName" required>
+      <input type="text" id="course-name" class="form-input" 
+             placeholder="Ingrese el nombre del curso"
+             [(ngModel)]="courseName" required>
     </div>
 
     <!-- Descripción del Curso -->
     <div class="form-group">
       <label for="course-description">Descripción del Curso *</label>
-      <textarea id="course-description" class="form-input" placeholder="Ingrese una descripción general del curso"
-        [(ngModel)]="courseDescription" required></textarea>
+      <textarea id="course-description" class="form-input" 
+                placeholder="Ingrese una descripción general del curso"
+                [(ngModel)]="courseDescription" required></textarea>
     </div>
 
     <!-- Imagen del Curso (URL) -->
@@ -64,91 +88,36 @@
              pattern="https?://.+">
       <small class="form-text text-muted">Ingrese una URL válida comenzando con http:// o https://</small>
       
-      <div class="image-preview mt-2" *ngIf="imageUrl">
-        <img [src]="imageUrl" alt="Vista previa" class="img-thumbnail" style="max-height: 200px;">
-        <button class="btn btn-sm btn-danger mt-2" (click)="removeImage()">
+      <div class="image-preview" *ngIf="imageUrl">
+        <img [src]="imageUrl" alt="Vista previa" class="img-thumbnail">
+        <button class="btn-remove-image" (click)="removeImage()">
           <i class="fas fa-trash"></i> Eliminar imagen
         </button>
       </div>
     </div>
 
-    <!-- Modal para Solicitar Nueva Categoría -->
-    <div class="modal-overlay" *ngIf="isCategoriaModalOpen">
-      <div class="modal-content">
-        <app-solicitar-categoria (cerrar)="cerrarModal()"></app-solicitar-categoria>
-      </div>
-    </div>
-
     <!-- Selección de Categoría -->
-    <div class="form-group category-group">
+    <div class="form-group">
       <label for="course-category">Categoría *</label>
       <div class="category-selection">
-        <select id="course-category" class="form-input" [(ngModel)]="selectedCategory" required>
-          <option value="">Seleccione una categoría aprobada</option>
+        <select id="course-category" class="form-input" 
+                [(ngModel)]="selectedCategory" required>
+          <option value="">Seleccione una categoría</option>
           <option *ngFor="let category of categories" [value]="category.nombreCategoria">
             {{ category.nombreCategoria }}
           </option>
         </select>
-        <button class="btn-add-category" (click)="solicitarNuevaCategoria()">
+        <button class="btn-add-category" (click)="solicitarNuevaCategoria()" title="Solicitar nueva categoría">
           <i class="fas fa-plus"></i>
         </button>
       </div>
     </div>
 
-    <!-- Sección de contenido -->
-    <div class="sections-container">
-      <!-- Iterar sobre las secciones -->
-      <div class="section" *ngFor="let section of sections; let sectionIndex = index">
-        <div class="form-group">
-          <label [attr.for]="'section-title-' + sectionIndex">Título de Sección {{sectionIndex + 1}} *</label>
-          <input type="text" [id]="'section-title-' + sectionIndex" class="form-input" 
-            placeholder="Ingrese el título de la sección" [(ngModel)]="section.title" required>
-          
-          <!-- Botón para eliminar sección -->
-          <button *ngIf="sections.length > 1" class="btn-delete" (click)="removeSection(sectionIndex)">
-            <i class="fas fa-trash"></i> Eliminar Sección
-          </button>
-        </div>
-
-        <!-- Iterar sobre los temas de la sección actual -->
-        <div class="subsection" *ngFor="let subsection of section.subsections; let subsectionIndex = index">
-          <div class="form-group">
-            <label [attr.for]="'subsection-title-' + sectionIndex + '-' + subsectionIndex">Tema {{subsectionIndex + 1}} *</label>
-            <input type="text" [id]="'subsection-title-' + sectionIndex + '-' + subsectionIndex" class="form-input" 
-              placeholder="Ingrese el tema" [(ngModel)]="subsection.title" required>
-          </div>
-          
-          <div class="form-group">
-            <label [attr.for]="'subsection-content-' + sectionIndex + '-' + subsectionIndex">Contenido *</label>
-            <textarea [id]="'subsection-content-' + sectionIndex + '-' + subsectionIndex" class="form-input" 
-              placeholder="Ingrese el contenido del tema" [(ngModel)]="subsection.content" required></textarea>
-          </div>
-          
-          <!-- Botón para eliminar subsección -->
-          <button *ngIf="section.subsections.length > 1" class="btn-delete"
-            (click)="removeSubsection(sectionIndex, subsectionIndex)">
-            <i class="fas fa-trash"></i> Eliminar Tema
-          </button>
-
-          <!-- Botón para añadir subsección -->
-          <button class="add-subsection-btn" (click)="addSubsection(sectionIndex)">
-            <i class="fas fa-plus"></i> Añadir Tema
-          </button>
-        </div>
-      </div>
-
-      <!-- Contenedor para los botones "Añadir Sección" y "Enviar a Revisión" -->
-      <div class="button-container">
-        <!-- Botón para añadir sección -->
-        <button class="add-section-btn" (click)="addSection()">
-          <i class="fas fa-plus"></i> Añadir Sección
-        </button>
-
-        <!-- Botón para enviar a revisión -->
-        <button class="submit-btn" (click)="submitForReview()" [disabled]="!isFormValid()">
-          Enviar a Revisión
-        </button>
-      </div>
+    <!-- Botón para guardar -->
+    <div class="form-actions">
+      <button class="btn-save" (click)="saveCourse()" [disabled]="!isFormValid()">
+        <i class="fas fa-save"></i> Guardar
+      </button>
     </div>
   </div>
 
