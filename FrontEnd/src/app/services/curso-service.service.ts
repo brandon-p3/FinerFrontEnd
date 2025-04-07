@@ -64,30 +64,38 @@ editarCurso(cursoData: CursoEditarDTO): Observable<any> {
       }
     );
   }
-  // Método para obtener categorías (si no lo tienes ya)
+  // Método para obtener categorías 
   obtenerCategorias(): Observable<VerCategoriasDTO[]> {
     return this.http.get<VerCategoriasDTO[]>(`${this.apiUrl}/categorias`);
   }
 
-  enviarCursoCompleto(params: HttpParams): Observable<any> {
+  enviarARevision(idSolicitudCurso: number): Observable<any> {
+    // Usar HttpParams para el parámetro de consulta
+    const params = new HttpParams().set('id_solicitud_curso', idSolicitudCurso.toString());
+
     return this.http.put(
         `${this.apiUrl}/solicitud-curso/enviar-a-revision`,
-        params.toString(),
+        null, // Cuerpo vacío porque usamos parámetros de consulta
         {
-            headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded'),
-            responseType: 'text'
+            params: params,
+            headers: new HttpHeaders({
+                'Accept': 'application/json'
+            })
         }
     ).pipe(
         catchError(error => {
-            // Transforma el error para manejo consistente
-            if (error.error && typeof error.error === 'string') {
+            // Manejo de errores consistente
+            let errorMessage = 'Error desconocido';
+            if (error.error) {
                 try {
-                    error.error = JSON.parse(error.error);
+                    // Intenta parsear si es un string JSON
+                    const errorObj = typeof error.error === 'string' ? JSON.parse(error.error) : error.error;
+                    errorMessage = errorObj.message || errorObj.error || error.statusText;
                 } catch (e) {
-                    // Si no es JSON, lo dejamos como está
+                    errorMessage = error.error || error.statusText;
                 }
             }
-            return throwError(() => error);
+            return throwError(() => new Error(errorMessage));
         })
     );
 }

@@ -618,13 +618,12 @@ editarTema(tema: TemaDTO): void {
   }
 
   enviarARevision(): void {
-    // Verificación explícita de null/undefined
+    // Verificaciones previas
     if (!this.selectedCourseForTema?.idCurso) {
         Swal.fire('Error', 'No se ha seleccionado un curso válido', 'error');
         return;
     }
 
-    // Verifica que tenga temas
     if (this.temasDelCurso.length === 0) {
         Swal.fire('Error', 'Debes agregar al menos un tema', 'error');
         return;
@@ -641,19 +640,24 @@ editarTema(tema: TemaDTO): void {
         if (result.isConfirmed) {
             this.isLoading = true;
             
-            // Usamos el operador de navegación segura (!) porque ya verificamos que no es null
-            const params = new HttpParams()
-                .set('id_solicitud_curso', this.selectedCourseForTema!.idCurso.toString());
-
-            this.cursoService.enviarCursoCompleto(params).subscribe({
-                next: () => {
-                    Swal.fire('¡Éxito!', 'Curso enviado a revisión correctamente', 'success');
+            // Llamada al servicio modificada
+            this.cursoService.enviarARevision(this.selectedCourseForTema!.idCurso).subscribe({
+                next: (response) => {
+                    Swal.fire({
+                        title: '¡Éxito!',
+                        text: response.message || 'Curso enviado a revisión correctamente',
+                        icon: 'success'
+                    });
                     this.closeTemaModal();
                     this.loadCursos();
                 },
                 error: (err) => {
                     console.error('Error:', err);
-                    Swal.fire('Error', err.error?.message || 'Error al enviar a revisión', 'error');
+                    Swal.fire({
+                        title: 'Error',
+                        text: err.message || 'Error al enviar a revisión',
+                        icon: 'error'
+                    });
                 },
                 complete: () => {
                     this.isLoading = false;

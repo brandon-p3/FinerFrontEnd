@@ -56,7 +56,7 @@ export class UsuariosService {
   logout() {
     localStorage.removeItem('currentUser');
     this.currentUserSubject.next(null);
-    this.router.navigate(['/login']);
+    this.router.navigate(['home/inicio']);
   }
 
   getUsuarioCompleto(): Observable<any> {

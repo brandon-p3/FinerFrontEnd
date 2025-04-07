@@ -175,7 +175,7 @@
         <div class="modal-actions">
             <button class="action-btn edit-btn" 
                 [disabled]="shouldDisableEdit(selectedCourse)"
-                (click)="editCourse(selectedCourse)">
+                (click)="enviarARevision()">
                 {{ selectedCourse.estatus === 'Rechazado' ? 'Reenviar a Revisión' : 'Editar' }}
             </button>
             <button class="action-btn temas-btn" (click)="openTemaModal(selectedCourse)">Gestionar Temas</button>
