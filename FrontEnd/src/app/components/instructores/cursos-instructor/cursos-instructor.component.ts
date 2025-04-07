@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
-import { CursoEditarDTO, CursoVerDTO, VerCategoriasDTO, TemaDTO } from '../../../documentos/cursoDocumento';
+import { CursoEditarDTO, CursoVerDTO, VerCategoriasDTO, TemaDTO, SolicitudTemaEditarDTO } from '../../../documentos/cursoDocumento';
 import { CursoServiceService } from '../../../services/curso-service.service';
 import { CategoriaServiceService } from '../../../services/categorias-service.service';
 import { UsuariosService } from '../../../services/usuarios-service.service';
 import { HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
 
 const customSwal = Swal.mixin({
   customClass: {
@@ -69,7 +68,6 @@ export class CursosInstructorComponent implements OnInit {
   courseToDelete: number | null = null;
   showDeleteModal = false;
   
-  // Nuevas propiedades para manejar la eliminación de temas
   temaToDelete: number | null = null;
   showDeleteTemaModal = false;
   
@@ -98,7 +96,7 @@ export class CursosInstructorComponent implements OnInit {
   selectedCourseForTema: CursoVerDTO | null = null;
   nuevoTema = { nombre: '', contenido: '' };
   temasDelCurso: TemaDTO[] = [];
-  editingTema: TemaDTO | null = null;
+  editingTema: any = null; // Cambiado a 'any' para mayor flexibilidad
   temasLoading = false;
 
   ngOnInit() {
@@ -303,7 +301,6 @@ export class CursosInstructorComponent implements OnInit {
       descripcion: curso.descripcion || '',
       categoria: curso.categoria || '',
       imagenUrl: curso.imagen ? this.getImageUrl(curso.imagen) : '',
-  
     };
     
     this.buscarCategoriaPorNombre(curso.categoria || '');
@@ -476,9 +473,8 @@ export class CursosInstructorComponent implements OnInit {
     }
   }
 
-  // Métodos para manejar la eliminación de temas
   confirmDeleteTema(tema: TemaDTO): void {
-    this.temaToDelete = tema.id;
+    this.temaToDelete = tema.idSolicitudTema; // Cambiado a idSolicitudTema
     this.showDeleteTemaModal = true;
   }
 
@@ -487,6 +483,26 @@ export class CursosInstructorComponent implements OnInit {
     this.temaToDelete = null;
   }
 
+  deleteTema(): void {
+    if (this.temaToDelete && this.usuario.idUsuario) {
+      this.isLoading = true;
+      this.cursoService.eliminarTema(this.usuario.idUsuario, this.temaToDelete).subscribe({
+        next: () => {
+          Swal.fire('¡Eliminado!', 'El tema ha sido eliminado correctamente.', 'success');
+          this.cargarTemasDelCurso();
+          this.showDeleteTemaModal = false;
+        },
+        error: (error) => {
+          console.error('Error al eliminar el tema', error);
+          Swal.fire('Error', 'No se pudo eliminar el tema. Por favor, intente nuevamente.', 'error');
+          this.showDeleteTemaModal = false;
+        },
+        complete: () => {
+          this.isLoading = false;
+        }
+      });
+    }
+  }
   
   logout() {
     Swal.fire({
@@ -521,6 +537,7 @@ export class CursosInstructorComponent implements OnInit {
     this.cursoService.verTemasSolicitadosPorCurso(this.selectedCourseForTema.idCurso).subscribe({
       next: (temas: TemaDTO[]) => {
         this.temasDelCurso = temas || [];
+        console.log('Temas cargados:', this.temasDelCurso);
       },
       error: (error) => {
         if (error.status === 404) {
@@ -545,80 +562,95 @@ export class CursosInstructorComponent implements OnInit {
 
     this.isLoading = true;
     
-    let observable: Observable<any>;
-    
     if (this.editingTema) {
-        // Verifica que tenemos los IDs necesarios
-        if (!this.editingTema.id || !this.usuario.idUsuario) {
-            Swal.fire('Error', 'Faltan datos necesarios para editar el tema', 'error');
-            this.isLoading = false;
-            return;
-        }
-        
-        observable = this.cursoService.editarTema(
-            this.usuario.idUsuario,
-            this.editingTema.id,
-            this.nuevoTema.nombre,
-            this.nuevoTema.contenido
-        );
-    } else {
-        if (!this.selectedCourseForTema?.idCurso) {
-            Swal.fire('Error', 'No se ha seleccionado un curso válido', 'error');
-            this.isLoading = false;
-            return;
-        }
-        
-        observable = this.cursoService.agregarTema(
-            this.selectedCourseForTema.idCurso,
-            this.nuevoTema.nombre,
-            this.nuevoTema.contenido
-        );
-    }
+      // Edición de tema existente
+      const solicitudTemaDTO: SolicitudTemaEditarDTO = {
+        idSolicitudTema: this.editingTema.idSolicitudTema, // Usar idSolicitudTema directamente
+        idSolicitudCurso: this.selectedCourseForTema?.idCurso || 0,
+        nombreTema: this.nuevoTema.nombre,
+        contenido: this.nuevoTema.contenido
+      };
 
-    observable.subscribe({
-        next: () => {
-            Swal.fire('¡Éxito!', this.editingTema ? 'Tema actualizado' : 'Tema agregado', 'success');
-            this.cargarTemasDelCurso();
-            if (!this.editingTema) {
-                this.nuevoTema = { nombre: '', contenido: '' };
-            }
+      console.log('Enviando datos para editar tema:', solicitudTemaDTO);
+
+      this.cursoService.editarSolicitudTema(solicitudTemaDTO).subscribe({
+        next: (response) => {
+          console.log('Respuesta del servidor:', response);
+          Swal.fire('¡Éxito!', 'Tema actualizado correctamente', 'success');
+          this.cargarTemasDelCurso();
+          this.cancelarEdicionTema();
         },
-        error: (err) => {
-            console.error('Error al guardar tema:', err);
-            Swal.fire('Error', 'No se pudo guardar el tema: ' + err.message, 'error');
+        error: (error) => {
+          console.error('Error al actualizar tema:', error);
+          Swal.fire('Error', 'No se pudo actualizar el tema: ' + (error.error?.message || error.message), 'error');
         },
         complete: () => {
-            this.isLoading = false;
-            this.editingTema = null;
+          this.isLoading = false;
         }
-    });
-}
-editarTema(tema: TemaDTO): void {
-  if (!this.usuario?.idUsuario) {
-      console.error('ID de usuario no disponible');
-      return;
+      });
+    } else {
+      // Creación de nuevo tema
+      if (!this.selectedCourseForTema?.idCurso) {
+        Swal.fire('Error', 'No se ha seleccionado un curso válido', 'error');
+        this.isLoading = false;
+        return;
+      }
+      
+      console.log('Agregando nuevo tema:', {
+        idSolicitudCurso: this.selectedCourseForTema.idCurso,
+        nombreTema: this.nuevoTema.nombre,
+        contenido: this.nuevoTema.contenido
+      });
+
+      this.cursoService.agregarTema(
+        this.selectedCourseForTema.idCurso,
+        this.nuevoTema.nombre,
+        this.nuevoTema.contenido
+      ).subscribe({
+        next: () => {
+          Swal.fire('¡Éxito!', 'Tema agregado correctamente', 'success');
+          this.cargarTemasDelCurso();
+          this.nuevoTema = { nombre: '', contenido: '' };
+        },
+        error: (error) => {
+          console.error('Error al agregar tema:', error);
+          Swal.fire('Error', 'No se pudo agregar el tema: ' + (error.error?.message || error.message), 'error');
+        },
+        complete: () => {
+          this.isLoading = false;
+        }
+      });
+    }
   }
 
-  // Asegúrate de que el tema tenga todos los campos necesarios
-  this.editingTema = {
-      id: tema.id,
-      nombre: tema.nombre || '', // Asegura que nombre tenga un valor
-      contenido: tema.contenido || '' // Asegura que contenido tenga un valor
-  };
-  
-  // Asigna ambos campos al formulario
-  this.nuevoTema = {
-      nombre: this.editingTema.nombre,
-      contenido: this.editingTema.contenido
-  };
-  
-}  cancelarEdicionTema(): void {
+  editarTema(tema: TemaDTO): void {
+    if (!this.usuario?.idUsuario) {
+        console.error('ID de usuario no disponible');
+        return;
+    }
+
+    console.log('Editando tema:', tema);
+
+    this.editingTema = {
+        id: tema.idSolicitudTema, // Usar idSolicitudTema en lugar de id
+        idSolicitudTema: tema.idSolicitudTema, // Mantener el id original
+        idSolicitudCurso: tema.idSolicitudCurso, // Mantener el id del curso
+        nombre: tema.nombre || '',
+        contenido: tema.contenido || ''
+    };
+    
+    this.nuevoTema = {
+        nombre: this.editingTema.nombre,
+        contenido: this.editingTema.contenido
+    };
+  }
+
+  cancelarEdicionTema(): void {
     this.editingTema = null;
     this.nuevoTema = { nombre: '', contenido: '' };
   }
 
   enviarARevision(): void {
-    // Verificaciones previas
     if (!this.selectedCourseForTema?.idCurso) {
         Swal.fire('Error', 'No se ha seleccionado un curso válido', 'error');
         return;
@@ -628,6 +660,8 @@ editarTema(tema: TemaDTO): void {
         Swal.fire('Error', 'Debes agregar al menos un tema', 'error');
         return;
     }
+
+    console.log('Enviando curso a revisión:', this.selectedCourseForTema.idCurso);
 
     Swal.fire({
         title: '¿Enviar a revisión?',
@@ -640,22 +674,22 @@ editarTema(tema: TemaDTO): void {
         if (result.isConfirmed) {
             this.isLoading = true;
             
-            // Llamada al servicio modificada
             this.cursoService.enviarARevision(this.selectedCourseForTema!.idCurso).subscribe({
                 next: (response) => {
+                    console.log('Respuesta del servidor al enviar a revisión:', response);
                     Swal.fire({
                         title: '¡Éxito!',
-                        text: response.message || 'Curso enviado a revisión correctamente',
+                        text: 'Curso enviado a revisión correctamente',
                         icon: 'success'
                     });
                     this.closeTemaModal();
                     this.loadCursos();
                 },
-                error: (err) => {
-                    console.error('Error:', err);
+                error: (error) => {
+                    console.error('Error:', error);
                     Swal.fire({
                         title: 'Error',
-                        text: err.message || 'Error al enviar a revisión',
+                        text: error.error?.message || 'Error al enviar a revisión',
                         icon: 'error'
                     });
                 },
@@ -665,7 +699,8 @@ editarTema(tema: TemaDTO): void {
             });
         }
     });
-}
+  }
+
   closeTemaModal(): void {
     this.showTemaModal = false;
     this.selectedCourseForTema = null;
@@ -682,9 +717,8 @@ editarTema(tema: TemaDTO): void {
   canSendToReview(curso: CursoVerDTO | null): boolean {
     if (!curso) return false;
     
-    // Solo permitir enviar cursos rechazados o pendientes
     return (curso.estatus === this.COURSE_STATUS.REJECTED || 
            curso.estatus === this.COURSE_STATUS.PENDING) &&
-           this.temasDelCurso.length > 0; // Asegurar que tenga temas
-}
+           this.temasDelCurso.length > 0;
+  }
 }

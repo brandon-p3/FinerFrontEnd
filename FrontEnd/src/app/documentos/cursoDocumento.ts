@@ -19,10 +19,12 @@ export interface CursoVerDTO {
 }
 
 export interface TemaDTO {
-  id: number;
+  idSolicitudTema: number;
+  idSolicitudCurso: number;
   nombre: string;
   contenido: string;
 }
+
 export interface CursoEditarDTO {
   idCurso: number;
   idInstructor: number;
@@ -38,4 +40,10 @@ export interface CursoEditarDTO {
   nombreCategoria: string;
   descripcion: string;
 
+}
+export interface SolicitudTemaEditarDTO {
+    idSolicitudTema: number;
+    idSolicitudCurso: number;
+    nombreTema: string;
+    contenido:string;
 }
