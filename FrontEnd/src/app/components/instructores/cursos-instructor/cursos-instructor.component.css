@@ -51,7 +51,7 @@ body {
   
   .search-bar:focus {
     outline: none;
-    border-color: #4CAF50;
+    border-color: #8EC3B0;
   }
   
   .search-icon {
@@ -75,7 +75,7 @@ body {
   }
   
   .create-course-btn {
-    background-color: #4CAF50;
+    background-color: #8EC3B0;
     color: white;
     border: none;
     padding: 10px 20px;
@@ -87,7 +87,7 @@ body {
   }
   
   .create-course-btn:hover {
-    background-color: #388E3C;
+    background-color: #8EC3B0;
   }
   
   /* ============ COURSE GRID ============ */
@@ -139,11 +139,11 @@ body {
     font-size: 12px;
     font-weight: bold;
     color: white;
-    background-color: #4CAF50;
+    background-color: #8EC3B0;
   }
   
   .course-status.pending {
-    background-color: #8BC34A;
+    background-color: #8EC3B0;
   }
   
   .course-status.rejected {
@@ -216,30 +216,30 @@ body {
   }
   
   .preview-btn {
-    background-color: #4CAF50;
+    background-color: #8EC3B0;
     color: white;
   }
   
   .preview-btn:hover:not(:disabled) {
-    background-color: #388E3C;
+    background-color: #8EC3B0;
   }
   
   .edit-btn {
-    background-color: #4CAF50;
+    background-color: #8EC3B0;
     color: white;
   }
   
   .edit-btn:hover:not(:disabled) {
-    background-color: #388E3C;
+    background-color: #8EC3B0;
   }
   
   .temas-btn {
-    background-color: #4CAF50;
+    background-color: #8EC3B0;
     color: white;
   }
   
   .temas-btn:hover:not(:disabled) {
-    background-color: #388E3C;
+    background-color: #8EC3B0;
   }
   
   .delete-btn {
@@ -324,7 +324,7 @@ body {
     color: white;
     display: inline-block;
     margin-left: 10px;
-    background-color: #4CAF50;
+    background-color: #8EC3B0;
   }
   
   .preview-main-content {
@@ -408,7 +408,7 @@ body {
     padding: 15px;
     margin-bottom: 15px;
     border-radius: 8px;
-    border-left: 4px solid #4CAF50;
+    border-left: 4px solid #8EC3B0;
   }
   
   .tema-header {
@@ -483,7 +483,7 @@ body {
   
   .form-input:focus, .form-textarea:focus {
     outline: none;
-    border-color: #4CAF50;
+    border-color: #8EC3B0;
     background-color: white;
   }
   
@@ -554,7 +554,7 @@ body {
   
   /* Send to Review Button */
   .send-review-btn {
-    background-color: #4CAF50;
+    background-color: #8EC3B0;
     color: white;
     border: none;
     padding: 10px 20px;
@@ -568,7 +568,7 @@ body {
   }
   
   .send-review-btn:hover:not(:disabled) {
-    background-color: #388E3C;
+    background-color: #8EC3B0;
   }
   
   .send-review-btn:disabled {
@@ -628,7 +628,7 @@ body {
   .spinner {
     border: 4px solid rgba(0, 0, 0, 0.1);
     border-radius: 50%;
-    border-top: 4px solid #4CAF50;
+    border-top: 4px solid #8EC3B0;
     width: 40px;
     height: 40px;
     animation: spin 1s linear infinite;
