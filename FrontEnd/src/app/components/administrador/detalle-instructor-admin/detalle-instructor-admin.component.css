@@ -1,4 +1,19 @@
-.modal {
+/* Estilos Mejorados */
+:root {
+    --primary-color: #3e9b74;
+    --primary-light: #def5e5;
+    --primary-dark: #055052;
+    --text-color: #344054;
+    --text-muted: #667085;
+    --border-color: #e4e7ec;
+    --shadow-sm: 0 1px 3px rgba(16, 24, 40, 0.1);
+    --shadow-md: 0 4px 8px rgba(16, 24, 40, 0.12);
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --transition: all 0.2s ease;
+  }
+  
+  .modal {
     display: flex;
     position: fixed;
     z-index: 1000;
@@ -6,106 +21,319 @@
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(16, 24, 40, 0.6);
     align-items: center;
     justify-content: center;
-    animation: fadeIn 0.3s ease-in-out;
-}
-
-.modal-content {
-    background: linear-gradient(to right, #DEF5E5, #ffffff);
-    padding: 30px; /* Aumenta el espacio interno */
-    border-radius: 12px;
-    width: 100%; /* Hace que el modal sea más grande */
-    max-width: 900px; /* Define un límite máximo para evitar que sea demasiado ancho */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    position: relative;
-    border-left: 5px solid #8EC3B0;
-    animation: slideIn 0.3s ease-in-out;
-}
-
-
-.content-container {
-    display: flex;
-    gap: 20px; /* Espacio entre las columnas */
-}
-
-/* Sección de información (más estrecha) */
-.info-section {
-    flex: 1.5; /* Ocupa menos espacio */
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    border-left: 5px solid #8EC3B0;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-/* Sección del certificado (mucho más ancha) */
-.certificate-section {
-    flex: 5; /* Ocupa más espacio */
-    text-align: center;
-    background: white;
-    padding: 15px;
-    border-radius: 8px;
-    border-left: 5px solid #8EC3B0;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-/* Ajustamos el tamaño del embed para aprovechar el espacio */
-.certificate-section embed {
+    animation: fadeIn 0.3s ease;
+    padding: 16px; /* Agrega padding para dispositivos móviles */
+  }
+  
+  .modal-content {
+    background: #ffffff;
+    border-radius: var(--radius-md);
     width: 100%;
-    height: 350px;
-    border-radius: 5px;
-    border: 1px solid #8EC3B0;
-}
-
-/* Botón de cerrar */
-.close-btn {
-    position: absolute;
-    top: 15px;
-    right: 20px;
-    font-size: 28px;
+    max-width: 1000px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 24px -4px rgba(16, 24, 40, 0.1), 
+                0 8px 8px -4px rgba(16, 24, 40, 0.04);
+    animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 32px;
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  .modal-header h2 {
+    margin: 0;
+    color: var(--text-color);
+    font-size: 24px;
+    font-weight: 600;
+  }
+  
+  .close-btn {
+    background: none;
+    border: none;
     cursor: pointer;
-    color: #055052;
-    transition: transform 0.2s ease, color 0.2s ease;
-}
-
-.close-btn:hover {
-    transform: scale(1.2);
-    color: #ff4d4d;
-}
-
-/* Estilos generales */
-h2 {
-    color: #055052;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    border-radius: 50%;
+    transition: var(--transition);
+  }
+  
+  .close-btn:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: var(--text-color);
+  }
+  
+  .content-container {
+    display: flex;
+    gap: 32px;
+    padding: 32px;
+  }
+  
+  /* Sección de información */
+  .info-section {
+    flex: 1;
+    min-width: 280px;
+  }
+  
+  .profile-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+  
+  .avatar {
+    width: 80px;
+    height: 80px;
+    background-color: var(--primary-light);
+    color: var(--primary-dark);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    border: 4px solid rgba(142, 195, 176, 0.2);
+  }
+  
+  .profile-header h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-color);
+    margin: 0;
     text-align: center;
-    margin-bottom: 15px;
-}
-
-p {
-    color: #333;
-    margin: 8px 0;
-}
-
-strong {
-    color: #055052;
-}
-
-/* Animaciones */
-@keyframes fadeIn {
+  }
+  
+  .info-details {
+    background-color: #f9fafb;
+    border-radius: var(--radius-sm);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .info-item {
+    display: flex;
+    gap: 12px;
+  }
+  
+  .info-icon {
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+  }
+  
+  .info-item div:last-child {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .info-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+  
+  .info-value {
+    color: var(--text-color);
+    word-break: break-word;
+  }
+  
+  /* Sección de documentos */
+  .document-section {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .document-section h3 {
+    font-size: 18px;
+    color: var(--text-color);
+    margin-top: 0;
+    margin-bottom: 16px;
+    font-weight: 600;
+  }
+  
+  .document-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  
+  .document-card {
+    background-color: #fff;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+  }
+  
+  .document-card:hover {
+    box-shadow: var(--shadow-md);
+    border-color: #d0d5dd;
+  }
+  
+  .document-icon {
+    margin-right: 16px;
+    color: var(--primary-color);
+    background-color: var(--primary-light);
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-sm);
+  }
+  
+  .document-info {
+    flex: 1;
+  }
+  
+  .document-info h4 {
+    margin: 0 0 8px 0;
+    font-size: 16px;
+    color: var(--text-color);
+    font-weight: 500;
+  }
+  
+  .document-link {
+    display: flex;
+    align-items: center;
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+    transition: var(--transition);
+  }
+  
+  .document-link:hover {
+    text-decoration: underline;
+  }
+  
+  .link-text {
+    margin-right: 8px;
+  }
+  
+  .document-status {
+    color: var(--text-muted);
+    font-style: italic;
+  }
+  
+  .document-preview {
+    margin-top: 16px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  
+  .document-preview h4 {
+    font-size: 16px;
+    color: var(--text-color);
+    margin: 0 0 12px 0;
+    font-weight: 500;
+  }
+  
+  .preview-container {
+    flex: 1;
+    min-height: 300px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+  }
+  
+  .preview-container iframe {
+    width: 100%;
+    height: 100%;
+    min-height: 300px;
+    border: none;
+  }
+  
+  .modal-footer {
+    padding: 16px 32px;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .btn-secondary {
+    background-color: white;
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    padding: 10px 16px;
+    border-radius: var(--radius-sm);
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+  }
+  
+  .btn-secondary:hover {
+    background-color: #f9fafb;
+    border-color: #d0d5dd;
+  }
+  
+  /* Animaciones */
+  @keyframes fadeIn {
     from {
-        opacity: 0;
+      opacity: 0;
     }
     to {
-        opacity: 1;
+      opacity: 1;
     }
-}
-
-@keyframes slideIn {
+  }
+  
+  @keyframes slideIn {
     from {
-        transform: translateY(-20px);
+      opacity: 0;
+      transform: translateY(-20px);
     }
     to {
-        transform: translateY(0);
+      opacity: 1;
+      transform: translateY(0);
     }
-}
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .content-container {
+      flex-direction: column;
+      padding: 24px;
+      gap: 24px;
+    }
+    
+    .modal-header {
+      padding: 16px 24px;
+    }
+    
+    .modal-header h2 {
+      font-size: 20px;
+    }
+    
+    .preview-container {
+      min-height: 200px;
+    }
+    
+    .preview-container iframe {
+      min-height: 200px;
+    }
+  }

@@ -1,22 +1,115 @@
+<!-- HTML -->
 <div class="modal">
-  <div class="modal-content">
-      <span class="close-btn" (click)="onCerrar()">&times;</span>
-      <h2>Detalles del Instructor</h2>
-      <div class="content-container">
-          <!-- Sección de información (más estrecha) -->
-          <div class="info-section">
-              <p><strong>Nombre Completo:</strong> {{ instructor?.nombre }}</p>
-              <p><strong>Correo Electrónico:</strong> {{ instructor?.correo }}</p>
-              <p><strong>Teléfono:</strong> {{ instructor?.telefono }}</p>
-              <p><strong>Dirección:</strong> {{ instructor?.direccion }}</p>
-          </div>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Detalles del Instructor</h2>
+            <button class="close-btn" (click)="onCerrar()" aria-label="Cerrar">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+        
+        <div class="content-container">
+            <!-- Sección de información personal -->
+            <div class="info-section">
+                <div class="profile-header">
+                    <div class="avatar">
+                        <span>{{ getInitials(instructor?.nombre) }}</span>
+                    </div>
+                    <h3>{{ instructor?.nombre }}</h3>
+                </div>
+                
+                <div class="info-details">
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                <polyline points="22,6 12,13 2,6"></polyline>
+                            </svg>
+                        </div>
+                        <div>
+                            <span class="info-label">Correo Electrónico</span>
+                            <span class="info-value">{{ instructor?.correo }}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <span class="info-label">Teléfono</span>
+                            <span class="info-value">{{ instructor?.telefono }}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                        </div>
+                        <div>
+                            <span class="info-label">Dirección</span>
+                            <span class="info-value">{{ instructor?.direccion }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-          <!-- Sección del certificado (más ancha) -->
-          <div class="certificate-section">
-              <h3>Certificado</h3>
-              <embed src="assets/certificado.png" type="application/pdf">
-              <p>Para ver el certificado, se requiere un visor de PDF.</p>
-          </div>
-      </div>
-  </div>
+            <!-- Sección de documentos -->
+            <div class="document-section">
+                <h3>Documentos</h3>
+                
+                <div class="document-container">
+                    <div class="document-card">
+                        <div class="document-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                <polyline points="10 9 9 9 8 9"></polyline>
+                            </svg>
+                        </div>
+                        <div class="document-info">
+                            <h4>Cédula</h4>
+                            <ng-container *ngIf="instructor?.cedula_pdf; else noCedula">
+                                <a [href]="instructor.cedula_pdf" target="_blank" rel="noopener noreferrer" class="document-link">
+                                    <span class="link-text">Ver documento</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                        <polyline points="15 3 21 3 21 9"></polyline>
+                                        <line x1="10" y1="14" x2="21" y2="3"></line>
+                                    </svg>
+                                </a>
+                            </ng-container>
+                            <ng-template #noCedula>
+                                <span class="document-status">No disponible</span>
+                            </ng-template>
+                        </div>
+                    </div>
+                    
+                    <!-- Espacio para añadir más documentos en el futuro -->
+                    <!-- Por ejemplo: certificados, diplomas, etc. -->
+                </div>
+                
+                <div class="document-preview" *ngIf="instructor?.cedula_pdf">
+                    <h4>Vista previa</h4>
+                    <div class="preview-container">
+                        <iframe [src]="getSafeUrl(instructor.cedula_pdf)" title="Vista previa de cédula"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="modal-footer">
+            <button class="btn-secondary" (click)="onCerrar()">Cerrar</button>
+        </div>
+    </div>
 </div>
