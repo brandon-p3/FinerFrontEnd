@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { AlumnoService } from '../../../services/alumno.service';
@@ -10,17 +10,17 @@ type PageType = 'actualizar-perfil' | 'certificados' | 'historial' | 'mis-cursos
   templateUrl: './navbar-alumno.component.html',
   styleUrl: './navbar-alumno.component.css'
 })
-export class NavbarAlumnoComponent {
+export class NavbarAlumnoComponent implements OnInit {
 
   usuario = {
-    idUsuario: 1,
-    nombre: 'Nombre del Alumno',
-    apellidoPaterno: 'ApellidoPaterno',
-    apellidoMaterno: 'ApellidoMaterno',
-    email: 'ejemplo@gmail.com',
-    contrasenia: 'password123',
-    nombreUsuario: 'nombreUsuario',
-    cursosCompletados: 5
+    idUsuario: 0,
+    nombre: '',
+    apellidoPaterno: '',
+    apellidoMaterno: '',
+    email: '',
+    contrasenia: '',
+    nombreUsuario: '',
+    cursosCompletados: 0
   };
 
   menuOpen = false;
@@ -28,6 +28,13 @@ export class NavbarAlumnoComponent {
   currentSection: string = 'perfil';
 
   constructor(private router: Router, private alumnoService: AlumnoService) {}
+
+  ngOnInit(): void {
+    const usuarioGuardado = localStorage.getItem('currentUser');
+    if (usuarioGuardado) {
+      this.usuario = JSON.parse(usuarioGuardado);
+    }
+  }
 
   toggleMenu() {
     this.menuOpen = !this.menuOpen;
@@ -60,14 +67,15 @@ export class NavbarAlumnoComponent {
       this.usuario.contrasenia,
       this.usuario.nombreUsuario
     ).subscribe({
-      next: (response) => {
+      next: () => {
         Swal.fire('Éxito', 'Los cambios se guardaron correctamente', 'success');
       },
-      error: (error) => {
+      error: () => {
         Swal.fire('Error', 'No se pudieron guardar los cambios', 'error');
       }
     });
   }
+
   descargarCertificado(idCertificado: number) {
     Swal.fire({
       title: '¿Estás seguro?',
@@ -90,7 +98,7 @@ export class NavbarAlumnoComponent {
             a.click();
             window.URL.revokeObjectURL(url);
           },
-          error: (error) => {
+          error: () => {
             Swal.fire('Error', 'No se pudo descargar el certificado', 'error');
           }
         });
@@ -114,6 +122,8 @@ export class NavbarAlumnoComponent {
 
   logout() {
     console.log('Cerrando sesión...');
-    this.router.navigate(['/login']);
+    localStorage.clear(); 
+    this.router.navigate(['/home/inicio']);
   }
+  
 }
