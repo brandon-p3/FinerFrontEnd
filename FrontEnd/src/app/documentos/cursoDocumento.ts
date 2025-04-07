@@ -15,8 +15,14 @@ export interface CursoVerDTO {
   origen: string;
   imagen: string;
   categoria: string; 
+  temas?: TemaDTO[]; 
 }
 
+export interface TemaDTO {
+  id: number;
+  nombre: string;
+  contenido: string;
+}
 export interface CursoEditarDTO {
   idCurso: number;
   idInstructor: number;

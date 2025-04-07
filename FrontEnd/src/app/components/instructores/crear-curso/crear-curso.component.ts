@@ -1,12 +1,11 @@
-import { Component, ElementRef, ViewChild, OnInit, Inject } from '@angular/core';
+import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2';
 import { CursoServiceService } from '../../../services/curso-service.service';
 import { VerCategoriasDTO } from '../../../documentos/cursoDocumento';
 import { UsuariosService } from '../../../services/usuarios-service.service';
 import { CategoriaServiceService } from '../../../services/categorias-service.service';
-import { HttpParams } from '@angular/common/http';
+import { HttpErrorResponse, HttpParams } from '@angular/common/http';
 
 @Component({
   selector: 'app-crear-curso',
@@ -16,8 +15,11 @@ import { HttpParams } from '@angular/common/http';
 export class CrearCursoComponent implements OnInit {
   isModalOpen: boolean = false;
   isCategoriaModalOpen: boolean = false;
-  menuOpen: boolean = false;
   currentPage: string = 'crear-curso';
+  
+  // Propiedades para el formulario de nueva categoría
+  nuevaCategoriaNombre: string = '';
+  nuevaCategoriaDescripcion: string = '';
   
   @ViewChild('vistaPreviaModal') vistaPreviaModal!: ElementRef;
  
@@ -26,34 +28,15 @@ export class CrearCursoComponent implements OnInit {
   selectedCategory: string = '';
   categories: VerCategoriasDTO[] = [];
   imageUrl: string = '';
-  selectedImage: File | null = null;
   imagePreview: string | ArrayBuffer | null = null;
 
-  sections: { title: string, subsections: { title: string, content: string }[] }[] = [
-    { title: '', subsections: [{ title: '', content: '' }] }
-  ];
-
   constructor(
-    private router: Router, 
-    private modalService: NgbModal,
+    private router: Router,
     private cursoService: CursoServiceService,
     public usuariosService: UsuariosService,
-    @Inject(CategoriaServiceService) private categoriaService: CategoriaServiceService
+    private categoriaService: CategoriaServiceService
   ) {}
   
-  // Usuario autenticado
-  usuario: any = {
-    id: 0,          
-    nombre: '',     
-    apellidoPaterno: '',
-    apellidoMaterno: '',
-    email: '',
-    username: '',
-    idUsuario: 0,    
-    idRol: 0         
-  };
-
-
   ngOnInit(): void {
     this.loadApprovedCategories();
   }
@@ -71,6 +54,64 @@ export class CrearCursoComponent implements OnInit {
         Swal.fire('Error', 'No se pudieron cargar las categorías aprobadas', 'error');
       }
     });
+  }
+
+  // Método para enviar solicitud de nueva categoría
+  enviarSolicitudCategoria(): void {
+    if (!this.nuevaCategoriaNombre) {
+      Swal.fire('Error', 'El nombre de la categoría es requerido', 'error');
+      return;
+    }
+  
+    Swal.fire({
+      title: 'Enviando solicitud...',
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      }
+    });
+  
+    this.categoriaService.solicitarNuevaCategoria(
+      this.nuevaCategoriaNombre,
+      this.nuevaCategoriaDescripcion
+    ).subscribe({
+      next: (response) => {
+        Swal.close();
+        if (response.success) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Solicitud enviada',
+            text: response.message || 'La solicitud fue recibida correctamente',
+            confirmButtonColor: '#8EC3B0'
+          });
+          this.cerrarModal();
+          this.resetFormCategoria();
+          this.loadApprovedCategories();
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: response.error || 'Error al enviar la solicitud',
+            confirmButtonColor: '#FF6B6B'
+          });
+        }
+      },
+      error: (error) => {
+        Swal.close();
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Ocurrió un problema al comunicarse con el servidor',
+          confirmButtonColor: '#FF6B6B'
+        });
+      }
+    });
+  }
+  
+  // Método para resetear el formulario de categoría
+  private resetFormCategoria(): void {
+    this.nuevaCategoriaNombre = '';
+    this.nuevaCategoriaDescripcion = '';
   }
 
   updateImageUrl(event: any): void {
@@ -97,82 +138,15 @@ export class CrearCursoComponent implements OnInit {
   removeImage(): void {
     this.imageUrl = '';
     this.imagePreview = null;
-    this.selectedImage = null;
-  }
-
-  onImageSelected(event: any): void {
-    const file = event.target.files[0];
-    if (file) {
-      this.selectedImage = file;
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.imagePreview = reader.result;
-        this.imageUrl = reader.result as string;
-      };
-      reader.readAsDataURL(file);
-    }
   }
 
   isFormValid(): boolean {
-    if (!this.courseName || !this.selectedCategory || !this.courseDescription) {
-      return false;
-    }
-
-    return this.sections.every(section => 
-      section.title && 
-      section.subsections.length > 0 &&
-      section.subsections.every(sub => sub.title && sub.content)
-    );
+    return !!this.courseName && 
+           !!this.selectedCategory && 
+           !!this.courseDescription;
   }
 
-  navigateTo(route: string) {
-    this.router.navigate([route]);
-  }
-
-  toggleMenu() {
-    this.menuOpen = !this.menuOpen;
-  }
-
-  addSection() {
-    this.sections.push({ title: '', subsections: [{ title: '', content: '' }] });
-  }
-
-  addSubsection(sectionIndex: number) {
-    this.sections[sectionIndex].subsections.push({ title: '', content: '' });
-  }
-
-  removeSection(sectionIndex: number) {
-    if (this.sections.length > 1) {
-      this.sections.splice(sectionIndex, 1);
-    } else {
-      Swal.fire('Información', 'Debe haber al menos una sección', 'info');
-    }
-  }
-
-  removeSubsection(sectionIndex: number, subsectionIndex: number) {
-    if (this.sections[sectionIndex].subsections.length > 1) {
-      this.sections[sectionIndex].subsections.splice(subsectionIndex, 1);
-    } else {
-      Swal.fire('Información', 'Debe haber al menos un tema por sección', 'info');
-    }
-  }
-
-  private generateStructuredDescription(): string {
-    let description = `Descripción: ${this.courseDescription}\n\nContenido del curso:\n\n`;
-    
-    this.sections.forEach((section, sectionIndex) => {
-      description += `## Sección ${sectionIndex + 1}: ${section.title}\n`;
-      
-      section.subsections.forEach((subsection, subIndex) => {
-        description += `### Tema ${subIndex + 1}: ${subsection.title}\n`;
-        description += `${subsection.content}\n\n`;
-      });
-    });
-
-    return description;
-  }
-
-  submitForReview() {
+  saveCourse() {
     if (!this.isFormValid()) {
       Swal.fire('Error', 'Por favor complete todos los campos obligatorios', 'error');
       return;
@@ -185,19 +159,19 @@ export class CrearCursoComponent implements OnInit {
     }
 
     const selectedCategoryObj = this.categories.find(c => c.nombreCategoria === this.selectedCategory);
-    if (!selectedCategoryObj) {
+    if (!selectedCategoryObj || !selectedCategoryObj.idCategoria) {
       Swal.fire('Error', 'Seleccione una categoría válida', 'error');
       return;
     }
 
     Swal.fire({
-      title: '¿Confirmar envío?',
-      text: '¿Estás seguro de enviar el curso a revisión?',
+      title: '¿Guardar curso?',
+      text: '¿Estás seguro de guardar el curso?',
       icon: 'question',
       showCancelButton: true,
       confirmButtonColor: '#8EC3B0',
       cancelButtonColor: '#FF6B6B',
-      confirmButtonText: 'Sí, enviar',
+      confirmButtonText: 'Sí, guardar',
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.isConfirmed) {
@@ -207,41 +181,41 @@ export class CrearCursoComponent implements OnInit {
   }
 
   private sendCourseToBackend(userId: number, categoryId: number) {
-    // Preparar los parámetros como x-www-form-urlencoded
     const params = new HttpParams()
       .set('idUsuarioInstructor', userId.toString())
       .set('idCategoria', categoryId.toString())
       .set('tituloCurso', this.courseName)
-      .set('descripcion', this.generateStructuredDescription())
+      .set('descripcion', this.courseDescription)
       .set('imagen', this.imageUrl || 'default.jpg');
   
     this.cursoService.crearCurso(params).subscribe({
       next: (response) => {
-        Swal.fire('Éxito', 'Curso creado correctamente', 'success');
+        Swal.fire('Éxito', 'Curso guardado correctamente', 'success');
         this.resetForm();
         this.router.navigate(['/instructor/cursos']);
       },
       error: (error) => {
-        console.error('Error al crear curso:', error);
-        let errorMsg = 'No se pudo crear el curso';
+        console.error('Error al guardar curso:', error);
+        let errorMsg = 'No se pudo guardar el curso';
         if (error.error && typeof error.error === 'string') {
           errorMsg += ': ' + error.error;
+        } else if (error.error?.message) {
+          errorMsg += ': ' + error.error.message;
         }
         Swal.fire('Error', errorMsg, 'error');
       }
     });
   }
+
   private resetForm() {
     this.courseName = '';
     this.courseDescription = '';
     this.selectedCategory = this.categories.length > 0 ? this.categories[0].nombreCategoria : '';
-    this.sections = [{ title: '', subsections: [{ title: '', content: '' }] }];
     this.imageUrl = '';
-    this.selectedImage = null;
     this.imagePreview = null;
   }
 
-  vistaPrevia() {
+  openPreview() {
     if (!this.isFormValid()) {
       Swal.fire('Información', 'Complete los campos obligatorios para ver la vista previa', 'info');
       return;
@@ -259,9 +233,10 @@ export class CrearCursoComponent implements OnInit {
 
   cerrarModal() {
     this.isCategoriaModalOpen = false;
+    this.resetFormCategoria();
   }
 
-  eliminarCurso() {
+  clearForm() {
     Swal.fire({
       title: '¿Borrar curso?',
       text: '¿Estás seguro de eliminar todo el contenido?',
