@@ -88,7 +88,7 @@ export class NavbarAlumnoComponent implements OnInit {
       cancelButtonColor: '#FF6B6B',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.alumnoService.generarCertificado(idCertificado).subscribe({
+        this.alumnoService.descargarCertificado(idCertificado).subscribe({
           next: (data) => {
             const blob = new Blob([data], { type: 'application/pdf' });
             const url = window.URL.createObjectURL(blob);
