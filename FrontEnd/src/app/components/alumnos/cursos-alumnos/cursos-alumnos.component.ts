@@ -9,23 +9,14 @@ import { Router } from '@angular/router';
   styleUrl: './cursos-alumnos.component.css'
 })
 export class CursosAlumnosComponent implements OnInit {
-  usuario = {
-    idUsuario: 1,
-    nombre: 'Nombre del Alumno',
-    apellidoPaterno: 'ApellidoPaterno',
-    apellidoMaterno: 'ApellidoMaterno',
-    email: 'ejemplo@gmail.com',
-    contrasenia: 'password123',
-    nombreUsuario: 'nombreUsuario',
-    cursosCompletados: 5,
-  };
-
   cursos: Curso[] = [];
   cursosFiltrados: Curso[] = [];
   nombreCurso: string = '';
   categoriaSeleccionada: string = '';
   menuOpen = false;
   curso: any = {};
+  categoriasUnicas: string[] = [];
+
 
 
 
@@ -46,6 +37,15 @@ export class CursosAlumnosComponent implements OnInit {
         console.log('Cursos obtenidos:', data);
         this.cursos = data;
         this.cursosFiltrados = data;
+
+        // Obtener categorías únicas
+        const categoriasSet = new Set<string>();
+        this.cursos.forEach(curso => {
+          if (curso.nombreCategoria) {
+            categoriasSet.add(curso.nombreCategoria);
+          }
+        });
+        this.categoriasUnicas = Array.from(categoriasSet);
       },
       (error) => {
         console.error('Error al obtener cursos:', error);
@@ -56,6 +56,7 @@ export class CursosAlumnosComponent implements OnInit {
       }
     );
   }
+
 
   filtrarCursos(): void {
     let cursosFiltrados = this.cursos;
@@ -86,6 +87,7 @@ export class CursosAlumnosComponent implements OnInit {
     if (this.categoriaSeleccionada) {
       this.cursosService.filtrarCursoPorCategoria(this.categoriaSeleccionada).subscribe(
         (data) => {
+          console.log('Cursos filtrados por categoría:', data);
           this.cursosFiltrados = data;
         },
         (error) => {
