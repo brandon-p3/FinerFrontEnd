@@ -43,3 +43,14 @@ export interface CategoriaCursos {
     apellidoMaterno: string;
     nombreCategoria: string
 }
+
+export interface CursoCertificadoResumenDTO {
+    idInscripcion: number;
+    nombreCompletoAlumno: string;
+    tituloCurso: string;
+    nombreCategoria: string;
+    nombreInstructor: string;
+    matricula: string;
+    fechaInscripcion: string;
+    //fechaGeneracion: string
+}

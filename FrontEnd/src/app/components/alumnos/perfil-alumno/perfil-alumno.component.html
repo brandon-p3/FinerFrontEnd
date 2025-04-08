@@ -30,11 +30,6 @@
       (click)="navigateTo('actualizar-perfil')">Actualizar Perfil</li>
     <li class="menu-item" [class.active]="currentPage === 'certificados'" (click)="navigateTo('certificados')">
       Certificados</li>
-
-    <li class="menu-section">Historial</li>
-    <li class="menu-item" [class.active]="currentPage === 'historial'" (click)="navigateTo('historial')">Historial de
-      Aprendizaje</li>
-
     <li class="menu-section">Cerrar Sesión</li>
     <li class="menu-item logout" (click)="logout()">Cerrar Sesión</li>
   </ul>
@@ -42,17 +37,17 @@
 
 <!-- Pantalla de Actualizar Perfil -->
 <div class="container" *ngIf="currentPage === 'actualizar-perfil'">
-    <!-- Sección superior reorganizada con imagen a la izquierda -->
-    <div class="profile-header">
-      <div class="profile-img-container">
-        <img src="assets/logo.png" alt="Foto de perfil" class="profile-img">
-      </div>
-      <div class="profile-info">
-        <h2>Bienvenido, {{ usuario.nombre }} {{ usuario.apellidoPaterno }} {{usuario.apellidoMaterno}}</h2>
-        <p><strong>Correo:</strong> {{ usuario.correo }}</p>
-        <p><strong>Cursos Completados:</strong> {{ usuario.cursosCompletados }}</p>
-      </div>
+  <!-- Sección superior reorganizada con imagen a la izquierda -->
+  <div class="profile-header">
+    <div class="profile-img-container">
+      <img src="assets/logo.png" alt="Foto de perfil" class="profile-img">
     </div>
+    <div class="profile-info">
+      <h2>Bienvenido, {{ usuario.nombre }} {{ usuario.apellidoPaterno }} {{usuario.apellidoMaterno}}</h2>
+      <p><strong>Correo:</strong> {{ usuario.correo }}</p>
+      <p><strong>Cursos Completados:</strong> {{ usuario.cursosCompletados }}</p>
+    </div>
+  </div>
 
   <!-- Mini-Menú -->
   <nav class="mini-menu">
@@ -60,8 +55,6 @@
       Perfil</span> |
     <span [class.active]="currentSection === 'certificados'" (click)="navigateTo('certificados')">Certificaciones</span>
     |
-    <span [class.active]="currentSection === 'historial'" (click)="navigateTo('historial')">Historial de
-      Aprendizaje</span> |
     <span [class.active]="currentSection === 'mis-cursos'" (click)="navigateTo('mis-cursos')">Mis Cursos</span>
   </nav>
 
@@ -74,7 +67,7 @@
         <input type="text" id="nombre" [(ngModel)]="usuario.nombre" class="form-input" required>
         <small *ngIf="!usuario.nombre" class="text-error">El nombre es requerido</small>
       </div>
-    
+
       <div class="form-group">
         <label for="apellidoPaterno">Apellido Paterno:</label>
         <input type="text" id="apellidoPaterno" [(ngModel)]="usuario.apellidoPaterno" class="form-input" required>
@@ -124,7 +117,8 @@
       </div>
       <!-- Botón de Guardar Cambios -->
       <div class="action-buttons">
-        <button class="save-btn" (click)="guardarCambios()" [disabled]="!usuario.nombre || !usuario.nombreUsuario || !usuario.apellidoPaterno || !usuario.correo">
+        <button class="save-btn" (click)="guardarCambios()"
+          [disabled]="!usuario.nombre || !usuario.nombreUsuario || !usuario.apellidoPaterno || !usuario.correo">
           Guardar Cambios
         </button>
       </div>
@@ -143,69 +137,21 @@
       Perfil</span> |
     <span [class.active]="currentSection === 'certificados'" (click)="navigateTo('certificados')">Certificaciones</span>
     |
-    <span [class.active]="currentSection === 'historial'" (click)="navigateTo('historial')">Historial de
-      Aprendizaje</span> |
     <span [class.active]="currentSection === 'mis-cursos'" (click)="navigateTo('mis-cursos')">Mis Cursos</span>
   </nav>
 
   <div class="certificados-list">
     <div class="certificado-item" *ngFor="let curso of cursosCertificados">
-      <h3>{{ curso.titulo }}</h3>
+      <h3>{{ curso.tituloCurso }}</h3>
       <p>Fecha de finalización: {{ curso.fechaInscripcion | date:'mediumDate' }}</p>
-      <button class="ver-certificado-btn" (click)="visualizarCertificado(curso.idInscripcion)">Ver Certificado</button>
       <button class="download-btn" (click)="descargarCertificado(curso.idInscripcion)">Descargar Certificado</button>
     </div>
+
     <div *ngIf="cursosCertificados.length === 0" class="no-certificados">
       <p>No tienes certificados disponibles todavía.</p>
     </div>
   </div>
-</div>
 
-<!-- Pantalla de Historial de Aprendizaje -->
-<div class="content-container" *ngIf="currentPage === 'historial'">
-  <h2>Historial de Aprendizaje</h2>
-  <p>Revisa tu progreso y actividades realizadas.</p>
-
-  <!-- Mini-Menú -->
-  <nav class="mini-menu">
-    <span [class.active]="currentSection === 'perfil'" (click)="navigateTo('actualizar-perfil')">Actualizar
-      Perfil</span> |
-    <span [class.active]="currentSection === 'certificados'" (click)="navigateTo('certificados')">Certificaciones</span>
-    |
-    <span [class.active]="currentSection === 'historial'" (click)="navigateTo('historial')">Historial de
-      Aprendizaje</span> |
-    <span [class.active]="currentSection === 'mis-cursos'" (click)="navigateTo('mis-cursos')">Mis Cursos</span>
-  </nav>
-
-  <div class="historial-list">
-    <div class="historial-item" *ngFor="let curso of cursos">
-      <div class="curso-header">
-        <h3>{{ curso.titulo }}</h3>
-        <span class="curso-status" [class.completed]="curso.estado === 'finalizado'">
-          {{ curso.estado === 'finalizado' ? 'Completado' : 'En progreso' }}
-        </span>
-      </div>
-
-      <div class="progress-container">
-        <div class="progress-bar" [style.width.%]="curso.progreso || 0">
-          <span>{{ curso.progreso || 0 }}%</span>
-        </div>
-      </div>
-
-      <div class="curso-details">
-        <div>
-          <strong>Última actividad:</strong>
-          {{ curso.ultimaActividad ? (curso.ultimaActividad | date:'mediumDate') : 'Ninguna' }}
-        </div>
-        <div *ngIf="curso.estado === 'finalizado'">
-        </div>
-      </div>
-
-      <button *ngIf="curso.estado !== 'finalizado'" class="continuar-btn" (click)="continuarCurso(curso.idCurso)">
-        Continuar
-      </button>
-    </div>
-  </div>
 </div>
 
 <!-- Pantalla de Mis Cursos -->
@@ -219,26 +165,22 @@
       Perfil</span> |
     <span [class.active]="currentSection === 'certificados'" (click)="navigateTo('certificados')">Certificaciones</span>
     |
-    <span [class.active]="currentSection === 'historial'" (click)="navigateTo('historial')">Historial de
-      Aprendizaje</span> |
     <span [class.active]="currentSection === 'mis-cursos'" (click)="navigateTo('mis-cursos')">Mis Cursos</span>
   </nav>
 
   <div class="cursos-list">
     <div class="curso-item" *ngFor="let curso of cursos">
-      <h3>{{ curso.titulo }}</h3>
+      <h3>{{ curso.tituloCurso }}</h3>
       <p>Estado: {{ curso.estado === 'finalizado' ? 'Finalizado' : 'En progreso' }}</p>
       <p>Progreso: {{ curso.progreso || 0 }}%</p>
-      <p *ngIf="curso.ultimaActividad">Última actividad: {{ curso.ultimaActividad | date:'mediumDate' }}</p>
 
-      <button *ngIf="curso.estado === 'finalizado'" class="ver-certificado-btn"
-        (click)="visualizarCertificado(curso.idInscripcion)">
-        Ver Certificado
-      </button>
-
-      <button *ngIf="curso.estado !== 'finalizado'" class="continuar-btn" (click)="continuarCurso(curso.idCurso)">
+      <button *ngIf="curso.estado !== 'finalizado'" class="continuar-btn" (click)="obtenerProgresoDeCursos()">
         Continuar Curso
       </button>
+      <button (click)="bajaCurso(curso.idCurso)" class="btn btn-danger">
+        Dar de baja
+      </button>
+
     </div>
     <div *ngIf="cursos.length === 0" class="no-cursos">
       <p>No estás inscrito en ningún curso actualmente.</p>

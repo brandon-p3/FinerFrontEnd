@@ -1,14 +1,23 @@
 // alumno.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError  } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import Swal from 'sweetalert2';
+import { CONFIG } from '../config/config';
+import { CursoCertificadoResumenDTO } from '../documentos/cursosDocumento';
+
+
+export interface VerIdInscripcionDTO {
+  idInscripcion: number;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class AlumnoService {
+  private apiInscripcion = CONFIG.apiUrl + '/token';
+  private apiUri = CONFIG.apiUrl + '/alumnos-instructor';
   private apiUrl='http://localhost:8080/api/alumno';
   private apiCursosUrl = 'http://localhost:8080/api/cursos/alumno'; // Endpoint para cursos
 
@@ -20,6 +29,29 @@ export class AlumnoService {
       'Content-Type': 'application/json',
       // Agrega aquí otros headers si son necesarios (como tokens de autenticación)
     });
+  }
+
+  obtenerCursosFinalizados(idAlumno: number): Observable<any[]> {
+    const url = `${this.apiCursosUrl}/cursos-finalizados/${idAlumno}`;
+    return this.http.get<{ cursos: any[] }>(url).pipe(
+      map(response => response.cursos), // <- aquí extraes el array real
+      catchError((error) => {
+        console.error('Error al obtener cursos finalizados:', error);
+        return throwError(() => error);
+      })
+    );
+  } 
+  
+  descargarCertificado(idInscripcion: number): Observable<Blob> {
+    const url = `${this.apiCursosUrl}/certificado/${idInscripcion}`;
+    return this.http.get(url, {
+      responseType: 'blob'
+    }).pipe(
+      catchError(error => {
+        console.error('Error al descargar certificado:', error);
+        return throwError(() => error);
+      })
+    );
   }
 
   /**
@@ -101,23 +133,6 @@ export class AlumnoService {
     );
   }
 
-  /**
-   * Genera un certificado PDF para el alumno
-   * @param idInscripcion ID de la inscripción
-   * @returns Observable con el blob del PDF
-   */
-  generarCertificado(idInscripcion: number): Observable<Blob> {
-    return this.http.get(`${this.apiCursosUrl}/certificado/${idInscripcion}`, {
-      responseType: 'blob',
-      headers: this.getHeaders()
-    }).pipe(
-      catchError(error => {
-        console.error('Error generando certificado:', error);
-        throw error;
-      })
-    );
-  }
-
 
   /**
    * Busca cursos por nombre
@@ -137,15 +152,16 @@ export class AlumnoService {
   }
 
   obtenerMisCursos(idAlumno: number): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiCursosUrl}/mis-cursos/${idAlumno}`, {
-      headers: this.getHeaders()
-    }).pipe(
-      catchError(error => {
-        console.error('Error obteniendo cursos:', error);
+    const url = `${this.apiCursosUrl}/mis-cursos/${idAlumno}`;
+    return this.http.get<any[]>(url).pipe(
+      catchError((error) => {
+        console.error('Error al obtener los cursos del alumno:', error);
+        Swal.fire('Error', 'No se pudieron obtener los cursos del alumno', 'error');
         throw error;
       })
     );
   }
+  
 
   
   /**
@@ -162,19 +178,45 @@ export class AlumnoService {
     );
   }
 
+  bajaCursoAlumno(idInscripcion: number): Observable<any> {
+    const url = `${this.apiCursosUrl}/bajaCurso/${idInscripcion}`;
+    return this.http.get<any>(url).pipe(
+      catchError(error => {
+        let mensaje = 'Ocurrió un error inesperado.';
+
+        if (error.status === 404) {
+          mensaje = 'El ID de inscripción no es válido o no se encuentra en nuestros registros.';
+        } else if (error.status === 500) {
+          mensaje = 'Error en la base de datos al intentar procesar la baja.';
+        }
+
+        Swal.fire('Error', mensaje, 'error');
+        return throwError(() => error);
+      })
+    );
+  }
+
   /**
    * Obtiene el progreso de un alumno en un curso específico
    * @param idEstudiante ID del estudiante
    * @param idCurso ID del curso
    * @returns Observable con los datos de progreso
    */
-  verProgresoAlumno(idEstudiante: number, idCurso: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/progreso`, {
-      headers: this.getHeaders(),
-      params: {
-        idEstudiante: idEstudiante.toString(),
-        idCurso: idCurso.toString()
-      }
-    });
+  obtenerProgresoCurso(idEstudiante: number, idCurso: number): Observable<number> {
+    return this.http.get<number>(`${this.apiUri}/progresoCurso/${idEstudiante}/${idCurso}`);
   }
+
+  // ============== EXTRAS ===============
+
+  obtenerIdInscripcion(idUsuario: number, idCurso: number): Observable<VerIdInscripcionDTO[]> {
+    const url = `${this.apiInscripcion}/verIdInscripcion/${idUsuario}/${idCurso}`;
+    return this.http.get<VerIdInscripcionDTO[]>(url).pipe(
+      catchError(error => {
+        console.error('Error al obtener el ID de inscripción', error);
+        Swal.fire('Error', 'No se pudo obtener el ID de inscripción.', 'error');
+        return throwError(() => error);
+      })
+    );
+  }
+  
 }

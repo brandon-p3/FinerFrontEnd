@@ -2,8 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { AlumnoService } from '../../../services/alumno.service';
+import { VerIdInscripcionDTO } from '../../../services/alumno.service';
+import { CursoCertificadoResumenDTO } from '../../../documentos/cursosDocumento';
+import { ActivatedRoute } from '@angular/router';
+import { saveAs } from 'file-saver';
 
-type PageType = 'actualizar-perfil' | 'certificados' | 'historial' | 'mis-cursos';
+type PageType = 'actualizar-perfil' | 'certificados' | 'mis-cursos';
 
 interface Usuario {
   idUsuario: number;
@@ -20,7 +24,7 @@ interface Usuario {
 }
 
 interface Curso {
-titulo: string;
+  tituloCurso: string;
   idCurso: number;
   idInscripcion: number;
   idAlumno: number;
@@ -38,8 +42,13 @@ titulo: string;
   styleUrls: ['./perfil-alumno.component.css']
 })
 export class PerfilAlumnoComponent implements OnInit {
-  constructor(private router: Router, private alumnoService: AlumnoService) {}
+  constructor(
+    private router: Router, 
+    private alumnoService: AlumnoService,
+    private route: ActivatedRoute
+  ) { }
 
+  // CAMBIAR CONTRASEÑA =========================0
   mostrarContraseniaActual: boolean = false;
   mostrarNuevaContrasenia: boolean = false;
   nuevaContrasenia: string = '';
@@ -59,12 +68,15 @@ export class PerfilAlumnoComponent implements OnInit {
     actualizarContrasenia: false,
   };
 
+// pARA LA NAVEGACION =================
   menuOpen = false;
   currentPage: PageType = 'actualizar-perfil';
   currentSection: string = 'perfil';
   cursos: Curso[] = [];
-  cursosCertificados: Curso[] = [];
   terminoBusqueda: string = '';
+
+  cursosCertificados: any[] = [];
+  idAlumno!: number;
 
   ngOnInit(): void {
     if (typeof window !== 'undefined' && localStorage.getItem('currentUser')) {
@@ -72,24 +84,34 @@ export class PerfilAlumnoComponent implements OnInit {
       this.usuario = storedUser ? JSON.parse(storedUser) : null;
       console.log('Usuario cargado:', this.usuario);
   
-      // Carga inicial según la página actual
-      if (this.currentPage === 'mis-cursos') {
-        this.cargarMisCursos();
+      if (this.usuario && this.usuario.idUsuario) {
+        this.idAlumno = this.usuario.idUsuario;
+  
+        if (this.currentPage === 'certificados') {
+          this.cargarCursosFinalizados();
+        }
+  
+        if (this.currentPage === 'mis-cursos') {
+          this.cargarMisCursos();
+        }
+      } else {
+        console.warn('El objeto usuario no tiene idUsuario');
+        this.router.navigate(['/home/inicio']);
       }
-      if (this.currentPage === 'certificados') {
-        this.cargarCursosFinalizados();
-      }
+  
     } else {
       console.warn('No se encontró información del usuario en localStorage');
-      this.router.navigate(['/home/inicio']); // Redirige si no hay usuario
+      this.router.navigate(['/home/inicio']);
     }
   }
   
-  
+
+  // ================ MI PERFIL ============================
 
   cargarMisCursos() {
     this.alumnoService.obtenerMisCursos(this.usuario.idUsuario).subscribe({
       next: (cursos: any[]) => {
+        console.log('Cursos obtenidos del backend:', cursos);
         this.cursos = cursos.map(curso => ({
           ...curso,
           progreso: 0,
@@ -104,25 +126,9 @@ export class PerfilAlumnoComponent implements OnInit {
     });
   }
 
-  cargarCursosFinalizados() {
-    this.alumnoService.obtenerMisCursos(this.usuario.idUsuario).subscribe({
-      next: (cursos: any[]) => {
-        this.cursosCertificados = cursos.filter(curso => curso.estado === 'finalizado');
-      },
-      error: (error) => {
-        console.error('Error al obtener cursos finalizados:', error);
-        Swal.fire('Error', 'No se pudieron cargar los certificados', 'error');
-      }
-    });
-  }
-
-  toggleMenu() {
-    this.menuOpen = !this.menuOpen;
-  }
-
   guardarCambios() {
     if (!this.usuario.nombre || !this.usuario.apellidoPaterno ||
-        !this.usuario.nombreUsuario || !this.usuario.correo) {
+      !this.usuario.nombreUsuario || !this.usuario.correo) {
       Swal.fire('Error', 'Por favor completa todos los campos requeridos', 'error');
       return;
     }
@@ -218,66 +224,34 @@ export class PerfilAlumnoComponent implements OnInit {
     });
   }
 
-  visualizarCertificado(idInscripcion: number) {
-    Swal.fire({
-      title: 'Generando certificado',
-      html: 'Por favor espera...',
-      allowOutsideClick: false,
-      didOpen: () => {
-        Swal.showLoading();
-      }
-    });
+  // =============== MIS CERTIFICADOS =============================
 
-    this.alumnoService.generarCertificado(idInscripcion).subscribe({
-      next: (data) => {
-        Swal.close();
-        const blob = new Blob([data], { type: 'application/pdf' });
-        const url = window.URL.createObjectURL(blob);
-
-        // Open in new tab
-        window.open(url, '_blank');
-
-        // Clean up
-        setTimeout(() => {
-          window.URL.revokeObjectURL(url);
-        }, 100);
+  descargarCertificado(idInscripcion: number): void {
+    this.alumnoService.descargarCertificado(idInscripcion).subscribe({
+      next: (pdfBlob: Blob) => {
+        const nombreArchivo = `certificado_${idInscripcion}.pdf`;
+        saveAs(pdfBlob, nombreArchivo);
       },
-      error: (error) => {
-        Swal.fire('Error', 'No se pudo generar el certificado', 'error');
-        console.error('Error al visualizar el certificado:', error);
+      error: (err) => {
+        console.error('No se pudo descargar el certificado', err);
+        // Puedes mostrar un mensaje con SweetAlert o algún toast
       }
     });
   }
 
-  descargarCertificado(idInscripcion: number) {
-    Swal.fire({
-      title: '¿Estás seguro?',
-      text: '¿Deseas descargar el certificado?',
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonText: 'Sí, descargar',
-      cancelButtonText: 'Cancelar',
-      confirmButtonColor: '#8EC3B0',
-      cancelButtonColor: '#FF6B6B',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.alumnoService.generarCertificado(idInscripcion).subscribe({
-          next: (data) => {
-            const blob = new Blob([data], { type: 'application/pdf' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `certificado-${idInscripcion}.pdf`;
-            a.click();
-            window.URL.revokeObjectURL(url);
-          },
-          error: (error) => {
-            Swal.fire('Error', 'No se pudo descargar el certificado', 'error');
-          }
-        });
+  cargarCursosFinalizados(): void {
+    this.alumnoService.obtenerCursosFinalizados(this.idAlumno).subscribe({
+      next: (cursos) => {
+        console.log('Cerficiciones: ', cursos)
+        this.cursosCertificados = cursos;
+      },
+      error: () => {
+        this.cursosCertificados = [];
       }
     });
   }
+  
+  // ============== MIS CURSOS ====================
 
   buscarCursos() {
     if (this.terminoBusqueda.trim() === '') {
@@ -299,84 +273,16 @@ export class PerfilAlumnoComponent implements OnInit {
 
   obtenerProgresoDeCursos() {
     this.cursos.forEach(curso => {
-      this.obtenerProgresoCurso(this.usuario.idUsuario, curso.idCurso);
-    });
-  }
-
-  obtenerProgresoCurso(idEstudiante: number, idCurso: number) {
-    this.alumnoService.verProgresoAlumno(idEstudiante, idCurso).subscribe({
-      next: (progreso) => {
-        const curso = this.cursos.find(c => c.idCurso === idCurso);
-        if (curso) {
-          curso.progreso = progreso.vPorcentaje;
-          curso.ultimaActividad = progreso.ultimaActividad;
+      this.alumnoService.obtenerProgresoCurso(this.usuario.idUsuario, curso.idCurso).subscribe({
+        next: (porcentaje: number) => {
+          console.log('porcentaje', porcentaje)
+          curso.progreso = porcentaje;
+        },
+        error: (error) => {
+          console.error(`Error al obtener el progreso del curso ${curso.idCurso}:`, error);
         }
-      },
-      error: (error) => {
-        console.error('Error al obtener el progreso del curso:', error);
-      }
+      });
     });
-  }
-
-continuarCurso(idCurso: number) {
-  // Show loading
-  Swal.fire({
-    title: 'Cargando curso',
-    html: 'Preparando tu lugar de aprendizaje...',
-    allowOutsideClick: false,
-    didOpen: () => {
-      Swal.showLoading();
-    }
-  });
-
-  // First get the course progress
-  this.alumnoService.verProgresoAlumno(this.usuario.idUsuario, idCurso).subscribe({
-    next: (progreso) => {
-      Swal.close();
-
-      // Check if course is completed
-      if (progreso.vPorcentaje >= 100) {
-        Swal.fire({
-          title: 'Curso completado',
-          text: 'Ya has completado este curso. ¿Deseas repasar el contenido?',
-          icon: 'question',
-          showCancelButton: true,
-          confirmButtonText: 'Sí, repasar',
-          cancelButtonText: 'Cancelar'
-        }).then((result) => {
-          if (result.isConfirmed) {
-            this.router.navigate(['/curso', idCurso, 'repaso']);
-          }
-        });
-      } else {
-        // Redirect to continue course
-        this.router.navigate(['/curso', idCurso, 'continuar']);
-      }
-    },
-    error: (error) => {
-      Swal.fire('Error', 'No se pudo cargar el progreso del curso', 'error');
-      console.error('Error al obtener progreso:', error);
-    }
-  });
-}
-
-  navigateTo(page: PageType) {
-    this.currentPage = page;
-
-    if (page === 'actualizar-perfil') {
-      this.currentSection = 'perfil';
-    } else if (page === 'certificados') {
-      this.currentSection = 'certificados';
-      this.cargarCursosFinalizados();
-    } else if (page === 'historial') {
-      this.currentSection = 'historial';
-      this.cargarMisCursos();
-    } else if (page === 'mis-cursos') {
-      this.currentSection = 'mis-cursos';
-      this.cargarMisCursos();
-    }
-
-    this.menuOpen = false;
   }
 
   inscribirseCurso(idCurso: number) {
@@ -396,9 +302,77 @@ continuarCurso(idCurso: number) {
     });
   }
 
+  bajaCurso(idCurso: number): void {
+    const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    const idUsuario = user.idUsuario; 
+    console.log('idUsuario:', idUsuario, 'idCurso:', idCurso);
+  
+    // Llamamos al servicio para obtener el idInscripcion
+    this.alumnoService.obtenerIdInscripcion(idUsuario, idCurso).subscribe({
+      next: (inscripciones: VerIdInscripcionDTO[]) => {
+        console.log('Respuesta de inscripciones:', inscripciones);
+        if (inscripciones && inscripciones.length > 0) {
+          const idInscripcion = inscripciones[0].idInscripcion; // Suponiendo que siempre hay un único idInscripcion
+  
+          // Ahora que tenemos el idInscripcion, mostramos una confirmación
+          Swal.fire({
+            title: '¿Estás seguro?',
+            text: 'Esta acción dará de baja al alumno del curso.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, dar de baja',
+            cancelButtonText: 'Cancelar'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              // Ahora damos de baja utilizando el idInscripcion
+              this.alumnoService.bajaCursoAlumno(idInscripcion).subscribe({
+                next: (res) => {
+                  Swal.fire('Curso dado de baja', res.mensaje, 'success');
+                  // Aquí puedes actualizar la lista de cursos o hacer otra acción después de dar de baja
+                },
+                error: (err) => {
+                  console.error('Error al dar de baja el curso:', err);
+                  Swal.fire('Error', 'No se pudo dar de baja el curso', 'error');
+                }
+              });
+            }
+          });
+        } else {
+          Swal.fire('Error', 'No se encontró la inscripción para este curso', 'error');
+        }
+      },
+      error: (error) => {
+        console.error('Error al obtener idInscripcion:', error);
+        Swal.fire('Error', 'No se pudo obtener el ID de inscripción', 'error');
+      }
+    });
+  }
+
+  //  ============ NAVEGACIONES ======================================
+  
   logout() {
     console.log('Cerrando sesión...');
     localStorage.clear();
     this.router.navigate(['/home/inicio']);
+  }
+
+  navigateTo(page: PageType) {
+    this.currentPage = page;
+
+    if (page === 'actualizar-perfil') {
+      this.currentSection = 'perfil';
+    } else if (page === 'certificados') {
+      this.currentSection = 'certificados';
+      this.cargarCursosFinalizados();
+    } else if (page === 'mis-cursos') {
+      this.currentSection = 'mis-cursos';
+      this.cargarMisCursos();
+    }
+
+    this.menuOpen = false;
+  }
+
+  toggleMenu() {
+    this.menuOpen = !this.menuOpen;
   }
 }
