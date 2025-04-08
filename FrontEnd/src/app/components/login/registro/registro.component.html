@@ -1,60 +1,55 @@
 <div class="registro-container">
-  <h2>Registro de Usuario</h2>
+  <div class="logo">
+    <img src="assets/logo.png" alt="Logo Finer" class="logo">
+    <h1>Regístrate en Finer</h1>
+  </div>
   <form (ngSubmit)="registrar()">
     
     <div class="form-group">
-      <label for="nombre">Nombre</label>
       <input [(ngModel)]="usuario.nombre" id="nombre" name="nombre" placeholder="Nombre" required>
     </div>
 
     <div class="form-group">
-      <label for="apellidoPaterno">Apellido Paterno</label>
       <input [(ngModel)]="usuario.apellidoPaterno" id="apellidoPaterno" name="apellidoPaterno" placeholder="Apellido Paterno" required>
     </div>
 
     <div class="form-group">
-      <label for="apellidoMaterno">Apellido Materno</label>
       <input [(ngModel)]="usuario.apellidoMaterno" id="apellidoMaterno" name="apellidoMaterno" placeholder="Apellido Materno" required>
     </div>
 
     <div class="form-group">
-      <label for="correo">Correo Electrónico</label>
-      <input [(ngModel)]="usuario.correo" id="correo" name="correo" placeholder="Correo" type="email" required>
+      <input [(ngModel)]="usuario.correo" id="correo" name="correo" placeholder="Correo Electrónico" type="email" required>
     </div>
 
     <div class="form-group">
-      <label for="contrasenia">Contraseña</label>
       <input [(ngModel)]="usuario.contrasenia" id="contrasenia" name="contrasenia" placeholder="Contraseña" type="password" required>
     </div>
 
     <div class="form-group">
-      <label for="nombreUsuario">Nombre de Usuario</label>
       <input [(ngModel)]="usuario.nombreUsuario" id="nombreUsuario" name="nombreUsuario" placeholder="Nombre de Usuario" required>
     </div>
 
-    <div class="form-group checkbox-group">
-      <label>
-        <input type="checkbox" [(ngModel)]="esInstructor" name="esInstructor"> Solicitud de Instructor
+    <div class="checkbox-container">
+      <label class="checkbox-label">
+        <input type="checkbox" [(ngModel)]="esInstructor" name="esInstructor"> 
+        <span>Solicitud de Instructor</span>
       </label>
     </div>
 
     <div *ngIf="esInstructor">
       <div class="form-group">
-        <label for="telefono">Teléfono</label>
         <input [(ngModel)]="usuario.telefono" id="telefono" name="telefono" placeholder="Teléfono" required>
       </div>
 
       <div class="form-group">
-        <label for="direccion">Dirección</label>
         <input [(ngModel)]="usuario.direccion" id="direccion" name="direccion" placeholder="Dirección" required>
       </div>
 
       <div class="form-group">
-        <label for="cedula">Cédula Profesional (URL)</label>
-        <input [(ngModel)]="usuario.cedula" id="cedula" name="cedula" placeholder="URL de la cédula PDF" required>
+        <input [(ngModel)]="usuario.cedula" id="cedula" name="cedula" placeholder="URL de la cédula profesional (PDF)" required>
       </div>
     </div>
 
-    <button type="submit" class="btn btn-primary">Registrarse</button>
+    <button type="submit" class="btn-registrarme">Registrarse</button>
   </form>
 </div>

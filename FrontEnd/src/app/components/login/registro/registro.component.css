@@ -1,172 +1,93 @@
-body {
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #BCEAD5, #f0faf7);
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-
-.container {
+.registro-container {
     background-color: #ffffff;
     padding: 40px;
-    border-radius: 15px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-    width: 600px;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    width: 500px;
     text-align: center;
-    border: 2px solid #BCEAD5;
-    animation: slideIn 0.5s ease-out;
-}
-
-@keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    margin: auto;
 }
 
 .logo {
-    margin-bottom: 40px;
+    margin-bottom: 25px;
 }
 
 .logo img {
-    width: 120px;
-    background: transparent;
+    width: 100px;
+    margin-bottom: 20px;
 }
 
 .logo h1 {
     color: #333;
-    font-size: 28px;
+    font-size: 24px;
     margin-top: 15px;
     font-family: 'Poppins', sans-serif;
     font-weight: 600;
 }
 
-.form-row {
-    display: flex;
-    justify-content: space-between;
-}
-
-.form-column {
-    width: 48%;
-}
-
 .form-group {
-    margin-bottom: 24px;
-    text-align: left;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 8px;
-    color: #555;
-    font-size: 16px;
-    font-weight: 500;
+    margin-bottom: 20px;
 }
 
 .form-group input {
     width: 100%;
-    padding: 12px;
+    padding: 12px 15px;
     box-sizing: border-box;
-    border: 1px solid #ddd;
-    border-radius: 6px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
     font-size: 14px;
     background-color: #f9f9f9;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    transition: all 0.3s ease;
+    color: #4a4a4a;
 }
 
 .form-group input:focus {
-    border-color: #BCEAD5;
+    border-color: #8ED3B2;
     outline: none;
-    box-shadow: 0 0 8px rgba(188, 234, 213, 0.6);
-    background-color: #ffffff;
+    box-shadow: 0 0 8px rgba(142, 211, 178, 0.4);
+    background-color: #fff;
 }
 
-.checkbox-group {
-    margin-top: 15px;
-    text-align: left;
+.form-group input::placeholder {
+    color: #a8a8a8;
+}
+
+.checkbox-container {
+    display: flex;
+    justify-content: center;
+    margin: 25px 0;
 }
 
 .checkbox-label {
     display: flex;
     align-items: center;
     color: #555;
-    font-size: 16px;
+    font-size: 14px;
+    cursor: pointer;
 }
 
-.checkbox-group input[type="checkbox"] {
+.checkbox-label input[type="checkbox"] {
     margin-right: 10px;
-    accent-color: #BCEAD5;
+    accent-color: #8ED3B2;
+    width: 16px;
+    height: 16px;
 }
 
-button {
+.btn-registrarme {
     width: 100%;
     padding: 14px;
-    background: linear-gradient(135deg, #BCEAD5, #9DD9C7);
-    color: #333;
+    background-color: #E1F7ED;
+    color: #2a7f5f;
     border: none;
-    border-radius: 6px;
+    border-radius: 8px;
     cursor: pointer;
-    font-size: 18px;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    margin-top: 10px;
 }
 
-button:hover {
-    background: linear-gradient(135deg, #9DD9C7, #BCEAD5);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-#instructorFields {
-    margin-top: 20px;
-    padding: 15px;
-    background-color: #f0faf7;
-    border-radius: 6px;
-    border: 1px solid #d0f0e4;
-}
-
-#instructorFields .form-group input {
-    background-color: #ffffff;
-}
-
-@media screen and (max-width: 768px) {
-    .form-row {
-        flex-direction: column;
-    }
-
-    .form-column {
-        width: 100%;
-    }
-
-    .container {
-        width: 90%;
-    }
-
-    .logo h1 {
-        font-size: 22px;
-    }
-
-    .form-group label {
-        font-size: 14px;
-    }
-
-    button {
-        font-size: 14px;
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .container {
-        padding: 20px;
-    }
-
-    button {
-        font-size: 16px;
-        padding: 12px;
-    }
+.btn-registrarme:hover {
+    background-color: #8ED3B2;
+    color: #fff;
 }
