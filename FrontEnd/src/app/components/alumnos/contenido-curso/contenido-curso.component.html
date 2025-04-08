@@ -39,7 +39,7 @@
         <span class="tema-progress">Tema {{ temaActualIndex + 1 }} de {{ temas.length }}</span>
       </div>
 
-      <!-- Contenido o evaluación -->
+      <!-- Contenido del curso -->
       <div class="tema-contenido">
 
         <!-- Contenido normal -->
@@ -72,12 +72,14 @@
           </form>
         </div>
 
-        <!-- Resultado -->
+        <!-- Resultado de la evaluación -->
         <div *ngIf="temaActual.tipo === 'resultado' && resultadoEvaluacion" class="resultado-box">
           <h2>Resultado de la Evaluación</h2>
-          <p><strong>Calificación final:</strong> {{ resultadoEvaluacion.calificacion.toFixed(2) }}%</p>
-          <p><strong>Aciertos:</strong> {{ resultadoEvaluacion.aciertos }} de {{ resultadoEvaluacion.preguntasTotales }}</p>
-          <p class="mensaje"><strong>Mensaje:</strong> {{ resultadoEvaluacion.mensaje }}</p>
+          <div class="resultado-content">
+            <p><strong>Calificación final:</strong> {{ resultadoEvaluacion.calificacion.toFixed(2) }}%</p>
+            <p><strong>Aciertos:</strong> {{ resultadoEvaluacion.aciertos }} de {{ resultadoEvaluacion.preguntasTotales }}</p>
+            <p class="mensaje"><strong>Mensaje:</strong> {{ resultadoEvaluacion.mensaje }}</p>
+          </div>
         </div>
 
       </div>
