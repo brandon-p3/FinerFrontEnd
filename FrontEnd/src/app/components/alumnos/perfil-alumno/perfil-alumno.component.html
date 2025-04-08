@@ -174,9 +174,11 @@
       <p>Estado: {{ curso.estado === 'finalizado' ? 'Finalizado' : 'En progreso' }}</p>
       <p>Progreso: {{ curso.progreso || 0 }}%</p>
 
-      <button *ngIf="curso.estado !== 'finalizado'" class="continuar-btn" (click)="obtenerProgresoDeCursos()">
+
+      <button *ngIf="curso.estado !== 'finalizado'" class="continuar-btn" (click)="accederYObtenerProgreso(curso)">
         Continuar Curso
       </button>
+
       <button (click)="bajaCurso(curso.idCurso)" class="danger-btn">
         Dar de baja
       </button>

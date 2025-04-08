@@ -49,7 +49,7 @@ body {
 
 .btn-volver:hover {
   background-color: var(--color-primario);
-  color: rgb(255, 255, 255);
+  color: rgb(159, 197, 159);
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
@@ -497,4 +497,82 @@ input[type="radio"]:checked::after {
     max-width: 100%;
     margin-top: 20px;
   }
+
+  /* Estilos para el componente de resultado de evaluación */
+.resultado-box {
+  background: linear-gradient(to bottom, #ffffff, #f5f9ff);
+  border: 1px solid #e0e8f5;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 2.5rem;
+  margin: 2rem 0;
+  max-width: 600px;
+  transition: all 0.3s ease;
+}
+
+.resultado-box:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  transform: translateY(-3px);
+}
+
+.resultado-box h2 {
+  color: #2c3e50;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 2px solid #3498db;
+}
+
+.resultado-box p {
+  color: #4a5568;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.resultado-box p strong {
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+.resultado-box .mensaje {
+  background-color: #f0f7ff;
+  border-left: 4px solid #3498db;
+  padding: 1rem;
+  margin-top: 1.5rem;
+  border-radius: 0 6px 6px 0;
+  font-style: italic;
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+  .resultado-box {
+    padding: 1.5rem;
+  }
+
+  .resultado-box h2 {
+    font-size: 1.5rem;
+  }
+
+  .resultado-box p {
+    font-size: 1rem;
+  }
+}
+
+/* Animación para cuando aparecen los resultados */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.resultado-box {
+  animation: fadeInUp 0.5s ease-out forwards;
+}
 }
