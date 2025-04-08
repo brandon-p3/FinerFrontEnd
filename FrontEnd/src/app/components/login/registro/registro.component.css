@@ -1,6 +1,6 @@
 body {
-    font-family: 'Poppins', sans-serif; /* Fuente principal */
-    background: linear-gradient(135deg, #BCEAD5, #f0faf7); /* Fondo degradado con tonos claros */
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #BCEAD5, #f0faf7);
     margin: 0;
     padding: 0;
     display: flex;
@@ -10,50 +10,62 @@ body {
 }
 
 .container {
-    background-color: #ffffff; /* Fondo blanco */
+    background-color: #ffffff;
     padding: 40px;
-    border-radius: 12px; /* Bordes redondeados */
-    box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
-    width: 600px; /* Más ancho para las dos columnas */
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    width: 600px;
     text-align: center;
-    border: 2px solid #BCEAD5; /* Borde del formulario */
+    border: 2px solid #BCEAD5;
+    animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .logo {
-    margin-bottom: 30px;
+    margin-bottom: 40px;
 }
 
 .logo img {
-    width: 120px; /* Imagen más grande */
-    background: transparent; /* Asegura que la imagen no tenga fondo */
+    width: 120px;
+    background: transparent;
 }
 
 .logo h1 {
-    color: #333; /* Texto oscuro para contraste */
-    font-size: 28px; /* Más grande */
+    color: #333;
+    font-size: 28px;
     margin-top: 15px;
-    font-family: 'Poppins', sans-serif; /* Nueva fuente */
-    font-weight: 600; /* Grosor de la fuente */
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
 }
 
 .form-row {
-    display: flex; /* Usamos Flexbox para las dos columnas */
+    display: flex;
     justify-content: space-between;
 }
 
 .form-column {
-    width: 48%; /* Las columnas ocupan un 48% del ancho */
+    width: 48%;
 }
 
 .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 24px;
     text-align: left;
 }
 
 .form-group label {
     display: block;
     margin-bottom: 8px;
-    color: #555; /* Texto gris para etiquetas */
+    color: #555;
     font-size: 16px;
     font-weight: 500;
 }
@@ -62,7 +74,7 @@ body {
     width: 100%;
     padding: 12px;
     box-sizing: border-box;
-    border: 1px solid #ddd; /* Borde gris claro */
+    border: 1px solid #ddd;
     border-radius: 6px;
     font-size: 14px;
     background-color: #f9f9f9;
@@ -70,9 +82,10 @@ body {
 }
 
 .form-group input:focus {
-    border-color: #BCEAD5; /* Borde verde claro al enfocar */
+    border-color: #BCEAD5;
     outline: none;
     box-shadow: 0 0 8px rgba(188, 234, 213, 0.6);
+    background-color: #ffffff;
 }
 
 .checkbox-group {
@@ -92,27 +105,23 @@ body {
     accent-color: #BCEAD5;
 }
 
-.hidden {
-    display: none;
-}
-
 button {
     width: 100%;
     padding: 14px;
-    background-color: #BCEAD5;
+    background: linear-gradient(135deg, #BCEAD5, #9DD9C7);
     color: #333;
     border: none;
     border-radius: 6px;
     cursor: pointer;
     font-size: 18px;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 button:hover {
-    background-color: #9DD9C7;
+    background: linear-gradient(135deg, #9DD9C7, #BCEAD5);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Estilos adicionales para los campos de instructor */
 #instructorFields {
     margin-top: 20px;
     padding: 15px;
@@ -127,19 +136,19 @@ button:hover {
 
 @media screen and (max-width: 768px) {
     .form-row {
-        flex-direction: column; /* En pantallas pequeñas, se apilan los campos */
+        flex-direction: column;
     }
 
     .form-column {
-        width: 100%; /* Las columnas ocupan todo el ancho */
+        width: 100%;
     }
 
     .container {
-        width: 90%; /* Ajuste para pantallas pequeñas */
+        width: 90%;
     }
 
     .logo h1 {
-        font-size: 22px; /* Reducir tamaño de texto en pantallas pequeñas */
+        font-size: 22px;
     }
 
     .form-group label {
@@ -148,5 +157,16 @@ button:hover {
 
     button {
         font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .container {
+        padding: 20px;
+    }
+
+    button {
+        font-size: 16px;
+        padding: 12px;
     }
 }

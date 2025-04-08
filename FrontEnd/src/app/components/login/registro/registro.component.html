@@ -1,58 +1,60 @@
-<div class="container">
-    <div class="logo">
-        <img src="assets/logo.png" alt="Logo Finnen">
-        <h1>Bienvenido a Finner</h1>
+<div class="registro-container">
+  <h2>Registro de Usuario</h2>
+  <form (ngSubmit)="registrar()">
+    
+    <div class="form-group">
+      <label for="nombre">Nombre</label>
+      <input [(ngModel)]="usuario.nombre" id="nombre" name="nombre" placeholder="Nombre" required>
     </div>
-    <form>
-        <div class="form-row">
-            <div class="form-column">
-                <div class="form-group">
-                    <label for="nombre">Nombre</label>
-                    <input type="text" id="nombre" name="nombre" required>
-                </div>
-                <div class="form-group">
-                    <label for="apellidoPaterno">Apellido Paterno</label>
-                    <input type="text" id="apellidoPaterno" name="apellidoPaterno" required>
-                </div>
-                <div class="form-group">
-                    <label for="apellidoMaterno">Apellido Materno</label>
-                    <input type="text" id="apellidoMaterno" name="apellidoMaterno" required>
-                </div>
-            </div>
-            <div class="form-column">
-                <div class="form-group">
-                    <label for="correoElectronico">Correo Electrónico</label>
-                    <input type="email" id="correoElectronico" name="correoElectronico" required>
-                </div>
-                <div class="form-group">
-                    <label for="contrasena">Contraseña</label>
-                    <input type="password" id="contrasena" name="contrasena" required>
-                </div>
-                <div class="form-group">
-                    <label for="verificacionContrasena">Verificación de Contraseña</label>
-                    <input type="password" id="verificacionContrasena" name="verificacionContrasena" required>
-                </div>
-            </div>
-        </div>
-        <div class="form-group checkbox-group">
-            <label class="checkbox-label">
-                <input type="checkbox" id="soyInstructor" name="soyInstructor" (change)="toggleInstructorFields()"> Solicitud de Instructor
-            </label>
-        </div>
-        <div id="instructorFields" [class.hidden]="!showInstructorFields">
-            <div class="form-group">
-                <label for="numeroTelefonico">Número Telefónico</label>
-                <input type="tel" id="numeroTelefonico" name="numeroTelefonico">
-            </div>
-            <div class="form-group">
-                <label for="direccion">Dirección</label>
-                <input type="text" id="direccion" name="direccion">
-            </div>
-            <div class="form-group">
-                <label for="certificado">Certificado</label>
-                <input type="file" id="certificado" name="certificado">
-            </div>
-        </div>
-        <button type="submit">Registrarme</button>
-    </form>
+
+    <div class="form-group">
+      <label for="apellidoPaterno">Apellido Paterno</label>
+      <input [(ngModel)]="usuario.apellidoPaterno" id="apellidoPaterno" name="apellidoPaterno" placeholder="Apellido Paterno" required>
+    </div>
+
+    <div class="form-group">
+      <label for="apellidoMaterno">Apellido Materno</label>
+      <input [(ngModel)]="usuario.apellidoMaterno" id="apellidoMaterno" name="apellidoMaterno" placeholder="Apellido Materno" required>
+    </div>
+
+    <div class="form-group">
+      <label for="correo">Correo Electrónico</label>
+      <input [(ngModel)]="usuario.correo" id="correo" name="correo" placeholder="Correo" type="email" required>
+    </div>
+
+    <div class="form-group">
+      <label for="contrasenia">Contraseña</label>
+      <input [(ngModel)]="usuario.contrasenia" id="contrasenia" name="contrasenia" placeholder="Contraseña" type="password" required>
+    </div>
+
+    <div class="form-group">
+      <label for="nombreUsuario">Nombre de Usuario</label>
+      <input [(ngModel)]="usuario.nombreUsuario" id="nombreUsuario" name="nombreUsuario" placeholder="Nombre de Usuario" required>
+    </div>
+
+    <div class="form-group checkbox-group">
+      <label>
+        <input type="checkbox" [(ngModel)]="esInstructor" name="esInstructor"> Solicitud de Instructor
+      </label>
+    </div>
+
+    <div *ngIf="esInstructor">
+      <div class="form-group">
+        <label for="telefono">Teléfono</label>
+        <input [(ngModel)]="usuario.telefono" id="telefono" name="telefono" placeholder="Teléfono" required>
+      </div>
+
+      <div class="form-group">
+        <label for="direccion">Dirección</label>
+        <input [(ngModel)]="usuario.direccion" id="direccion" name="direccion" placeholder="Dirección" required>
+      </div>
+
+      <div class="form-group">
+        <label for="cedula">Cédula Profesional (URL)</label>
+        <input [(ngModel)]="usuario.cedula" id="cedula" name="cedula" placeholder="URL de la cédula PDF" required>
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Registrarse</button>
+  </form>
 </div>
