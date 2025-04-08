@@ -1,7 +1,7 @@
 // alumno.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable, throwError  } from 'rxjs';
+import { Observable, throwError, of  } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { CONFIG } from '../config/config';
@@ -151,10 +151,16 @@ export class AlumnoService {
     );
   }
 
-  obtenerMisCursos(idAlumno: number): Observable<any[]> {
+  obtenerMisCursos(idAlumno: number): Observable<any> {
     const url = `${this.apiCursosUrl}/mis-cursos/${idAlumno}`;
-    return this.http.get<any[]>(url).pipe(
+    return this.http.get<any>(url).pipe(
       catchError((error) => {
+        // No muestra errores si es un 404 (alumno sin cursos)
+        if (error.status === 404) {
+          console.log('El alumno no tiene cursos en proceso');
+          return of([]); // Retorna un array vacío
+        }
+        
         console.error('Error al obtener los cursos del alumno:', error);
         Swal.fire('Error', 'No se pudieron obtener los cursos del alumno', 'error');
         throw error;
