@@ -100,15 +100,7 @@ export class CursosAlumnosComponent implements OnInit {
     }
   }
 
-  accederCurso(curso: any) {
-    console.log('Accediendo al curso:', curso);
-
-    if (curso.idCurso) {
-      this.router.navigate([`/alumnos/contenido`, curso.idCurso]);
-    } else {
-      console.error("ID del curso inválido");
-    }
-  }
+ 
   logout() {
     console.log('Cerrando sesión...');
     this.router.navigate(['/login']);

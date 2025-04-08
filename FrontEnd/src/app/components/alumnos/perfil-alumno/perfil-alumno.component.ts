@@ -43,7 +43,7 @@ interface Curso {
 })
 export class PerfilAlumnoComponent implements OnInit {
   constructor(
-    private router: Router, 
+    private router: Router,
     private alumnoService: AlumnoService,
     private route: ActivatedRoute
   ) { }
@@ -83,14 +83,14 @@ export class PerfilAlumnoComponent implements OnInit {
       const storedUser = localStorage.getItem('currentUser');
       this.usuario = storedUser ? JSON.parse(storedUser) : null;
       console.log('Usuario cargado:', this.usuario);
-  
+
       if (this.usuario && this.usuario.idUsuario) {
         this.idAlumno = this.usuario.idUsuario;
-  
+
         if (this.currentPage === 'certificados') {
           this.cargarCursosFinalizados();
         }
-  
+
         if (this.currentPage === 'mis-cursos') {
           this.cargarMisCursos();
         }
@@ -98,13 +98,13 @@ export class PerfilAlumnoComponent implements OnInit {
         console.warn('El objeto usuario no tiene idUsuario');
         this.router.navigate(['/home/inicio']);
       }
-  
+
     } else {
       console.warn('No se encontró información del usuario en localStorage');
       this.router.navigate(['/home/inicio']);
     }
   }
-  
+
 
   // ================ MI PERFIL ============================
 
@@ -250,7 +250,7 @@ export class PerfilAlumnoComponent implements OnInit {
       }
     });
   }
-  
+
   // ============== MIS CURSOS ====================
 
   buscarCursos() {
@@ -275,8 +275,9 @@ export class PerfilAlumnoComponent implements OnInit {
     this.cursos.forEach(curso => {
       this.alumnoService.obtenerProgresoCurso(this.usuario.idUsuario, curso.idCurso).subscribe({
         next: (porcentaje: number) => {
-          console.log('porcentaje', porcentaje)
-          curso.progreso = porcentaje;
+          const porcentajeRedondeado = Math.round(porcentaje);
+          console.log('porcentaje redondeado', porcentajeRedondeado);
+        curso.progreso = porcentajeRedondeado;
         },
         error: (error) => {
           console.error(`Error al obtener el progreso del curso ${curso.idCurso}:`, error);
@@ -284,6 +285,32 @@ export class PerfilAlumnoComponent implements OnInit {
       });
     });
   }
+
+  accederYObtenerProgreso(curso: any) {
+    this.alumnoService.obtenerProgresoCurso(this.usuario.idUsuario, curso.idCurso).subscribe({
+      next: (porcentaje: number) => {
+        curso.progreso = porcentaje;
+        console.log(`Progreso del curso ${curso.idCurso}:`, porcentaje);
+
+        // Ahora redirige al contenido del curso
+        this.router.navigate([`/alumnos/contenido`, curso.idCurso]);
+      },
+      error: (error) => {
+        console.error(`Error al obtener el progreso del curso ${curso.idCurso}:`, error);
+        // Si quieres, puedes mostrar un mensaje de error aquí antes de redirigir o detener la navegación
+      }
+    });
+  }
+
+  /*  accederCurso(curso: any) {
+    console.log('Accediendo al curso:', curso);
+
+    if (curso.idCurso) {
+      this.router.navigate([`/alumnos/contenido`, curso.idCurso]);
+    } else {
+      console.error("ID del curso inválido");
+    }
+  }*/
 
   inscribirseCurso(idCurso: number) {
     this.alumnoService.inscribirseCurso(this.usuario.idUsuario, idCurso).subscribe({
@@ -304,16 +331,16 @@ export class PerfilAlumnoComponent implements OnInit {
 
   bajaCurso(idCurso: number): void {
     const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
-    const idUsuario = user.idUsuario; 
+    const idUsuario = user.idUsuario;
     console.log('idUsuario:', idUsuario, 'idCurso:', idCurso);
-  
+
     // Llamamos al servicio para obtener el idInscripcion
     this.alumnoService.obtenerIdInscripcion(idUsuario, idCurso).subscribe({
       next: (inscripciones: VerIdInscripcionDTO[]) => {
         console.log('Respuesta de inscripciones:', inscripciones);
         if (inscripciones && inscripciones.length > 0) {
           const idInscripcion = inscripciones[0].idInscripcion; // Suponiendo que siempre hay un único idInscripcion
-  
+
           // Ahora que tenemos el idInscripcion, mostramos una confirmación
           Swal.fire({
             title: '¿Estás seguro?',
@@ -349,7 +376,7 @@ export class PerfilAlumnoComponent implements OnInit {
   }
 
   //  ============ NAVEGACIONES ======================================
-  
+
   logout() {
     console.log('Cerrando sesión...');
     localStorage.clear();
