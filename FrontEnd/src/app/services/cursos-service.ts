@@ -55,11 +55,8 @@ export class CursosServiceService {
     return this.http.get(url, { responseType: 'text' });
   }
 
-
-
-//aun no establecidos
-    obtenerCursoPorAlumno(idEvaluacion: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrlE}/${idEvaluacion}`);
+  obtenerIdInscripcion(idUsuario: number, idCurso: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUri}/token/verIdInscripcion/${idUsuario}/${idCurso}`);
   }
 
   guardarRespuestas(respuestaDTO: any): Observable<any> {
@@ -71,6 +68,13 @@ export class CursosServiceService {
     return this.http.get<any>(`${this.apiUrlE}/${idEvaluacion}`);
   }
 //|----------------------------------------------------------------
+
+verResultadoEvaluacion(idInscripcion: number) {
+  return this.http.get<any>(`${this.apiUrlA}/resultadoEvaluacion/${idInscripcion}`);
+}
+
+
+
 
 
 

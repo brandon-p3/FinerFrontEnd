@@ -16,14 +16,19 @@
 
 <div class="dropdown-menu" [class.show]="menuOpen">
   <ul>
-      <li class="menu-section">Cursos</li>
-      <li class="menu-item" [class.active]="currentPage === 'mis-cursos'" (click)="navigateTo('mis-cursos')">Mis Cursos</li>
-      <li class="menu-section">Perfil</li>
-      <li class="menu-item" [class.active]="currentPage === 'actualizar-perfil'" (click)="navigateTo('actualizar-perfil')">Actualizar Perfil</li>
-      <li class="menu-item" [class.active]="currentPage === 'certificados'" (click)="navigateTo('certificados')">Certificados</li>
-      <li class="menu-section">Historial</li>
-      <li class="menu-item" [class.active]="currentPage === 'historial'" (click)="navigateTo('historial')">Historial de Aprendizaje</li>
-      <li class="menu-section">Cerrar Sesión</li>
-      <li class="menu-item logout" (click)="logout()">Cerrar Sesión</li>
+    <li class="menu-section">Cursos</li>
+    <li class="menu-item" routerLink="/alumnos/Cursos" routerLinkActive="active" (click)="menuOpen = false">Home</li>
+    <li class="menu-item" routerLink="/alumnos/mis-cursos" routerLinkActive="active" (click)="menuOpen = false">Mis Cursos</li>
+
+    <li class="menu-section">Perfil</li>
+    <li class="menu-item" routerLink="/alumnos/perfil" routerLinkActive="active" (click)="menuOpen = false">Actualizar Perfil</li>
+    <li class="menu-item" routerLink="/alumnos/certificados" routerLinkActive="active" (click)="menuOpen = false">Certificados</li>
+
+    <li class="menu-section">Historial</li>
+    <li class="menu-item" routerLink="/alumnos/historial" routerLinkActive="active" (click)="menuOpen = false">Historial de Aprendizaje</li>
+
+    <li class="menu-section">Cerrar Sesión</li>
+    <li class="menu-item logout" (click)="logout()">Cerrar Sesión</li>
   </ul>
 </div>
+

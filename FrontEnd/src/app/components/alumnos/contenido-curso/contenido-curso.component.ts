@@ -18,7 +18,13 @@ export class ContenidoCursoComponent implements OnInit {
   evaluacion: any = null;
   respuestas: { [idPregunta: number]: number } = {};
   idAlumno: number = 0;
-
+  resultadoVisible: boolean = false;
+  resultadoEvaluacion: {
+    calificacion: number,
+    aciertos: number,
+    preguntasTotales: number,
+    mensaje: string
+  } | null = null;
 
   constructor(private route: ActivatedRoute, private cursosService: CursosServiceService, private usuariosService: UsuariosService) {}
 
@@ -68,23 +74,37 @@ export class ContenidoCursoComponent implements OnInit {
       this.cargarEvaluacion();
     }
   }
+
   mostrarSiguienteTema(): void {
     const temaActualId = this.temas[this.temaActualIndex]?.idTema;
-    const idInscripcion = `${this.idAlumno}-${this.idCurso}`;
-
-    console.log('➡️ Cambiando al siguiente tema...');
-    console.log('🧩 Tema actual ID:', temaActualId);
-    console.log('👤 ID Alumno:', this.idAlumno);
-    console.log('📘 ID Curso:', this.idCurso);
-    console.log('🆔 ID Inscripción:', idInscripcion);
 
     if (temaActualId !== 0 && this.idAlumno && this.idCurso) {
-      this.cursosService.completarTema(idInscripcion, temaActualId.toString()).subscribe(
-        response => {
-          console.log('✅ Tema completado:', response);
+      // Obtener el idInscripcion real desde el backend
+      this.cursosService.obtenerIdInscripcion(this.idAlumno, Number(this.idCurso)).subscribe(
+        (data) => {
+          const idInscripcion = data[0]?.idInscripcion;
+
+          console.log('➡️ Cambiando al siguiente tema...');
+          console.log('🧩 Tema actual ID:', temaActualId);
+          console.log('👤 ID Alumno:', this.idAlumno);
+          console.log('📘 ID Curso:', this.idCurso);
+          console.log('🆔 ID Inscripción:', idInscripcion);
+
+          if (idInscripcion) {
+            this.cursosService.completarTema(idInscripcion, temaActualId.toString()).subscribe(
+              response => {
+                console.log('✅ Tema completado:', response);
+              },
+              error => {
+                console.error('❌ Error al completar tema:', error);
+              }
+            );
+          } else {
+            console.error('❌ No se obtuvo idInscripción válido');
+          }
         },
         error => {
-          console.error('❌ Error al completar tema:', error);
+          console.error('❌ Error al obtener idInscripción:', error);
         }
       );
     }
@@ -125,14 +145,10 @@ export class ContenidoCursoComponent implements OnInit {
     }
   }
 
-  // Función para manejar el envío de la evaluación
-
   enviarEvaluacion(): void {
-    // Crear el arreglo de idPreguntas y idOpciones
     const idPreguntas = Object.keys(this.respuestas).map(id => Number(id));
     const idOpciones = idPreguntas.map(id => this.respuestas[id]);
 
-    // Construir el objeto `RespuestaDTO` (payload)
     const respuestaDTO: RespuestaDTO = {
       idEstudiante: this.idAlumno,
       idCurso: Number(this.idCurso),
@@ -140,22 +156,85 @@ export class ContenidoCursoComponent implements OnInit {
       idOpciones: idOpciones
     };
 
-    // Mostrar el payload antes de enviarlo (opcional)
-    console.log('📋 Respuestas seleccionadas:', this.respuestas);
     console.log('📦 Payload a enviar:', respuestaDTO);
 
-    // Llamar al servicio para guardar las respuestas
     this.cursosService.guardarRespuestas(respuestaDTO).subscribe(
-      (response) => {
-        console.log('Respuestas guardadas con éxito:', response);
-        alert('Evaluación enviada con éxito 🎉');
+      () => {
+        console.log('✅ Respuestas guardadas');
+        // Llamar a la función para obtener el resultado de la evaluación
+        this.obtenerResultadoEvaluacion();
       },
       (error) => {
-        console.error('Error al enviar la evaluación:', error);
+        console.error('❌ Error al enviar respuestas:', error);
         alert('Hubo un error al enviar la evaluación.');
       }
     );
   }
+
+  obtenerResultadoEvaluacion(): void {
+    this.cursosService.obtenerIdInscripcion(this.idAlumno, Number(this.idCurso)).subscribe(
+      (data) => {
+        const idInscripcion = data[0]?.idInscripcion;
+        if (idInscripcion) {
+          // Obtener los resultados de la evaluación
+          this.cursosService.verResultadoEvaluacion(idInscripcion).subscribe(
+            (resultado) => {
+              console.log('🎯 Resultado:', resultado);
+
+              // Aquí se obtienen los datos de la evaluación
+              const preguntasTotales = resultado[0]?.preguntas_totales;
+              let aciertos = resultado[0]?.aciertos;
+
+              // Validar que los aciertos no superen el total de preguntas
+              if (aciertos > preguntasTotales) {
+                aciertos = preguntasTotales;
+              }
+
+              let calificacion = (aciertos / preguntasTotales) * 100;
+
+              // Determinar el mensaje basado en la calificación
+              let mensaje = '';
+              if (calificacion === 100) mensaje = '¡Excelente! Sacaste 100 🎉';
+              else if (calificacion >= 80) mensaje = `¡Muy bien! Tienes un buen promedio con ${calificacion.toFixed(2)}% 😊`;
+              else if (calificacion >= 60) mensaje = `Pasaste con ${calificacion.toFixed(2)}%, pero podrías mejorar 💪`;
+              else mensaje = `Ups... No pasaste con ${calificacion.toFixed(2)}%. ¡Sigue intentando!`;
+
+              // Guardar resultado para mostrarlo en HTML
+              this.resultadoEvaluacion = {
+                calificacion,
+                aciertos,
+                preguntasTotales,
+                mensaje
+              };
+
+              // Agregar el resultado como un nuevo "tema" de evaluación
+              const resultadoTema: contenidoCurso = {
+                nombreTema: 'Resultado de la Evaluación',
+                contenido: '', // Lo mostramos en el HTML
+                tipo: 'resultado',
+                idTema: -1
+              };
+
+              // Agregar el tema y mostrarlo
+              this.temas.push(resultadoTema);
+              this.temaActualIndex = this.temas.length - 1;
+              this.mostrarTema(this.temaActualIndex);
+            },
+            (error) => {
+              console.error('❌ Error al obtener resultado:', error);
+              alert('No se pudo obtener la puntuación final.');
+            }
+          );
+        } else {
+          console.error('❌ No se obtuvo idInscripción válido');
+        }
+      },
+      (error) => {
+        console.error('❌ Error al obtener idInscripción:', error);
+      }
+    );
+  }
+
 
   seleccionarRespuesta(idPregunta: number, idOpcion: number): void {
     this.respuestas[idPregunta] = idOpcion;

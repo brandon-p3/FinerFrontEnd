@@ -23,6 +23,7 @@ export interface contenidoCurso{
 
 }
 
+
 export interface RespuestaDTO {
   idEstudiante: number;
   idCurso: number;

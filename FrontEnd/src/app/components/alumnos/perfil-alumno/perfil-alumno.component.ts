@@ -11,7 +11,7 @@ interface Usuario {
   nombre: string;
   apellidoPaterno: string;
   apellidoMaterno: string;
-  email: string;
+  correo: string;
   contrasenia: string;
   nombreUsuario: string;
   cursosCompletados?: number;
@@ -46,16 +46,16 @@ export class PerfilAlumnoComponent implements OnInit {
   confirmarContrasenia: string = '';
 
   usuario: Usuario = {
-    idUsuario: 10,
-    idRol: 3,
-    nombre: 'Diego',
-    apellidoPaterno: 'Flores',
-    apellidoMaterno: 'Moreno',
-    email: 'diego.flores@estudiante.finer.edu',
-    contrasenia: 'est202',
-    nombreUsuario: 'diego_estudiante',
-    estado: 'activo',
-    cursosCompletados: 1,
+    idUsuario: 0,
+    idRol: 0,
+    nombre: '',
+    apellidoPaterno: '',
+    apellidoMaterno: '',
+    correo: '',
+    contrasenia: '',
+    nombreUsuario: '',
+    estado: '',
+    cursosCompletados: 0,
     actualizarContrasenia: false,
   };
 
@@ -67,13 +67,25 @@ export class PerfilAlumnoComponent implements OnInit {
   terminoBusqueda: string = '';
 
   ngOnInit(): void {
-    if (this.currentPage === 'mis-cursos') {
-      this.cargarMisCursos();
-    }
-    if (this.currentPage === 'certificados') {
-      this.cargarCursosFinalizados();
+    if (typeof window !== 'undefined' && localStorage.getItem('currentUser')) {
+      const storedUser = localStorage.getItem('currentUser');
+      this.usuario = storedUser ? JSON.parse(storedUser) : null;
+      console.log('Usuario cargado:', this.usuario);
+  
+      // Carga inicial según la página actual
+      if (this.currentPage === 'mis-cursos') {
+        this.cargarMisCursos();
+      }
+      if (this.currentPage === 'certificados') {
+        this.cargarCursosFinalizados();
+      }
+    } else {
+      console.warn('No se encontró información del usuario en localStorage');
+      this.router.navigate(['/home/inicio']); // Redirige si no hay usuario
     }
   }
+  
+  
 
   cargarMisCursos() {
     this.alumnoService.obtenerMisCursos(this.usuario.idUsuario).subscribe({
@@ -110,12 +122,12 @@ export class PerfilAlumnoComponent implements OnInit {
 
   guardarCambios() {
     if (!this.usuario.nombre || !this.usuario.apellidoPaterno ||
-        !this.usuario.nombreUsuario || !this.usuario.email) {
+        !this.usuario.nombreUsuario || !this.usuario.correo) {
       Swal.fire('Error', 'Por favor completa todos los campos requeridos', 'error');
       return;
     }
 
-    if (!this.usuario.email.includes('@')) {
+    if (!this.usuario.correo.includes('@')) {
       Swal.fire('Error', 'Por favor ingresa un correo electrónico válido', 'error');
       return;
     }
@@ -136,7 +148,7 @@ export class PerfilAlumnoComponent implements OnInit {
           this.usuario.nombre,
           this.usuario.apellidoPaterno,
           this.usuario.apellidoMaterno,
-          this.usuario.email,
+          this.usuario.correo,
           contrasenia,
           this.usuario.nombreUsuario
         ).subscribe({
@@ -164,7 +176,7 @@ export class PerfilAlumnoComponent implements OnInit {
       return;
     }
 
-    this.alumnoService.actualizarContrasenia(this.usuario.email, this.nuevaContrasenia)
+    this.alumnoService.actualizarContrasenia(this.usuario.correo, this.nuevaContrasenia)
       .subscribe({
         next: () => {
           Swal.fire('Éxito', 'Contraseña actualizada correctamente', 'success');
@@ -188,7 +200,7 @@ export class PerfilAlumnoComponent implements OnInit {
       this.usuario.nombre,
       this.usuario.apellidoPaterno,
       this.usuario.apellidoMaterno,
-      this.usuario.email,
+      this.usuario.correo,
       contrasenia,
       this.usuario.nombreUsuario
     ).subscribe({
@@ -386,6 +398,7 @@ continuarCurso(idCurso: number) {
 
   logout() {
     console.log('Cerrando sesión...');
-    this.router.navigate(['/login']);
+    localStorage.clear();
+    this.router.navigate(['/home/inicio']);
   }
 }
