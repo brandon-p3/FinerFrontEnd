@@ -104,8 +104,7 @@ body {
   transition: all 0.3s ease;
 }
 
-.filter-dropdown select:focus {
-  outline: none;
+.filter-dropdown select:focus {utline: none;
   border-color: #8EC3B0;
   box-shadow: 0 0 0 3px rgba(142, 195, 176, 0.2);
   background-color: #fff;
@@ -218,6 +217,20 @@ body {
   font-weight: 600;
   line-height: 1.4;
 }
+.titulo-h3 {
+  font-size: 1.75rem;   /* Tamaño más grande */
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+}
+
+.titulo-h4 {
+  font-size: 1.25rem;   /* Más pequeño que el h3 */
+  font-weight: 500;
+  color: #34495e;
+  margin-bottom: 0.5rem;
+}
+
 
 .course-description {
   color: #6c757d;

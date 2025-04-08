@@ -23,10 +23,11 @@
       <div class="filter-options">
         <div class="filter-dropdown">
           <select [(ngModel)]="categoriaSeleccionada" (change)="onCategoriaChange($event)">
-            <option value="">Todas las categorías</option>
-            <option value="programacion">Programación</option>
-            <option value="diseño">Diseño</option>
-            <option value="marketing">Marketing</option>
+            <option value="">Filtrar por categoría</option>
+            <option *ngFor="let categoria of categoriasUnicas" [value]="categoria">
+              {{ categoria }}
+            </option>
+
           </select>
           <i class="fa-solid fa-chevron-down dropdown-icon"></i>
         </div>
@@ -49,12 +50,14 @@
         <div *ngFor="let curso of cursosFiltrados" class="course-card">
           <div class="curso-imagen">
             <img [src]="curso.imagen" alt="Imagen de {{ curso.tituloCurso }}"
-              onerror="this.src='assets/images/default-curso.jpg'">
+            onerror="this.src='assets/default-curso.jpg'">
           </div>
 
           <div class="course-info">
             <h3 class="course-title">{{ curso.tituloCurso }}</h3>
+            <h4 class="course-description">{{ curso.nombreCategoria }}</h4>
             <p class="course-description">{{ curso.descripcion }}</p>
+
 
             <div class="course-actions">
               <button class="btn-primary" (click)="accederCurso(curso)">
