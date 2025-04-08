@@ -110,14 +110,26 @@ export class PerfilAlumnoComponent implements OnInit {
 
   cargarMisCursos() {
     this.alumnoService.obtenerMisCursos(this.usuario.idUsuario).subscribe({
-      next: (cursos: any[]) => {
-        console.log('Cursos obtenidos del backend:', cursos);
-        this.cursos = cursos.map(curso => ({
-          ...curso,
-          progreso: 0,
-          ultimaActividad: ''
-        }));
-        this.obtenerProgresoDeCursos();
+      next: (response: any) => {
+        console.log('Respuesta del backend:', response);
+        
+        // Verifica si es un array (lista de cursos) o un objeto con mensaje
+        if (Array.isArray(response)) {
+          this.cursos = response.map(curso => ({
+            ...curso,
+            progreso: 0,
+            ultimaActividad: ''
+          }));
+        } else {
+          // Si es un objeto con mensaje y cursos vacíos
+          if (response.cursos) {
+            this.cursos = [];
+          }
+        }
+        
+        if (this.cursos.length > 0) {
+          this.obtenerProgresoDeCursos();
+        }
       },
       error: (error) => {
         console.error('Error al obtener cursos:', error);

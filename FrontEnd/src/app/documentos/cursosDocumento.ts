@@ -11,8 +11,6 @@ export interface Curso {
     instructor: string;
     categoria: string;
     cantidadTemas: string;
-
-
 }
 
 export interface contenidoCurso{
@@ -52,5 +50,5 @@ export interface CursoCertificadoResumenDTO {
     nombreInstructor: string;
     matricula: string;
     fechaInscripcion: string;
-    //fechaGeneracion: string
+    fechaGeneracion: string
 }
