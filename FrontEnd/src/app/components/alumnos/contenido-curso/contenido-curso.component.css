@@ -49,7 +49,7 @@ body {
 
 .btn-volver:hover {
   background-color: var(--color-primario);
-  color: rgb(255, 255, 255);
+  color: rgb(159, 197, 159);
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }

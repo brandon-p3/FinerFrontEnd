@@ -1,58 +1,161 @@
-<div class="container">
-    <div class="logo">
-        <img src="assets/logo.png" alt="Logo Finnen">
-        <h1>Bienvenido a Finner</h1>
+<div class="registro-container">
+  <div class="logo">
+    <img src="assets/logo.png" alt="Logo Finer" class="logo">
+    <h1>Regístrate en Finer</h1>
+  </div>
+  
+  <form (ngSubmit)="registrar()" #registroForm="ngForm" class="registro-form">
+    <!-- Campos comunes -->
+    <div class="form-group">
+      <label for="nombre">Nombre*</label>
+      <input [(ngModel)]="usuario.nombre" id="nombre" name="nombre" 
+             placeholder="Ej. Juan" required minlength="2" maxlength="50"
+             pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+" #nombreInput="ngModel">
+      <div *ngIf="nombreInput.invalid && (nombreInput.dirty || nombreInput.touched)"
+           class="text-danger">
+        <small *ngIf="nombreInput.errors?.['required']">Este campo es requerido</small>
+        <small *ngIf="nombreInput.errors?.['minlength']">Mínimo 2 caracteres</small>
+        <small *ngIf="nombreInput.errors?.['pattern']">Solo letras permitidas</small>
+      </div>
     </div>
-    <form>
-        <div class="form-row">
-            <div class="form-column">
-                <div class="form-group">
-                    <label for="nombre">Nombre</label>
-                    <input type="text" id="nombre" name="nombre" required>
-                </div>
-                <div class="form-group">
-                    <label for="apellidoPaterno">Apellido Paterno</label>
-                    <input type="text" id="apellidoPaterno" name="apellidoPaterno" required>
-                </div>
-                <div class="form-group">
-                    <label for="apellidoMaterno">Apellido Materno</label>
-                    <input type="text" id="apellidoMaterno" name="apellidoMaterno" required>
-                </div>
-            </div>
-            <div class="form-column">
-                <div class="form-group">
-                    <label for="correoElectronico">Correo Electrónico</label>
-                    <input type="email" id="correoElectronico" name="correoElectronico" required>
-                </div>
-                <div class="form-group">
-                    <label for="contrasena">Contraseña</label>
-                    <input type="password" id="contrasena" name="contrasena" required>
-                </div>
-                <div class="form-group">
-                    <label for="verificacionContrasena">Verificación de Contraseña</label>
-                    <input type="password" id="verificacionContrasena" name="verificacionContrasena" required>
-                </div>
-            </div>
+
+    <div class="form-group">
+      <label for="apellidoPaterno">Apellido Paterno*</label>
+      <input [(ngModel)]="usuario.apellidoPaterno" id="apellidoPaterno" name="apellidoPaterno" 
+             placeholder="Ej. Pérez" required minlength="2" maxlength="50"
+             pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+" #apellidoPInput="ngModel">
+      <div *ngIf="apellidoPInput.invalid && (apellidoPInput.dirty || apellidoPInput.touched)"
+           class="text-danger">
+        <small *ngIf="apellidoPInput.errors?.['required']">Este campo es requerido</small>
+        <small *ngIf="apellidoPInput.errors?.['minlength']">Mínimo 2 caracteres</small>
+        <small *ngIf="apellidoPInput.errors?.['pattern']">Solo letras permitidas</small>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="apellidoMaterno">Apellido Materno</label>
+      <input [(ngModel)]="usuario.apellidoMaterno" id="apellidoMaterno" name="apellidoMaterno" 
+             placeholder="Ej. López" minlength="2" maxlength="50"
+             pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+" #apellidoMInput="ngModel">
+      <div *ngIf="apellidoMInput.invalid && (apellidoMInput.dirty || apellidoMInput.touched)"
+           class="text-danger">
+        <small *ngIf="apellidoMInput.errors?.['minlength']">Mínimo 2 caracteres</small>
+        <small *ngIf="apellidoMInput.errors?.['pattern']">Solo letras permitidas</small>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="correo">Correo Electrónico*</label>
+      <input [(ngModel)]="usuario.correo" id="correo" name="correo" type="email"
+             placeholder="Ej. juan@example.com" required
+             pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" #correoInput="ngModel">
+      <div *ngIf="correoInput.invalid && (correoInput.dirty || correoInput.touched)"
+           class="text-danger">
+        <small *ngIf="correoInput.errors?.['required']">Este campo es requerido</small>
+        <small *ngIf="correoInput.errors?.['pattern']">Ingresa un correo válido</small>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="contrasenia">Contraseña*</label>
+      <input [(ngModel)]="usuario.contrasenia" id="contrasenia" name="contrasenia" 
+             type="password" placeholder="Mínimo 8 caracteres" required
+             minlength="8" pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$" #contraseniaInput="ngModel">
+      <div *ngIf="contraseniaInput.invalid && (contraseniaInput.dirty || contraseniaInput.touched)"
+           class="text-danger">
+        <small *ngIf="contraseniaInput.errors?.['required']">Este campo es requerido</small>
+        <small *ngIf="contraseniaInput.errors?.['minlength']">Mínimo 8 caracteres</small>
+        <small *ngIf="contraseniaInput.errors?.['pattern']">
+          Debe incluir al menos una letra mayúscula, una letra minúscula y un número
+        </small>
+      </div>
+    </div>    
+
+    <div class="form-group">
+      <label for="nombreUsuario">Nombre de Usuario*</label>
+      <input [(ngModel)]="usuario.nombreUsuario" id="nombreUsuario" name="nombreUsuario" 
+             placeholder="Ej. juan123" required minlength="4" maxlength="20"
+             pattern="[a-zA-Z0-9]+" #usuarioInput="ngModel">
+      <div *ngIf="usuarioInput.invalid && (usuarioInput.dirty || usuarioInput.touched)"
+           class="text-danger">
+        <small *ngIf="usuarioInput.errors?.['required']">Este campo es requerido</small>
+        <small *ngIf="usuarioInput.errors?.['minlength']">Mínimo 4 caracteres</small>
+        <small *ngIf="usuarioInput.errors?.['pattern']">
+          Solo letras y números permitidos
+        </small>
+      </div>
+    </div>
+
+    <!-- Checkbox para instructor -->
+    <div class="checkbox-container">
+      <label class="checkbox-label">
+        <input type="checkbox" [(ngModel)]="esInstructor" name="esInstructor" 
+               (change)="usuario.telefono = ''; usuario.direccion = ''; usuario.cedula = ''"> 
+        <span>Registrarme como Instructor</span>
+      </label>
+    </div>
+
+    <!-- Campos adicionales para instructor -->
+    <div *ngIf="esInstructor" class="instructor-fields">
+      <div class="form-group">
+        <label for="telefono">Teléfono*</label>
+        <input [(ngModel)]="usuario.telefono" id="telefono" name="telefono" 
+               placeholder="Ej. 5512345678" required pattern="[0-9]{10}" #telefonoInput="ngModel">
+        <div *ngIf="telefonoInput.invalid && (telefonoInput.dirty || telefonoInput.touched)"
+             class="text-danger">
+          <small *ngIf="telefonoInput.errors?.['required']">Este campo es requerido</small>
+          <small *ngIf="telefonoInput.errors?.['pattern']">Debe tener 10 dígitos numéricos</small>
         </div>
-        <div class="form-group checkbox-group">
-            <label class="checkbox-label">
-                <input type="checkbox" id="soyInstructor" name="soyInstructor" (change)="toggleInstructorFields()"> Solicitud de Instructor
-            </label>
+      </div>
+
+      <div class="form-group">
+        <label for="direccion">Dirección*</label>
+        <input [(ngModel)]="usuario.direccion" id="direccion" name="direccion" 
+               placeholder="Ej. Calle Falsa 123, CDMX" required minlength="10" #direccionInput="ngModel">
+        <div *ngIf="direccionInput.invalid && (direccionInput.dirty || direccionInput.touched)"
+             class="text-danger">
+          <small *ngIf="direccionInput.errors?.['required']">Este campo es requerido</small>
+          <small *ngIf="direccionInput.errors?.['minlength']">Mínimo 10 caracteres</small>
         </div>
-        <div id="instructorFields" [class.hidden]="!showInstructorFields">
-            <div class="form-group">
-                <label for="numeroTelefonico">Número Telefónico</label>
-                <input type="tel" id="numeroTelefonico" name="numeroTelefonico">
-            </div>
-            <div class="form-group">
-                <label for="direccion">Dirección</label>
-                <input type="text" id="direccion" name="direccion">
-            </div>
-            <div class="form-group">
-                <label for="certificado">Certificado</label>
-                <input type="file" id="certificado" name="certificado">
-            </div>
+      </div>
+
+      <div class="form-group">
+        <label for="cedula">Cédula Profesional (URL)*</label>
+        <input [(ngModel)]="usuario.cedula" id="cedula" name="cedula" 
+               placeholder="Ej. https://drive.google.com/cedula" required
+               pattern="https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)"
+               #cedulaInput="ngModel">
+        <div *ngIf="cedulaInput.invalid && (cedulaInput.dirty || cedulaInput.touched)"
+             class="text-danger">
+          <small *ngIf="cedulaInput.errors?.['required']">La URL de la cédula es requerida</small>
+          <small *ngIf="cedulaInput.errors?.['pattern']">
+            Debe ser una URL válida (ej: https://drive.google.com/cedula)
+          </small>
         </div>
-        <button type="submit">Registrarme</button>
-    </form>
+        <div *ngIf="cedulaInput.valid && cedulaInput.touched" class="text-success">
+          <small><i class="fas fa-check-circle"></i> Formato de URL válido</small>
+        </div>
+      </div>      
+    </div>
+
+    <!-- Mensajes de feedback -->
+    <div *ngIf="errorMessage" class="alert alert-danger">
+      <i class="fas fa-exclamation-circle"></i> {{ errorMessage }}
+    </div>
+
+    <div *ngIf="successMessage" class="alert alert-success">
+      <i class="fas fa-check-circle"></i> {{ successMessage }}
+    </div>
+
+    <button type="submit" class="btn-registrarme" [disabled]="!registroForm.valid || isLoading">
+      <span *ngIf="!isLoading">Registrarse</span>
+      <span *ngIf="isLoading">
+        <i class="fas fa-spinner fa-spin"></i> Procesando...
+      </span>
+    </button>
+
+    <div class="form-footer">
+      <small>Los campos marcados con * son obligatorios</small>
+    </div>
+  </form>
 </div>

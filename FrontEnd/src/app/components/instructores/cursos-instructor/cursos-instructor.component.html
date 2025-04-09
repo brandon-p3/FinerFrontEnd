@@ -139,14 +139,11 @@
                                     {{ selectedCourse.descripcion }}
                                 </div>
                             </div>
-                            </div>
                         </div>
                     </div>
                 </div>
-                
-                
-           
-        
+            </div>
+            
             <!-- Sección de Temas -->
             <div class="temas-section">
                 <h4 class="section-title">Temas del Curso</h4>
@@ -173,16 +170,107 @@
         </div>
 
         <div class="modal-actions">
-            <button class="action-btn edit-btn" 
-                [disabled]="shouldDisableEdit(selectedCourse)"
-                (click)="enviarARevision()">
-                {{ selectedCourse.estatus === 'Rechazado' ? 'Reenviar a Revisión' : 'Editar' }}
+            <!-- Botón de evaluación - condición modificada para mayor flexibilidad -->
+            <button class="action-btn evaluacion-btn" 
+                    (click)="openEvaluacionModal(selectedCourse)"
+                    *ngIf="selectedCourse.estatus === 'Aprobado' || selectedCourse.estatus === 'aprobado'">
+                Gestionar Evaluación
             </button>
+            
             <button class="action-btn temas-btn" (click)="openTemaModal(selectedCourse)">Gestionar Temas</button>
             <button class="action-btn close-btn" (click)="closePreviewModal()">Cerrar</button>
         </div>
     </div>
 </div>
+
+<!-- Modal para la evaluación -->
+<div *ngIf="showEvaluacionModal && selectedCourseForEvaluacion" class="modal-overlay evaluacion-modal-overlay">
+    <div class="modal-content evaluacion-modal-content">
+        <button class="close-modal-btn" (click)="closeEvaluacionModal()">&times;</button>
+        
+        <div class="modal-header">
+            <h2>Gestionar Evaluación - {{selectedCourseForEvaluacion.titulo}}</h2>
+            <div class="modal-status" [ngClass]="{
+                'approved': selectedCourseForEvaluacion.estatus === 'Aprobado' || selectedCourseForEvaluacion.estatus === 'aprobado'
+            }">
+                {{selectedCourseForEvaluacion.estatus}}
+            </div>
+        </div>
+        <div class="modal-body">
+            <div class="evaluacion-form" *ngIf="!existingEvaluacion">
+                <div class="modal-body">
+                    <div class="form-group">
+                      <label>Título de la Evaluación</label>
+                      <input type="text" class="form-control" 
+                             [(ngModel)]="nuevaEvaluacion.tituloEvaluacion"
+                             placeholder="Ingrese el título de la evaluación">
+                    </div>
+                    
+                    <div class="preguntas-section">
+                      <h4>Preguntas</h4>
+                      
+                      <div *ngFor="let pregunta of nuevaEvaluacion.preguntas; let i = index" class="pregunta-item">
+                        <div class="pregunta-header">
+                          <h5>Pregunta {{i + 1}}</h5>
+                          <button class="btn btn-danger btn-sm" (click)="removePregunta(i)">
+                            Eliminar
+                          </button>
+                        </div>
+                        
+                        <div class="form-group">
+                          <label>Texto de la Pregunta</label>
+                          <input type="text" class="form-control" 
+                                 [(ngModel)]="pregunta.pregunta"
+                                 placeholder="Ingrese la pregunta" required>
+                        </div>
+                        
+                        <div class="opciones-section">
+                          <label>Opciones de Respuesta</label>
+                          
+                          <div *ngFor="let opcion of pregunta.opciones; let j = index" class="opcion-item">
+                            <div class="opcion-controls">
+                              <input type="text" class="form-control" 
+                                     [(ngModel)]="opcion.textoOpcion"
+                                     placeholder="Texto de la opción">
+                              
+                              <label class="checkbox-container">
+                                <input type="checkbox" [(ngModel)]="opcion.verificar">
+                                <span class="checkmark"></span>
+                                Correcta
+                              </label>
+                              
+                              <button class="btn btn-danger btn-sm" 
+                                      (click)="removeOpcion(i, j)"
+                                      [disabled]="pregunta.opciones.length <= 2">
+                                Eliminar
+                              </button>
+                            </div>
+                          </div>
+                          
+                          <button class="btn btn-primary btn-sm" (click)="addOpcion(i)">
+                            + Agregar Opción
+                          </button>
+                        </div>
+                      </div>
+                      
+                      <button class="btn btn-primary" (click)="addPregunta()">
+                        + Agregar Pregunta
+                      </button>
+                    </div>
+                  </div>
+              
+                  <div class="modal-footer">
+                    <button class="btn btn-success" 
+                    (click)="crearEvaluacion()"
+                    [disabled]="!esEvaluacionValida()">
+              Guardar Evaluación
+            </button>
+                    <button class="btn btn-secondary" (click)="closeEvaluacionModal()">
+                      Cancelar
+                    </button>
+                  </div>
+                </div>
+              </div>
 
 <!-- Modal de Edición Mejorado -->
 <div *ngIf="showEditModal" class="modal-overlay edit-modal-overlay">
@@ -205,16 +293,12 @@
             
             <div class="form-group">
                 <label for="categoria">Categoría</label>
-                <div class="category-selector">
-                    <input type="text" id="categoria" [(ngModel)]="editFormData.categoria" 
-                        placeholder="Busque y seleccione una categoría"
-                        (input)="buscarCategoriaPorNombre(editFormData.categoria)"
-                        class="form-input">
-                    <div *ngIf="categoriaSeleccionada" class="selected-category">
-                        <span class="category-name">{{ categoriaSeleccionada.nombreCategoria }}</span>
-                        <button class="clear-category" (click)="clearCategory()">×</button>
-                    </div>
-                </div>
+                <select id="categoria" class="form-control" [(ngModel)]="editFormData.idCategoria">
+                    <option value="">Seleccione una categoría</option>
+                    <option *ngFor="let categoria of categorias" [value]="categoria.idCategoria">
+                        {{categoria.nombreCategoria}}
+                    </option>
+                </select>
             </div>
             
             <div class="form-group">
@@ -264,6 +348,7 @@
         </div>
 
         <div class="modal-body">
+            <!-- Formulario para agregar/editar temas -->
             <div class="form-group">
                 <label>Título del Tema</label>
                 <input type="text" class="form-control" [(ngModel)]="nuevoTema.nombre" 
@@ -280,21 +365,26 @@
                 <p>Cargando temas...</p>
             </div>
 
+            <!-- Lista de temas registrados - Versión corregida -->
             <div *ngIf="!temasLoading && temasDelCurso.length > 0" class="temas-list">
                 <h4 class="temas-title">Temas Registrados</h4>
-                <div *ngFor="let tema of temasDelCurso" class="tema-item">
+                <div *ngFor="let tema of temasDelCurso; let i = index" class="tema-item">
                     <div class="tema-header">
-                        <h5 class="tema-nombre">{{tema.nombre}}</h5>
+                        <h5 class="tema-nombre">
+                            <span class="tema-number">Tema {{i+1}}:</span> 
+                            {{tema.nombre }}
+                        </h5>
                         <div class="tema-actions">
                             <button *ngIf="canEditCourse(selectedCourseForTema)" 
                                     class="action-btn edit-btn" 
-                                    (click)="editarTema(tema)"
+                                    (click)="cargarTemaParaEdicion(tema)"
                                     [disabled]="isLoading">
                                 Editar
                             </button>
+    
                         </div>
                     </div>
-                    <div class="tema-contenido">{{tema.contenido}}</div>
+                    <div class="tema-contenido">{{tema.contenido || 'Sin contenido'}}</div>
                 </div>
             </div>
             
@@ -324,12 +414,12 @@
                 </button>
                 
                 <button *ngIf="canSendToReview(selectedCourseForTema)" 
-                class="send-review-btn" 
-                (click)="enviarARevision()"
-                [disabled]="isLoading || temasDelCurso.length === 0"
-                [title]="temasDelCurso.length === 0 ? 'Debes agregar al menos un tema' : ''">
-            <i class="fas fa-paper-plane"></i> Enviar a Revisión
-        </button>
+                        class="send-review-btn" 
+                        (click)="enviarARevision()"
+                        [disabled]="isLoading || temasDelCurso.length === 0"
+                        [title]="temasDelCurso.length === 0 ? 'Debes agregar al menos un tema' : ''">
+                    <i class="fas fa-paper-plane"></i> Enviar a Revisión
+                </button>
                 
                 <button class="action-btn close-btn" 
                         (click)="closeTemaModal()"
@@ -367,6 +457,7 @@
         
         <div class="confirmation-actions">
             <button class="btn cancel-btn" (click)="cancelDeleteTema()">Cancelar</button>
+            <button class="btn delete-btn" (click)="deleteTema()">Eliminar</button>
         </div>
     </div>
 </div>

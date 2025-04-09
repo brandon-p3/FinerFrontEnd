@@ -353,8 +353,14 @@ button:hover {
     transform: scale(1.05); /* Efecto de escala al pasar el ratón */
 }
 
-.download-btn, .continuar-btn, .ver-certificado-btn {
+.download-btn, .continuar-btn, .ver-certificado-btn{
     background-color: #8EC3B0; /* Verde claro */
+}
+
+.danger-btn{
+    background-color: #E57373;
+    padding: 10px 20px;
+    margin-left: 10spx;
 }
 
 .download-btn:hover, .continuar-btn:hover, .ver-certificado-btn:hover {
