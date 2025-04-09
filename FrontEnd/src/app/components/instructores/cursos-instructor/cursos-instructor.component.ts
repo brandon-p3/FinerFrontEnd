@@ -60,19 +60,19 @@ export class CursosInstructorComponent implements OnInit {
   currentPage = 'mis-cursos';
   searchQuery = '';
   sortOption = 'asc';
-  
+
   cursos: CursoVerDTO[] = [];
   filteredCourses: CursoVerDTO[] = [];
   isLoading = false;
   errorMessage = '';
   courseToDelete: number | null = null;
   showDeleteModal = false;
-  
+
   temaToDelete: number | null = null;
   showDeleteTemaModal = false;
-  
+
   noHayCursos: boolean = false;
-  
+
   showPreviewModal = false;
   selectedCourse: CursoVerDTO | null = null;
   previewLoading = false;
@@ -143,14 +143,14 @@ export class CursosInstructorComponent implements OnInit {
 
   loadCursos() {
     if (!this.usuario.idUsuario) return;
-    
+
     this.isLoading = true;
     this.errorMessage = '';
     this.noHayCursos = false;
-    
+
     this.cursos = [];
     this.filteredCourses = [];
-  
+
     this.cursoService.verCursosInstructor(this.usuario.idUsuario).subscribe({
       next: (cursos) => {
         if (cursos && cursos.length > 0) {
@@ -192,10 +192,10 @@ export class CursosInstructorComponent implements OnInit {
       return;
     }
 
-    const encontrada = this.categorias.find(c => 
+    const encontrada = this.categorias.find(c =>
       c.nombreCategoria.toLowerCase().includes(nombre.toLowerCase())
     );
-    
+
     if (encontrada) {
       this.categoriaSeleccionada = encontrada;
     } else {
@@ -203,7 +203,7 @@ export class CursosInstructorComponent implements OnInit {
       this.categoriaSeleccionada = null;
     }
   }
-  
+
   toggleMenu() {
     this.menuOpen = !this.menuOpen;
   }
@@ -221,9 +221,9 @@ export class CursosInstructorComponent implements OnInit {
   navigateTo(page: string) {
     this.currentPage = page;
     this.menuOpen = false;
-    
+
     if (page === 'cursos') {
-        this.router.navigate(['/instructor/cursos']);
+      this.router.navigate(['/instructor/cursos']);
     }
   }
 
@@ -250,7 +250,7 @@ export class CursosInstructorComponent implements OnInit {
     this.router.navigate(['/instructor/crear-curso']);
   }
 
-  perfil(){
+  perfil() {
     this.currentPage = 'perfil';
     this.router.navigate(['/instructor/perfil']);
   }
@@ -301,8 +301,9 @@ export class CursosInstructorComponent implements OnInit {
       descripcion: curso.descripcion || '',
       categoria: curso.categoria || '',
       imagenUrl: curso.imagen ? this.getImageUrl(curso.imagen) : '',
+      estatus: curso.estatus
     };
-    
+
     this.buscarCategoriaPorNombre(curso.categoria || '');
     this.showEditModal = true;
     this.isEditing = true;
@@ -310,15 +311,15 @@ export class CursosInstructorComponent implements OnInit {
 
   getImageUrl(imagen: string): string {
     if (!imagen) return 'assets/images/default-course.jpg';
-    
+
     if (imagen.startsWith('http') || imagen.startsWith('data:')) {
       return imagen;
     }
-    
+
     if (imagen.startsWith('assets/')) {
       return imagen;
     }
-    
+
     return imagen;
   }
 
@@ -337,8 +338,8 @@ export class CursosInstructorComponent implements OnInit {
 
   submitEditForm() {
     if (!this.editFormData.titulo || !this.editFormData.descripcion || !this.editFormData.categoria) {
-        this.errorMessage = 'Por favor complete todos los campos requeridos';
-        return;
+      this.errorMessage = 'Por favor complete todos los campos requeridos';
+      return;
     }
 
     Swal.fire({
@@ -365,15 +366,24 @@ export class CursosInstructorComponent implements OnInit {
     const idCategoria = categoriaSeleccionada ? categoriaSeleccionada.idCategoria : 0;
 
     const cursoData: CursoEditarDTO = {
-        idCurso: this.editFormData.idCurso,
-        idInstructor: this.editFormData.idInstructor,
-        titulo: this.editFormData.titulo,
-        descripcion: this.editFormData.descripcion,
-        imagen: this.editFormData.imagenUrl,
-        idCategoria: idCategoria
+      idCurso: this.editFormData.idCurso,
+      idInstructor: this.editFormData.idInstructor,
+      titulo: this.editFormData.titulo,
+      descripcion: this.editFormData.descripcion,
+      imagen: this.editFormData.imagenUrl,
+      idCategoria: idCategoria
     };
 
-    this.cursoService.editarCurso(cursoData).subscribe({
+    const cursoDataSolicitud: any = {
+      idSolicitudCurso: this.editFormData.idCurso,
+      idUsuarioInstructor: this.editFormData.idInstructor,
+      tituloCursoSolicitado: this.editFormData.titulo,
+      descripcion: this.editFormData.descripcion,
+      imagen: this.editFormData.imagenUrl,
+      idCategoria: idCategoria
+    };
+    if (this.editFormData.estatus == 'rechazada') {
+      this.cursoService.editarCursoRechazado(cursoDataSolicitud).subscribe({
         next: (response) => {
           Swal.fire(
             '¡Guardado!',
@@ -384,19 +394,46 @@ export class CursosInstructorComponent implements OnInit {
           this.closeEditModal();
         },
         error: (error) => {
-            console.error('Error al editar el curso', error);
-            Swal.fire(
-              'Error',
-              error.error?.message || 'No se pudo actualizar el curso.',
-              'error'
-            );
-            this.errorMessage = error.error?.message || 'No se pudo actualizar el curso.';
-            this.isLoading = false;
+          console.error('Error al editar el curso', error);
+          Swal.fire(
+            'Error',
+            error.error?.message || 'No se pudo actualizar el curso.',
+            'error'
+          );
+          this.errorMessage = error.error?.message || 'No se pudo actualizar el curso.';
+          this.isLoading = false;
         },
         complete: () => {
-            this.isLoading = false;
+          this.isLoading = false;
         }
-    });
+      });
+    } else {
+
+      this.cursoService.editarCurso(cursoData).subscribe({
+        next: (response) => {
+          Swal.fire(
+            '¡Guardado!',
+            'Los cambios se han guardado correctamente.',
+            'success'
+          );
+          this.loadCursos();
+          this.closeEditModal();
+        },
+        error: (error) => {
+          console.error('Error al editar el curso', error);
+          Swal.fire(
+            'Error',
+            error.error?.message || 'No se pudo actualizar el curso.',
+            'error'
+          );
+          this.errorMessage = error.error?.message || 'No se pudo actualizar el curso.';
+          this.isLoading = false;
+        },
+        complete: () => {
+          this.isLoading = false;
+        }
+      });
+    }
   }
 
   closeEditModal() {
@@ -418,31 +455,31 @@ export class CursosInstructorComponent implements OnInit {
 
   confirmDelete(curso: CursoVerDTO) {
     if (this.shouldDisableDelete(curso)) {
-        let message = '';
-        
-        switch(curso.estatus) {
-            case this.COURSE_STATUS.REJECTED:
-                message = 'No puedes eliminar un curso rechazado. Puedes editarlo y volver a enviarlo a revisión.';
-                break;
-            case this.COURSE_STATUS.PENDING:
-                message = 'No puedes eliminar un curso pendiente de revisión.';
-                break;
-            case this.COURSE_STATUS.IN_REVIEW:
-                message = 'No puedes eliminar un curso en proceso de revisión.';
-                break;
-            default:
-                message = 'Acción no permitida para este estado.';
-        }
-        
-        Swal.fire({
-            title: 'Acción no permitida',
-            text: message,
-            icon: 'warning',
-            confirmButtonText: 'Entendido'
-        });
-        return;
+      let message = '';
+
+      switch (curso.estatus) {
+        case this.COURSE_STATUS.REJECTED:
+          message = 'No puedes eliminar un curso rechazado. Puedes editarlo y volver a enviarlo a revisión.';
+          break;
+        case this.COURSE_STATUS.PENDING:
+          message = 'No puedes eliminar un curso pendiente de revisión.';
+          break;
+        case this.COURSE_STATUS.IN_REVIEW:
+          message = 'No puedes eliminar un curso en proceso de revisión.';
+          break;
+        default:
+          message = 'Acción no permitida para este estado.';
+      }
+
+      Swal.fire({
+        title: 'Acción no permitida',
+        text: message,
+        icon: 'warning',
+        confirmButtonText: 'Entendido'
+      });
+      return;
     }
-    
+
     this.courseToDelete = curso.idCurso;
     this.showDeleteModal = true;
   }
@@ -503,7 +540,7 @@ export class CursosInstructorComponent implements OnInit {
       });
     }
   }
-  
+
   logout() {
     Swal.fire({
       title: '¿Cerrar sesión?',
@@ -529,10 +566,13 @@ export class CursosInstructorComponent implements OnInit {
     this.cargarTemasDelCurso();
     this.showTemaModal = true;
   }
+  cargarTemaParaEdicion(tema: TemaDTO): void {
+    this.editarTema(tema);
+  }
 
   cargarTemasDelCurso(): void {
     if (!this.selectedCourseForTema) return;
-    
+
     this.temasLoading = true;
     this.cursoService.verTemasSolicitadosPorCurso(this.selectedCourseForTema.idCurso).subscribe({
       next: (temas: TemaDTO[]) => {
@@ -556,12 +596,12 @@ export class CursosInstructorComponent implements OnInit {
 
   agregarTema(): void {
     if (!this.nuevoTema.nombre || !this.nuevoTema.contenido) {
-        Swal.fire('Error', 'Debes completar todos los campos del tema', 'error');
-        return;
+      Swal.fire('Error', 'Debes completar todos los campos del tema', 'error');
+      return;
     }
 
     this.isLoading = true;
-    
+
     if (this.editingTema) {
       // Edición de tema existente
       const solicitudTemaDTO: SolicitudTemaEditarDTO = {
@@ -595,7 +635,7 @@ export class CursosInstructorComponent implements OnInit {
         this.isLoading = false;
         return;
       }
-      
+
       console.log('Agregando nuevo tema:', {
         idSolicitudCurso: this.selectedCourseForTema.idCurso,
         nombreTema: this.nuevoTema.nombre,
@@ -625,23 +665,23 @@ export class CursosInstructorComponent implements OnInit {
 
   editarTema(tema: TemaDTO): void {
     if (!this.usuario?.idUsuario) {
-        console.error('ID de usuario no disponible');
-        return;
+      console.error('ID de usuario no disponible');
+      return;
     }
 
     console.log('Editando tema:', tema);
 
     this.editingTema = {
-        id: tema.idSolicitudTema, // Usar idSolicitudTema en lugar de id
-        idSolicitudTema: tema.idSolicitudTema, // Mantener el id original
-        idSolicitudCurso: tema.idSolicitudCurso, // Mantener el id del curso
-        nombre: tema.nombre || '',
-        contenido: tema.contenido || ''
+      id: tema.idSolicitudTema, // Usar idSolicitudTema en lugar de id
+      idSolicitudTema: tema.idSolicitudTema, // Mantener el id original
+      idSolicitudCurso: tema.idSolicitudCurso, // Mantener el id del curso
+      nombre: tema.nombre || '',
+      contenido: tema.contenido || ''
     };
-    
+
     this.nuevoTema = {
-        nombre: this.editingTema.nombre,
-        contenido: this.editingTema.contenido
+      nombre: this.editingTema.nombre,
+      contenido: this.editingTema.contenido
     };
   }
 
@@ -652,52 +692,52 @@ export class CursosInstructorComponent implements OnInit {
 
   enviarARevision(): void {
     if (!this.selectedCourseForTema?.idCurso) {
-        Swal.fire('Error', 'No se ha seleccionado un curso válido', 'error');
-        return;
+      Swal.fire('Error', 'No se ha seleccionado un curso válido', 'error');
+      return;
     }
 
     if (this.temasDelCurso.length === 0) {
-        Swal.fire('Error', 'Debes agregar al menos un tema', 'error');
-        return;
+      Swal.fire('Error', 'Debes agregar al menos un tema', 'error');
+      return;
     }
 
     console.log('Enviando curso a revisión:', this.selectedCourseForTema.idCurso);
 
     Swal.fire({
-        title: '¿Enviar a revisión?',
-        text: '¿Estás seguro de que deseas enviar este curso a revisión?',
-        icon: 'question',
-        showCancelButton: true,
-        confirmButtonText: 'Sí, enviar',
-        cancelButtonText: 'Cancelar'
+      title: '¿Enviar a revisión?',
+      text: '¿Estás seguro de que deseas enviar este curso a revisión?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, enviar',
+      cancelButtonText: 'Cancelar'
     }).then((result) => {
-        if (result.isConfirmed) {
-            this.isLoading = true;
-            
-            this.cursoService.enviarARevision(this.selectedCourseForTema!.idCurso).subscribe({
-                next: (response) => {
-                    console.log('Respuesta del servidor al enviar a revisión:', response);
-                    Swal.fire({
-                        title: '¡Éxito!',
-                        text: 'Curso enviado a revisión correctamente',
-                        icon: 'success'
-                    });
-                    this.closeTemaModal();
-                    this.loadCursos();
-                },
-                error: (error) => {
-                    console.error('Error:', error);
-                    Swal.fire({
-                        title: 'Error',
-                        text: error.error?.message || 'Error al enviar a revisión',
-                        icon: 'error'
-                    });
-                },
-                complete: () => {
-                    this.isLoading = false;
-                }
+      if (result.isConfirmed) {
+        this.isLoading = true;
+
+        this.cursoService.enviarARevision(this.selectedCourseForTema!.idCurso).subscribe({
+          next: (response) => {
+            console.log('Respuesta del servidor al enviar a revisión:', response);
+            Swal.fire({
+              title: '¡Éxito!',
+              text: 'Curso enviado a revisión correctamente',
+              icon: 'success'
             });
-        }
+            this.closeTemaModal();
+            this.loadCursos();
+          },
+          error: (error) => {
+            console.error('Error:', error);
+            Swal.fire({
+              title: 'Error',
+              text: error.error?.message || 'Error al enviar a revisión',
+              icon: 'error'
+            });
+          },
+          complete: () => {
+            this.isLoading = false;
+          }
+        });
+      }
     });
   }
 
@@ -711,14 +751,14 @@ export class CursosInstructorComponent implements OnInit {
 
   canEditCourse(curso: CursoVerDTO | null): boolean {
     if (!curso) return false;
-    return [this.COURSE_STATUS.APPROVED, this.COURSE_STATUS.REJECTED].includes(curso.estatus);
+    return [this.COURSE_STATUS.APPROVED, this.COURSE_STATUS.REJECTED, ].includes(curso.estatus);
   }
 
   canSendToReview(curso: CursoVerDTO | null): boolean {
     if (!curso) return false;
-    
-    return (curso.estatus === this.COURSE_STATUS.REJECTED || 
-           curso.estatus === this.COURSE_STATUS.PENDING) &&
-           this.temasDelCurso.length > 0;
+
+    return (curso.estatus === this.COURSE_STATUS.REJECTED ||
+      curso.estatus === this.COURSE_STATUS.PENDING) &&
+      this.temasDelCurso.length > 0;
   }
 }

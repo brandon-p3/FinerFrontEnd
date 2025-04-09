@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { catchError, Observable, throwError } from 'rxjs';
+import { catchError, Observable, of, throwError } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { CursoVerDTO, VerCategoriasDTO, CursoEditarDTO, TemaDTO, SolicitudTemaEditarDTO } from '../documentos/cursoDocumento';
 import { CONFIG } from '../config/config';
 
@@ -53,6 +54,12 @@ export class CursoServiceService {
       responseType: 'text'
     });
   }
+  editarCursoRechazado(cursoData: any): Observable<any> {
+    return this.http.put(`http://localhost:8080/api/solicitud-curso/editar`, cursoData, {
+      headers: new HttpHeaders({'Content-Type': 'application/json'}),
+      responseType: 'text'
+    });
+  }
 
   crearCurso(params: HttpParams): Observable<any> {
     return this.http.post(
@@ -96,6 +103,7 @@ export class CursoServiceService {
       })
     );
   }
+  
 
   agregarTema(idSolicitudCurso: number, nombreTema: string, contenido: string): Observable<any> {
     const params = new HttpParams()
@@ -113,15 +121,37 @@ export class CursoServiceService {
     );
   }
 
-  verTemasSolicitadosPorCurso(idSolicitudCurso: number): Observable<TemaDTO[]> {
-    const url = `${this.apiUri}/cursos/ver-solicitudes/tema`;
-    return this.http.get<TemaDTO[]>(url, {
-      params: {
-        idSolicitudCurso: idSolicitudCurso.toString()
-      }
-    });
+  verTemasSolicitadosPorCurso(idCurso: number, esAprobado: boolean = false): Observable<TemaDTO[]> {
+    const endpoint = esAprobado 
+      ? `${this.apiUrl}/${idCurso}/temas`  // Endpoint alternativo para cursos aprobados
+      : `${this.apiUrl}/ver-solicitudes/tema`;
+  
+    console.log(`Solicitando temas desde: ${endpoint}`); // Log para depuración
+  
+    return this.http.get<any[]>(endpoint, {
+      params: esAprobado ? {} : { idSolicitudCurso: idCurso.toString() }
+    }).pipe(
+      map(response => {
+        console.log('Respuesta cruda del backend:', response); // Log importante
+        
+        if (!Array.isArray(response)) {
+          console.error('La respuesta no es un array:', response);
+          return [];
+        }
+  
+        return response.map(tema => ({
+          idSolicitudTema: tema.idTema || tema.idSolicitudTema || 0, // Valor por defecto
+          idSolicitudCurso: tema.idCurso || tema.idSolicitudCurso || idCurso,
+          nombre: tema.nombre || tema.nombreTema || 'Tema sin nombre',
+          contenido: tema.contenido || tema.descripcion || 'Sin contenido'
+        }));
+      }),
+      catchError(error => {
+        console.error(`Error obteniendo temas (aprobado: ${esAprobado}):`, error);
+        return of([]); // Retorna array vacío en caso de error
+      })
+    );
   }
-
   // Método actualizado para editar tema según el nuevo controlador Spring
   editarSolicitudTema(solicitudTemaDTO: SolicitudTemaEditarDTO): Observable<any> {
     return this.http.put(
