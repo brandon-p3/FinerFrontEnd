@@ -360,7 +360,7 @@ button:hover {
 .danger-btn{
     background-color: #E57373;
     padding: 10px 20px;
-    margin-left: 10px;
+    margin-left: 10spx;
 }
 
 .download-btn:hover, .continuar-btn:hover, .ver-certificado-btn:hover {
