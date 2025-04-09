@@ -60,16 +60,16 @@
       <label for="contrasenia">Contraseña*</label>
       <input [(ngModel)]="usuario.contrasenia" id="contrasenia" name="contrasenia" 
              type="password" placeholder="Mínimo 8 caracteres" required
-             minlength="8" pattern="^(?=.*[A-Za-z])(?=.*\d).{8,}$" #contraseniaInput="ngModel">
+             minlength="8" pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$" #contraseniaInput="ngModel">
       <div *ngIf="contraseniaInput.invalid && (contraseniaInput.dirty || contraseniaInput.touched)"
            class="text-danger">
         <small *ngIf="contraseniaInput.errors?.['required']">Este campo es requerido</small>
         <small *ngIf="contraseniaInput.errors?.['minlength']">Mínimo 8 caracteres</small>
         <small *ngIf="contraseniaInput.errors?.['pattern']">
-          Debe incluir letras y números
+          Debe incluir al menos una letra mayúscula, una letra minúscula y un número
         </small>
       </div>
-    </div>
+    </div>    
 
     <div class="form-group">
       <label for="nombreUsuario">Nombre de Usuario*</label>
@@ -120,22 +120,22 @@
       </div>
 
       <div class="form-group">
-        <label for="cedula">Cédula Profesional (URL PDF)*</label>
+        <label for="cedula">Cédula Profesional (URL)*</label>
         <input [(ngModel)]="usuario.cedula" id="cedula" name="cedula" 
-               placeholder="Ej. https://drive.google.com/cedula.pdf" required
-               pattern="https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*\.pdf)"
+               placeholder="Ej. https://drive.google.com/cedula" required
+               pattern="https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)"
                #cedulaInput="ngModel">
         <div *ngIf="cedulaInput.invalid && (cedulaInput.dirty || cedulaInput.touched)"
              class="text-danger">
           <small *ngIf="cedulaInput.errors?.['required']">La URL de la cédula es requerida</small>
           <small *ngIf="cedulaInput.errors?.['pattern']">
-            Debe ser una URL válida que termine en .pdf (ej: https://drive.google.com/cedula.pdf)
+            Debe ser una URL válida (ej: https://drive.google.com/cedula)
           </small>
         </div>
         <div *ngIf="cedulaInput.valid && cedulaInput.touched" class="text-success">
           <small><i class="fas fa-check-circle"></i> Formato de URL válido</small>
         </div>
-      </div>
+      </div>      
     </div>
 
     <!-- Mensajes de feedback -->
