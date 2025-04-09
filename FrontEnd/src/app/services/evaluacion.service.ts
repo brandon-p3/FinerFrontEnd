@@ -33,7 +33,7 @@ export class EvaluacionService {
       idCurso: frontendData.idCurso,
       tituloEvaluacion: frontendData.tituloEvaluacion,
       preguntas: frontendData.preguntas.map(pregunta => ({
-        pregunta: pregunta.pregunta || '',
+        textoPregunta: pregunta.pregunta || '',
         opciones: pregunta.opciones.map(opcion => ({
           textoOpcion: opcion.textoOpcion,
           verificar: opcion.verificar
@@ -41,43 +41,38 @@ export class EvaluacionService {
       }))
     };
   }
-  
+
   private handleError(error: HttpErrorResponse) {
     let errorMessage = 'Error desconocido';
-    
+
     if (error.error instanceof ErrorEvent) {
-      // Error del lado del cliente
       errorMessage = `Error: ${error.error.message}`;
     } else {
-      // Error del servidor (puede ser texto plano o JSON)
       try {
-        // Intentamos parsear el error como JSON
         const errorObj = typeof error.error === 'string' ? JSON.parse(error.error) : error.error;
         errorMessage = errorObj.message || errorObj.error || error.message;
       } catch (e) {
-        // Si falla el parseo, usamos el texto plano
         errorMessage = error.error || error.message;
       }
-      
-      // Agregamos detalles del estado HTTP
+
       errorMessage = `Error ${error.status}: ${errorMessage}`;
-      
-      // Mensaje más descriptivo para errores 500
+
       if (error.status === 500) {
         errorMessage += '\n\nDetalle del error en el servidor:';
         errorMessage += `\n- URL: ${error.url}`;
         errorMessage += `\n- Mensaje: ${error.message}`;
       }
     }
-    
+
     console.error('Error completo:', error);
     return throwError(() => new Error(errorMessage));
   }
-obtenerEvaluacionPorCurso(idCurso: number): Observable<Evaluacion> {
+
+  obtenerEvaluacionPorCurso(idCurso: number): Observable<Evaluacion> {
     if (!idCurso || idCurso <= 0) {
       return throwError(() => new Error('ID de curso inválido'));
     }
-    
+
     return this.http.get<Evaluacion>(`${this.apiUrl}/curso/${idCurso}`).pipe(
       catchError(this.handleError)
     );

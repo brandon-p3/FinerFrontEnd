@@ -61,12 +61,6 @@ export class CursoServiceService {
     });
   }
 
-  editarCursoRechazado(cursoData: any): Observable<any> {
-    return this.http.put(`http://localhost:8080/api/solicitud-curso/editar`, cursoData, {
-      headers: new HttpHeaders({'Content-Type': 'application/json'}),
-      responseType: 'text'
-    });
-  }
   crearCurso(params: HttpParams): Observable<any> {
     return this.http.post(
       `${this.instructorApiUrl}/crear-curso`,
