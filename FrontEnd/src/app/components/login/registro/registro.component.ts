@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { RegistroService } from '../../../services/registro.service';
-import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-registro',
@@ -8,7 +7,7 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./registro.component.css']
 })
 export class RegistroComponent {
-  usuario: any = {
+  usuario = {
     nombre: '',
     apellidoPaterno: '',
     apellidoMaterno: '',
@@ -20,32 +19,79 @@ export class RegistroComponent {
     cedula: ''
   };
 
-  esInstructor: boolean = false;
+  esInstructor = false;
+  isLoading = false;
+  errorMessage = '';
+  successMessage = '';
 
   constructor(private registroService: RegistroService) {}
 
   registrar() {
+    this.errorMessage = '';
+    this.successMessage = '';
+    this.isLoading = true;
+
     if (this.esInstructor) {
-      this.registroService.registrarInstructor(this.usuario).subscribe({
-        next: (res: any) => {
-          console.log('Instructor registrado:', res);
-          alert(res.message || '¡Instructor registrado correctamente!');
-        },
-        error: (err) => {
-          console.error('Error al registrar instructor:', err);
-          alert('Error al registrar instructor');
-        }
-      });
+      this.registrarInstructor();
     } else {
-      this.registroService.registrarAlumno(this.usuario).subscribe({
-        next: () => {
-          alert('¡Alumno registrado correctamente!');
-        },
-        error: (err) => {
-          console.error('Error al registrar alumno:', err);
-          alert('Error al registrar alumno');
-        }
-      });
+      this.registrarAlumno();
     }
+  }
+
+  private registrarAlumno() {
+    const { nombre, apellidoPaterno, apellidoMaterno, correo, contrasenia, nombreUsuario } = this.usuario;
+    
+    this.registroService.registrarAlumno(
+      nombre,
+      apellidoPaterno,
+      apellidoMaterno,
+      correo,
+      contrasenia,
+      nombreUsuario
+    ).subscribe({
+      next: (res: any) => {
+        this.isLoading = false;
+        this.successMessage = res?.message || 'Alumno registrado correctamente';
+      },
+      error: (err) => {
+        this.isLoading = false;
+        this.errorMessage = err.message || 'Error al registrar alumno';
+        console.error('Error en registro:', err);
+      }
+    });
+  }
+
+  private registrarInstructor() {
+    const { nombre, apellidoPaterno, apellidoMaterno, correo, contrasenia, 
+           nombreUsuario, telefono, direccion, cedula } = this.usuario;
+    
+    // Validación de campos requeridos para instructor
+    if (!telefono || !direccion || !cedula) {
+      this.isLoading = false;
+      this.errorMessage = 'Todos los campos de instructor son requeridos';
+      return;
+    }
+
+    this.registroService.registrarInstructor(
+      nombre,
+      apellidoPaterno,
+      apellidoMaterno,
+      correo,
+      contrasenia,
+      nombreUsuario,
+      telefono,
+      direccion,
+      cedula
+    ).subscribe({
+      next: (res: any) => {
+        this.isLoading = false;
+        this.successMessage = res?.message || 'Solicitud de instructor enviada correctamente';
+      },
+      error: (err) => {
+        this.isLoading = false;
+        this.errorMessage = err.message || 'Error al registrar instructor';
+        console.error('Error en registro:', err);
+      }
+    });
   }
 }
