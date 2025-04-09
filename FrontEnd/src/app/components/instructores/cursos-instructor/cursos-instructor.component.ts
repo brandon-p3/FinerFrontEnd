@@ -5,8 +5,8 @@ import { CursoEditarDTO, CursoVerDTO, VerCategoriasDTO, TemaDTO, SolicitudTemaEd
 import { CursoServiceService } from '../../../services/curso-service.service';
 import { CategoriaServiceService } from '../../../services/categorias-service.service';
 import { UsuariosService } from '../../../services/usuarios-service.service';
-import { HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { EvaluacionService } from '../../../services/evaluacion.service';
+import { PreguntaDTO, EvaluacionInstructorDTO, OpcionDTO, Evaluacion } from '../../../documentos/evaluacionDocumento';
 
 const customSwal = Swal.mixin({
   customClass: {
@@ -42,7 +42,8 @@ export class CursosInstructorComponent implements OnInit {
     private router: Router,
     public cursoService: CursoServiceService,
     private categoriaService: CategoriaServiceService,
-    private usuariosService: UsuariosService
+    private usuariosService: UsuariosService,
+    private evaluacionService: EvaluacionService
   ) { }
 
   usuario: any = {
@@ -87,6 +88,8 @@ export class CursosInstructorComponent implements OnInit {
     categoria: '',
     nombreCategoriaActual: '',
     imagenUrl: ''
+
+    
   };
   categorias: VerCategoriasDTO[] = [];
   isEditing = false;
@@ -761,4 +764,141 @@ export class CursosInstructorComponent implements OnInit {
       curso.estatus === this.COURSE_STATUS.PENDING) &&
       this.temasDelCurso.length > 0;
   }
+
+  // Agrega estas propiedades a la clase
+showEvaluacionModal = false;
+selectedCourseForEvaluacion: CursoVerDTO | null = null;
+existingEvaluacion: Evaluacion | null = null;
+
+nuevaEvaluacion: EvaluacionInstructorDTO = {
+  idCurso: 0,
+  tituloEvaluacion: '',
+  preguntas: []
+};
+// Agrega estos métodos a la clase
+openEvaluacionModal(curso: CursoVerDTO): void {
+  this.selectedCourseForEvaluacion = { ...curso };
+  this.nuevaEvaluacion = {
+    idCurso: curso.idCurso,
+    tituloEvaluacion: `Evaluación de ${curso.titulo}`,
+    preguntas: []
+  };
+  this.showEvaluacionModal = true;
+  
+  // Verificar si ya existe una evaluación para este curso
+  this.verificarEvaluacionExistente(curso.idCurso);
+}
+
+closeEvaluacionModal(): void {
+  this.showEvaluacionModal = false;
+  this.selectedCourseForEvaluacion = null;
+  this.existingEvaluacion = null;
+  this.nuevaEvaluacion = {
+    idCurso: 0,
+    tituloEvaluacion: '',
+    preguntas: []
+  };
+}
+
+verificarEvaluacionExistente(idCurso: number): void {
+  // Aquí deberías implementar la llamada a tu servicio para verificar si existe una evaluación
+  // Por ahora lo dejamos como null (no existe)
+  this.existingEvaluacion = null;
+}
+
+addPregunta(): void {
+  this.nuevaEvaluacion.preguntas.push({
+    pregunta: '',
+    opciones: [
+      { textoOpcion: '', verificar: false },
+      { textoOpcion: '', verificar: false }
+    ]
+  });
+}
+removePregunta(index: number): void {
+  this.nuevaEvaluacion.preguntas.splice(index, 1);
+}
+
+esEvaluacionValida(): boolean {
+  // Verificar que el título de la evaluación no esté vacío
+  const tituloValido = !!this.nuevaEvaluacion.tituloEvaluacion && 
+                      this.nuevaEvaluacion.tituloEvaluacion.trim() !== '';
+
+  // Verificar que hay al menos una pregunta
+  const tienePreguntas = this.nuevaEvaluacion.preguntas.length > 0;
+
+  // Verificar cada pregunta
+  const preguntasValidas = this.nuevaEvaluacion.preguntas.every(pregunta => {
+    // El texto de la pregunta no debe estar vacío
+    const textoPreguntaValido = !!pregunta.pregunta && 
+                               pregunta.pregunta.trim() !== '';
+
+    // Debe haber al menos 2 opciones por pregunta
+    const tieneOpcionesSuficientes = pregunta.opciones.length >= 2;
+
+    // Todas las opciones deben tener texto
+    const opcionesTextoValido = pregunta.opciones.every(opcion => 
+      !!opcion.textoOpcion && opcion.textoOpcion.trim() !== ''
+    );
+
+    // Al menos una opción debe estar marcada como correcta (verificar = true)
+    const tieneOpcionCorrecta = pregunta.opciones.some(opcion => opcion.verificar === true);
+
+    return textoPreguntaValido && 
+           tieneOpcionesSuficientes && 
+           opcionesTextoValido && 
+           tieneOpcionCorrecta;
+  });
+
+  return tituloValido && tienePreguntas && preguntasValidas;
+}
+
+addOpcion(preguntaIndex: number): void {
+  this.nuevaEvaluacion.preguntas[preguntaIndex].opciones.push({
+    textoOpcion: '',
+    verificar: false
+  });
+}
+removeOpcion(preguntaIndex: number, opcionIndex: number): void {
+  this.nuevaEvaluacion.preguntas[preguntaIndex].opciones.splice(opcionIndex, 1);
+}
+
+crearEvaluacion(): void {
+  this.isLoading = true;
+  console.log(this.nuevaEvaluacion)
+  
+  this.evaluacionService.crearEvaluacion(this.nuevaEvaluacion).subscribe({
+    next: (response) => {
+      // Manejar respuesta exitosa (puede ser texto o JSON)
+      let mensaje = 'Evaluación creada correctamente';
+      if (typeof response === 'string') {
+        mensaje = response;
+      }
+      Swal.fire('¡Éxito!', mensaje, 'success');
+      this.closeEvaluacionModal();
+    },
+    error: (error) => {
+      console.error('Error completo:', error);
+      
+      let mensajeError = error.message;
+      // Extraer solo el mensaje si es muy largo
+      if (mensajeError.length > 150) {
+        mensajeError = mensajeError.substring(0, 150) + '...';
+      }
+      
+      Swal.fire({
+        title: 'Error al crear evaluación',
+        html: `<div style="text-align: left;">
+               <p>${mensajeError}</p>
+               <small>Ver consola para más detalles</small>
+               </div>`,
+        icon: 'error',
+        width: '600px'
+      });
+    },
+    complete: () => {
+      this.isLoading = false;
+    }
+  });
+}
 }
