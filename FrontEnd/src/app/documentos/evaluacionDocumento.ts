@@ -16,13 +16,22 @@ export interface Evaluacion {
     texto: string;
     correcta: boolean;
   }
-  
   export interface EvaluacionInstructorDTO {
     idCurso: number;
-    titulo: string;
-    preguntas: PreguntaInstructorDTO[];
+    tituloEvaluacion: string ;  // Nombre exacto como lo usa el frontend
+    preguntas: PreguntaDTO[];
   }
   
+  export interface PreguntaDTO {
+    pregunta: string;  
+    opciones: OpcionDTO[];
+  }
+  
+  export interface OpcionDTO {
+    textoOpcion: string;  // Nombre exacto como lo usa el frontend
+    verificar: boolean;   // Nombre exacto como lo usa el frontend
+  }
+
   export interface PreguntaInstructorDTO {
     texto: string;
     opciones: OpcionInstructorDTO[];
